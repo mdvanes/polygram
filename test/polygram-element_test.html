@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>polygram-element test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../polygram-element.html">
+</head>
+<body>
+
+<test-fixture id="BasicTestFixture">
+    <template>
+        <polygram-element></polygram-element>
+    </template>
+</test-fixture>
+
+<test-fixture id="ChangedPropertyTestFixture">
+    <template>
+        <polygram-element prop1="new-prop1"></polygram-element>
+    </template>
+</test-fixture>
+
+<script>
+    suite('polygram-element', function () {
+
+        test('instantiating the element with default properties works', () => {
+            const element = fixture('BasicTestFixture');
+            assert.equal(element.myName, 'polygram');
+            const elementShadowRoot = element.shadowRoot;
+            const elementHeader = elementShadowRoot.querySelector('h2');
+            assert.equal(elementHeader.innerHTML, 'Hello polygram!');
+        });
+
+        test('setting a property on the element works', () => {
+            // Create a test fixture
+            const element = fixture('ChangedPropertyTestFixture');
+            assert.equal(element.myName, 'polygram');
+            const elementShadowRoot = element.shadowRoot;
+            const elementHeader = elementShadowRoot.querySelector('h2');
+            assert.equal(elementHeader.innerHTML, 'Hello polygram!');
+        });
+
+        /*test('setting a property like this would fail when testing in shadowroot', () => {
+            // Create a test fixture
+            const element = fixture('ChangedPropertyTestFixture');
+            assert.equal(element.myName, 'polygram');
+            //const elementShadowRoot = element.shadowRoot;
+            const elementHeader = element.querySelector('h2');
+            assert.equal(elementHeader.innerHTML, 'Hello polygram!');
+        });*/
+
+        /*test('something async', done => {
+            // TODO async function not yet implemented, example from the course
+            element.addEventListener('search', e => {
+                assert.equal(e.detail, 'hello');
+                done();
+            });
+            element.querySelector('#searchInput').value = 'hello';
+            element.querySelector('.searchbutton').click();
+        })*/
+
+    });
+</script>
+
+</body>
+</html>
