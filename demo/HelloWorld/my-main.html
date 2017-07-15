@@ -1,0 +1,79 @@
+<link rel="import" href="../../../polymer/polymer-element.html">
+
+<dom-module id="my-main">
+  <template>
+
+    <!-- Styles MUST be inside template -->
+    <style>
+      :host p {
+        color: red;
+      }
+
+      .bar-style {
+          border: 1px solid #ccc;
+          border-radius: 3px;
+          display: inline-block;
+          padding: 0.5em;
+      }
+    </style>
+    <div class$="[[_computeMyClass(test)]]">
+      <p>Hello World (polymer)!</p>
+    </div>
+
+  </template>
+
+  <script>
+    class MyMain extends Polymer.Element {
+      constructor() {
+        super();
+        console.log('Constructed!');
+        // TODO shadow root https://www.polymer-project.org/2.0/docs/devguide/dom-template#create-your-own-shadow-root
+      }
+
+      static get is() { return 'my-main' }
+
+      connectedCallback() {
+        super.connectedCallback();
+        this._logAttributes();
+      }
+
+      // static get template() {
+      //   return '<style>:host p { color: blue; }</style><p>Lorem Ipsum!</p>';
+      // }
+
+      disconnectedCallback() {
+        console.log('element removed');
+      }
+
+      _logAttributes() {
+        console.log('Attribute "test" has value:', this.test);
+      }
+
+      static get properties() {
+        return {
+          test: {
+            type: String,
+            //observer: '_testAttrChanged'
+          }
+        };
+      }
+      
+      // _testAttrChanged(newValue, oldValue) {
+      //   console.log('changed', newValue, oldValue);
+      //   if(newValue === 'bar') {
+      //       this.setAttribute('class', 'bar-style')
+      //   }        
+      // }
+
+      _computeMyClass(prop) {
+        if(prop === 'bar') {
+          return 'bar-style';
+        }
+      }
+      
+      // TODO getter/setter for document.querySelector('my-component').myProperty
+
+    }
+    window.customElements.define(MyMain.is, MyMain);
+  </script>
+</dom-module>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HelloWorld</title>
+    <style type="text/css">
+        p {
+            background: #97b1ff;
+        }
+    </style>
+
+    <!-- Native Webcomponent -->
+    <script src="main.js"></script>
+
+    <!-- Native Webcomponent with Shadow DOM -->
+    <script src="main-shadow.js"></script>
+
+    <!-- Polymer -->
+    <script src="../../../webcomponentsjs/webcomponents-lite.js"></script>
+    <link rel="import" href="my-main.html">
+
+</head>
+<body>
+<my-component test="foo"></my-component>
+<my-shadow-component test="foo"></my-shadow-component>
+<my-main test="foo"></my-main>
+</body>
+</html>
