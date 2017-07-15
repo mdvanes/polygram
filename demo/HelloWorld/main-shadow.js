@@ -1,9 +1,8 @@
 class MyShadowComponent extends HTMLElement {
     constructor() {
         super();
+        this._root = this.attachShadow({mode: 'open'});
         console.log('Constructed!');
-
-        this._root = this.attachShadow({'mode': 'open'});
     }
 
     connectedCallback() {
