@@ -2,7 +2,7 @@ class MyShadowComponent extends HTMLElement {
     constructor() {
         super();
         this._root = this.attachShadow({mode: 'open'});
-        console.log('Constructed!');
+        console.log('MyShadowComponent constructed!');
     }
 
     connectedCallback() {
@@ -28,7 +28,7 @@ p {
     }
 
     _logAttributes() {
-        console.log('Attribute "test" has value:', this.getAttribute('test'));
+        console.log('Attribute "test" on my-shadow-component has value:', this.getAttribute('test'));
     }
 
     static get observedAttributes() {
@@ -36,7 +36,8 @@ p {
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
-        console.log('changed', oldValue, newValue);
+        //console.log('changed', oldValue, newValue);
+        this._logAttributes();
         if(newValue === 'bar') {
             this.setAttribute('class', 'bar-style')
         }

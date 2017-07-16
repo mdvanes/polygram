@@ -29,7 +29,7 @@ p {
     }
 
     _logAttributes() {
-        console.log('Attribute "test" has value:', this.getAttribute('test'));
+        console.log('Attribute "test" on my-component has value:', this.getAttribute('test'));
     }
 
     static get observedAttributes() {
