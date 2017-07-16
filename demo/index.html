@@ -17,7 +17,9 @@
 
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
-    <link rel="import" href="../polygram-element.html">
+    <!--<link rel="import" href="../polygram-element.html">-->
+    <link rel="import" href="../polygram-searchbox.html">
+    <link rel="import" href="../polygram-details.html">
 
     <custom-style>
       <style is="custom-style" include="demo-pages-shared-styles">
@@ -25,12 +27,22 @@
     </custom-style>
   </head>
   <body>
-    <div class="vertical-section-container centered">
+    <!--<div class="vertical-section-container centered">
       <h3>Basic polygram-element demo</h3>
       <p>root paragraph</p>
       <demo-snippet>
         <template>
           <polygram-element></polygram-element>
+        </template>
+      </demo-snippet>
+    </div>-->
+    <div class="vertical-section-container centered">
+      <h3>Basic polygram-element demo</h3>
+      <p>root paragraph</p>
+      <demo-snippet>
+        <template>
+          <polygram-searchbox></polygram-searchbox>
+          <polygram-details></polygram-details>
         </template>
       </demo-snippet>
     </div>
