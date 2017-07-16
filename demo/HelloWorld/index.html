@@ -23,5 +23,13 @@
 <my-component test="foo"></my-component>
 <my-shadow-component test="baz"></my-shadow-component>
 <my-polymer-component test="bat"></my-polymer-component>
+
+<button onclick="javascript: console.log(document.querySelector('my-shadow-component').myProperty);">shadow getter</button>
+<button onclick="javascript: document.querySelector('my-shadow-component').myProperty = 'no-polymer';">shadow getter</button>
+<br/>
+<button onclick="javascript: console.log(document.querySelector('my-polymer-component').myProperty);">polymer getter</button>
+<button onclick="javascript: document.querySelector('my-polymer-component').myProperty = 'with-polymer';">polymer getter</button>
+
+
 </body>
 </html>
