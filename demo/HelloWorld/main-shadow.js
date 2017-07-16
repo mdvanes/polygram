@@ -32,7 +32,7 @@ p {
     }
 
     static get observedAttributes() {
-        return ['test'];
+        return ['test', 'my-property'];
     }
 
     attributeChangedCallback(name, oldValue, newValue) {
@@ -42,14 +42,15 @@ p {
         }
     }
 
-    // set myProperty(x) {
-    //     this._myProperty = x;
-    // }
+    // document.querySelector('my-shadow-component').myProperty = 'nopolymer'
+    set myProperty(x) {
+        this._myProperty = x;
+    }
 
-    // // document.querySelector('my-component').myProperty
-    // get myProperty() {
-    //     return this._myProperty || 'empty';
-    // }
+    // document.querySelector('my-shadow-component').myProperty
+    get myProperty() {
+        return this._myProperty || 'empty';
+    }
 
     // click() {
     //     alert('foo' + this._myProperty);
