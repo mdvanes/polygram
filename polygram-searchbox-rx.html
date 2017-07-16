@@ -1,13 +1,13 @@
-<link rel="import" href="../marked-element/marked-element.html">
+<!--<link rel="import" href="../marked-element/marked-element.html">-->
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
-<link rel="import" href="../iron-ajax/iron-ajax.html">
+<!--<link rel="import" href="../iron-ajax/iron-ajax.html">-->
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="polygram-element-styles.html">
 <script src="../rxjs/dist/rx.lite.js"></script>
 
-<dom-module id="polygram-element">
+<dom-module id="polygram-searchbox-rx">
     <template>
         <!--<style>
             :host {
@@ -22,31 +22,16 @@
             }
         </style>
         <div>
-            <h2>Hello [[myName]]!</h2>
-            <p>encapsulated paragraph</p>
-            <marked-element>
-                <div slot="markdown-html"></div>
-                <script type="text/markdown">
-                # Marked Test
-
-                This is a
-
-                * marked
-                * test
-                </script>
-            </marked-element>
-            <marked-element markdown="`Markdown` is _awesome_!">
-                <div slot="markdown-html"></div>
-            </marked-element>
+            <h2>Search (rx) [[sourceName]]!</h2>
             <paper-input id="searchFetchInput" label="search with Fetch" on-change="fakeSearchAction">
                 <iron-icon icon="close" slot="prefix"></iron-icon>
             </paper-input>
-            <button id="btn-toggle" on-click="toggle">toggle [[isOpen]]</button>
-            <div class="test-class-toggling">
-                <div class$="{{_toggleClass}}">
-                    test class$
-                </div>
-            </div>
+            <!--<button id="btn-toggle" on-click="toggle">toggle [[isOpen]]</button>-->
+            <!--<div class="test-class-toggling">-->
+                <!--<div class$="{{_toggleClass}}">-->
+                    <!--test class$-->
+                <!--</div>-->
+            <!--</div>-->
             <template is="dom-if" if="{{isOpen}}">
                 <div class="external-css">test external-css and dom-if</div>
             </template>
@@ -57,53 +42,51 @@
                     <li>[[item.title]]</li>
                 </template>
             </ul>
-            <paper-input id="searchIAInput"
-                         value="{{_searchIAInput}}"
-                         label="search with iron-ajax" charcounter="true" maxlength="100">
-                <iron-icon icon="close" slot="prefix"></iron-icon>
-            </paper-input>
-            <ul>
-                <template is="dom-repeat" items="{{_searchResultsIAArr}}">
-                    <li>[[index]]. [[item.title]]</li>
-                </template>
-            </ul>
-            <iron-request id="xhr"></iron-request>
-            <!--
-             Without auto, call manually with:
-              this.$.searchIARequest.generateRequest() in e.g. ready()
-            -->
-            <iron-ajax
-                    auto
-                    id="searchIARequest"
-                    url="{{_searchIAUrl}}"
-                    handle-as="json"
-                    debounce-duration="500"
-                    on-response="_searchIAHandler"></iron-ajax>
+            <!--<paper-input id="searchIAInput"-->
+                         <!--value="{{_searchIAInput}}"-->
+                         <!--label="search with iron-ajax" charcounter="true" maxlength="100">-->
+                <!--<iron-icon icon="close" slot="prefix"></iron-icon>-->
+            <!--</paper-input>-->
+            <!--<ul>-->
+                <!--<template is="dom-repeat" items="{{_searchResultsIAArr}}">-->
+                    <!--<li>[[index]]. [[item.title]]</li>-->
+                <!--</template>-->
+            <!--</ul>-->
+            <!--<iron-request id="xhr"></iron-request>-->
+            <!--&lt;!&ndash;-->
+             <!--Without auto, call manually with:-->
+              <!--this.$.searchIARequest.generateRequest() in e.g. ready()-->
+            <!--&ndash;&gt;-->
+            <!--<iron-ajax-->
+                    <!--auto-->
+                    <!--id="searchIARequest"-->
+                    <!--url="{{_searchIAUrl}}"-->
+                    <!--handle-as="json"-->
+                    <!--debounce-duration="500"-->
+                    <!--on-response="_searchIAHandler"></iron-ajax>-->
         </div>
 
     </template>
 
     <script>
         /**
-         * `polygram-element`
+         * `polygram-searchbox-rx`
          * load photos in instagram style
          *
          * @customElement
          * @polymer
          * @demo demo/index.html
          */
-        class PolygramElement extends Polymer.Element {
+        class PolygramSearchboxRx extends Polymer.Element {
             static get is() {
-                return 'polygram-element';
+                return 'polygram-searchbox-rx';
             }
-
-            // TODO search type (wikipedia/images/etc) via prop
 
             static get properties() {
                 return {
-                    myName: {
+                    sourceName: {
                         type: String,
-                        value: 'polygram'
+                        value: 'polygram-searchbox-rx'
                     },
                     isOpen: {
                         type: Boolean,
@@ -122,29 +105,29 @@
                         type: Array,
                         value: []
                     },
-                    _searchIAInput: {
-                        type: String,
-                        value: null,
-                        observer: '_searchIAInputChanged'
-                    },
-                    _searchIAUrl: {
-                        type: String,
-                        value: null
-                    },
-                    _searchResultsIAArr: {
-                        type: Array,
-                        value: []
-                    }
+//                    _searchIAInput: {
+//                        type: String,
+//                        value: null,
+//                        observer: '_searchIAInputChanged'
+//                    },
+//                    _searchIAUrl: {
+//                        type: String,
+//                        value: null
+//                    },
+//                    _searchResultsIAArr: {
+//                        type: Array,
+//                        value: []
+//                    }
                 };
             }
 
-            /**
-             * Toggle the info block
-             */
-            toggle() {
-                //console.log('toggle isopen', this.isOpen);
-                this.set('isOpen', !this.isOpen);
-            }
+//            /**
+//             * Toggle the info block
+//             */
+//            toggle() {
+//                //console.log('toggle isopen', this.isOpen);
+//                this.set('isOpen', !this.isOpen);
+//            }
 
             _bindSearchObservableFetch() {
                 //console.log('_bindSearchObservable', this);
@@ -255,20 +238,20 @@
 //                console.log(response);
 //            }
 
-            _searchIAInputChanged(term) {
-                //console.log(term);
-                if(term && term.length > 0) {
-                    this._searchIAUrl = `https://cors-anywhere.herokuapp.com/en.wikipedia.org:443/w/api.php?action=query&format=json&list=search&srsearch=${encodeURI(term)}`;
-                }
-            }
-
-            _searchIAHandler(data) {
-                console.log(data, data.detail, data.detail.response);
-                if(data && data.detail && data.detail.response && data.detail.response.query &&
-                data.detail.response.query.search) {
-                    this._searchResultsIAArr = data.detail.response.query.search;
-                }
-            }
+//            _searchIAInputChanged(term) {
+//                //console.log(term);
+//                if(term && term.length > 0) {
+//                    this._searchIAUrl = `https://cors-anywhere.herokuapp.com/en.wikipedia.org:443/w/api.php?action=query&format=json&list=search&srsearch=${encodeURI(term)}`;
+//                }
+//            }
+//
+//            _searchIAHandler(data) {
+//                console.log(data, data.detail, data.detail.response);
+//                if(data && data.detail && data.detail.response && data.detail.response.query &&
+//                data.detail.response.query.search) {
+//                    this._searchResultsIAArr = data.detail.response.query.search;
+//                }
+//            }
 
             // TODO use Polymer property observer with rxjs?
 
@@ -285,9 +268,9 @@
                 this._bindSearchObservableFetch();
             }
 
-            fakeSearchAction() {
-                console.log(`fakesearching "${this.$.searchFetchInput.value}".`);
-            }
+//            fakeSearchAction() {
+//                console.log(`fakesearching "${this.$.searchFetchInput.value}".`);
+//            }
 
             /*searchAction() {
                 this.searchService(this.$.searchInput.value);
@@ -295,6 +278,6 @@
 
         }
 
-        window.customElements.define(PolygramElement.is, PolygramElement);
+        window.customElements.define(PolygramSearchboxRx.is, PolygramSearchboxRx);
     </script>
 </dom-module>
