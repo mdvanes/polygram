@@ -28,7 +28,7 @@
             </paper-input>
             <ul>
                 <template is="dom-repeat" items="{{_searchResultsIAArr}}">
-                    <li>[[index]]. [[item.title]]</li>
+                    <li id="[[item.title]]" on-click="_handleClick">[[index]]. [[item.title]]</li>
                 </template>
             </ul>
             <iron-request id="xhr"></iron-request>
@@ -80,7 +80,7 @@
                     },
                     _searchResultsIAArr: {
                         type: Array,
-                        value: []
+                        value: [] // [{title:"foo"}]
                     }
                 };
             }
@@ -97,6 +97,10 @@
                 data.detail.response.query.search) {
                     this._searchResultsIAArr = data.detail.response.query.search;
                 }
+            }
+
+            _handleClick(e) {
+                console.log('clicked', e.target.id);
             }
 
             ready() {
