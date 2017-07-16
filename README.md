@@ -32,8 +32,6 @@ native webcomponents and a Polymer component.
 
 # TODO
 
-* Search should return images only (and rename to polygram-searchbox)
-* Add second component to show image details (polygram-details)
-* Add higher level app, integrating both components next to the 2 demo pages (should be polygram-element).
 * Use Redux to share data: if a search result is clicked (in polygram-searchbox) show the result (in polygram-details)
+* Higher order components for switching APIs (e.g. Wiki, Getty en Marvel?)
 * Test cases, source maps?
