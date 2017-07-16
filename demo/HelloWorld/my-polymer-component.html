@@ -1,6 +1,6 @@
 <link rel="import" href="../../../polymer/polymer-element.html">
 
-<dom-module id="my-main">
+<dom-module id="my-polymer-component">
     <template>
 
         <!-- Styles MUST be inside template -->
@@ -23,15 +23,15 @@
     </template>
 
     <script>
-        class MyMain extends Polymer.Element {
+        class MyPolymerComponent extends Polymer.Element {
             constructor() {
                 super();
                 // Already in Shadow DOM Mode - this.attachShadow({mode: 'open', delegatesFocus: true});
-                console.log('Constructed!');
+                console.log('MyPolymerComponent constructed!');
             }
 
             static get is() {
-                return 'my-main'
+                return 'my-polymer-component'
             }
 
             connectedCallback() {
@@ -48,7 +48,7 @@
             }
 
             _logAttributes() {
-                console.log('Attribute "test" has value:', this.test);
+                console.log('Attribute "test" on my-polymer-component has value:', this.test);
             }
 
             static get properties() {
@@ -56,6 +56,7 @@
                     test: {
                         type: String,
                         //observer: '_testAttrChanged'
+                        observer: '_logAttributes'
                     },
                     myProperty: {
                         type: String,
@@ -77,14 +78,14 @@
                 }
             }
 
-            // Getter/setter for document.querySelector('my-component').myProperty
+            // Getter/setter for document.querySelector('my-polymer-component').myProperty
             // https://www.polymer-project.org/2.0/docs/devguide/properties
             // It is possible to use properties with vanilla webcomponents too,
             // but for Polymer it is specifically in the docs
-            // document.querySelector('my-shadow-component').myProperty = 'nopolymer'
-            // document.querySelector('my-shadow-component').myProperty
+            // document.querySelector('my-polymer-component').myProperty
+            // document.querySelector('my-polymer-component').myProperty = 'withpolymer'
 
         }
-        window.customElements.define(MyMain.is, MyMain);
+        window.customElements.define(MyPolymerComponent.is, MyPolymerComponent);
     </script>
 </dom-module>
