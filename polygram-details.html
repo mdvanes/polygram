@@ -1,11 +1,11 @@
-<link rel="import" href="../paper-input/paper-input.html">
-<link rel="import" href="../iron-icon/iron-icon.html">
+<!--<link rel="import" href="../paper-input/paper-input.html">-->
+<!--<link rel="import" href="../iron-icon/iron-icon.html">-->
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="polygram-element-styles.html">
 
-<dom-module id="polygram-searchbox">
+<dom-module id="polygram-details">
     <template>
         <!--<style>
             :host {
@@ -20,17 +20,22 @@
             }
         </style>
         <div>
-            <h2>Search [[sourceName]]!</h2>
-            <paper-input id="searchIAInput"
-                         value="{{_searchIAInput}}"
-                         label="search with iron-ajax" charcounter="true" maxlength="100">
-                <iron-icon icon="close" slot="prefix"></iron-icon>
-            </paper-input>
-            <ul>
-                <template is="dom-repeat" items="{{_searchResultsIAArr}}">
-                    <li id="[[item.title]]" on-click="_handleClick">[[index]]. [[item.title]]</li>
-                </template>
-            </ul>
+            <h2>Details for [[term]]:</h2>
+            <!--<paper-input id="searchIAInput"-->
+                         <!--value="{{_searchIAInput}}"-->
+                         <!--label="search with iron-ajax" charcounter="true" maxlength="100">-->
+                <!--<iron-icon icon="close" slot="prefix"></iron-icon>-->
+            <!--</paper-input>-->
+            <!--<ul>-->
+                <!--<template is="dom-repeat" items="{{_searchResultsIAArr}}">-->
+                    <!--<li id="[[item.title]]" on-click="_handleClick">[[index]]. [[item.title]]</li>-->
+                <!--</template>-->
+            <!--</ul>-->
+
+            TODO add condition
+            <h3><a href="https://en.wikipedia.org/wiki/[[_searchResult.title]]">[[_searchResult.title]]</a> ([[_searchResult.size]])</h3>
+            <div>[[_searchResult.summary]]</div>
+
             <iron-request id="xhr"></iron-request>
             <!--
              Without auto, call manually with:
@@ -49,43 +54,42 @@
 
     <script>
         /**
-         * `polygram-searchbox`
+         * `polygram-details`
          * load photos in instagram style
          *
          * @customElement
          * @polymer
-         * @demo demo/polygram-searchbox/index.html
+         * @demo demo/polygram-details/index.html
          */
-        class PolygramSearchbox extends Polymer.Element {
+        class PolygramDetails extends Polymer.Element {
             static get is() {
-                return 'polygram-searchbox';
+                return 'polygram-details';
             }
-
-            // TODO search type (wikipedia/images/etc) via Higher Order Component also containing the Redux bindings
 
             static get properties() {
                 return {
-                    sourceName: {
+                    term: {
                         type: String,
-                        value: 'polygram-searchbox'
+                        value: 'polygram-details',
+                        observer: '_termChanged'
                     },
-                    _searchIAInput: {
-                        type: String,
-                        value: null,
-                        observer: '_searchIAInputChanged'
-                    },
+//                    _searchIAInput: {
+//                        type: String,
+//                        value: null,
+//                        observer: '_searchIAInputChanged'
+//                    },
                     _searchIAUrl: {
                         type: String,
                         value: null
                     },
-                    _searchResultsIAArr: {
-                        type: Array,
+                    _searchResult: {
+                        type: Object,
                         value: [] // [{title:"foo"}]
                     }
                 };
             }
 
-            _searchIAInputChanged(term) {
+            _termChanged(term) {
                 if(term && term.length > 0) {
                     this._searchIAUrl = `https://cors-anywhere.herokuapp.com/en.wikipedia.org:443/w/api.php?action=query&format=json&list=search&srsearch=${encodeURI(term)}`;
                 }
@@ -93,9 +97,14 @@
 
             _searchIAHandler(data) {
                 console.log(data, data.detail, data.detail.response);
-                if(data && data.detail && data.detail.response && data.detail.response.query &&
-                data.detail.response.query.search) {
-                    this._searchResultsIAArr = data.detail.response.query.search;
+                if(data && data.detail && data.detail.response &&
+                    data.detail.response.query && data.detail.response.query.search) {
+                    //this._searchResultsIAArr = data.detail.response.query.search;
+                    this._searchResult = {
+                        title: data.detail.response.query.search[0].title,
+                        size: data.detail.response.query.search[0].size,
+                        summary: data.detail.response.query.search[0].snippet
+                    }
                 }
             }
 
@@ -109,6 +118,6 @@
 
         }
 
-        window.customElements.define(PolygramSearchbox.is, PolygramSearchbox);
+        window.customElements.define(PolygramDetails.is, PolygramDetails);
     </script>
 </dom-module>
