@@ -56,6 +56,10 @@
                     test: {
                         type: String,
                         //observer: '_testAttrChanged'
+                    },
+                    myProperty: {
+                        type: String,
+                        value: 'empty'
                     }
                 };
             }
@@ -73,7 +77,12 @@
                 }
             }
 
-            // TODO getter/setter for document.querySelector('my-component').myProperty
+            // Getter/setter for document.querySelector('my-component').myProperty
+            // https://www.polymer-project.org/2.0/docs/devguide/properties
+            // It is possible to use properties with vanilla webcomponents too,
+            // but for Polymer it is specifically in the docs
+            // document.querySelector('my-shadow-component').myProperty = 'nopolymer'
+            // document.querySelector('my-shadow-component').myProperty
 
         }
         window.customElements.define(MyMain.is, MyMain);
