@@ -4,7 +4,6 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../polymer/lib/elements/dom-repeat.html">
 <link rel="import" href="polygram-element-styles.html">
-<!--<script src="../rxjs/dist/rx.lite.js"></script>-->
 
 <dom-module id="polygram-searchbox">
     <template>
@@ -70,23 +69,6 @@
                         type: String,
                         value: 'polygram-searchbox'
                     },
-//                    isOpen: {
-//                        type: Boolean,
-//                        value: false,
-//                        observer: '_isOpenChanged'
-//                    },
-//                    staticOpen: {
-//                        type: Boolean,
-//                        value: false
-//                    },
-//                    _toggleClass: {
-//                        type: String,
-//                        value: ''
-//                    },
-                    _searchResultsFetchArr: {
-                        type: Array,
-                        value: []
-                    },
                     _searchIAInput: {
                         type: String,
                         value: null,
@@ -103,125 +85,7 @@
                 };
             }
 
-//            /**
-//             * Toggle the info block
-//             */
-//            toggle() {
-//                //console.log('toggle isopen', this.isOpen);
-//                this.set('isOpen', !this.isOpen);
-//            }
-
-//            _bindSearchObservableFetch() {
-//                //console.log('_bindSearchObservable', this);
-//                const observable = Rx.Observable.fromEvent(this.$.searchFetchInput, 'keyup')
-//                    .map(e => e.target.value) // the complete value of the input elem
-//                    .filter(text => text.length > 2 ) // only if longer than 2 chars
-//                    //.debounceTime(750) // pause for 750 ms // TODO this is somehow not included in the rx.lite.js import
-//                    .distinctUntilChanged(); // only if changed
-//
-//                // FlatMapLatest has been replaced by SwitchMap: Map to observable, complete previous inner observable, emit values.
-//                // Needed to keep this context in _searchWikipedia
-//                const searcher = observable.switchMap(term => this._searchWikipediaFetch(term));
-//                //const searcher = observable.switchMap(this._searchWikipedia);
-//
-//                // TODO test `polymer build --preset es6-bundled`
-//                // TODO test the ING the guide starter kit for Polymer!
-//
-//                searcher.subscribe(data => {
-//                    //console.log('subscribe response:', data);
-//                    // TODO do results by creating result HTML with Polymer
-//                    //this.$.searchResults.innerText = '';
-//                    this._searchResultsArr = [];
-//                    if(data) {
-//                        //console.log('query result', data.query.pages[4576465].images);
-//                        // results
-//                        //     //.empty()
-//                        //     .append =
-//                        //console.log('query result', data.query);
-//                        // Search for "flower"
-////                        data.query.search.map(item => {
-////                        //data.query.pages[4576465].images.map(item => {
-////                            //console.log(item);
-////                            //return `<li>${item.title}</li>`;
-////                            const li = document.createElement('li');
-////                            li.innerHTML = item.title;
-////                            return li;
-////                        })
-////                        .forEach(item => this.$.searchResults.appendChild(item));
-//                        // TODO accept data.query.pages.*.images
-//                        this._searchResultsFetchArr = data.query.search.map(item => {
-//                            //console.log('_searchResultsArr', item);
-//                            // TODO render images
-//                            return {title: item.title};
-//                        });
-//                    } else {
-//                        console.error('data is empty');
-//                    }
-//                })
-//            }
-//
-//            _searchWikipediaFetch(term) {
-//                console.log(`searching Wikipedia for ${term}`);
-//                //term = 'flower';
-//                // TODO solve using iron-ajax. The following is called on each change, but only fires one request
-//                // It is not possible with iron-request (see https://medium.com/@fokusman/how-to-make-ajax-calls-in-polymer-js-8ba6b893ebf8)
-//                // This would involve using iron-ajax with auto=on and the url a property that is observed. The response
-//                // could be set with the callback function to another property which can also be observed, and this would
-//                // remove the need and possibility to use Rx. So make maybe two search under each other with the two different
-//                // implementations
-////                this.$.xhr
-////                    .send({
-////                        // wikipedia articles
-////                        url: `https://cors-anywhere.herokuapp.com/en.wikipedia.org:443/w/api.php?action=query&format=json&list=search&srsearch=${encodeURI(term)}`,
-////                        // wikipedia images
-////                        //url: `https://cors-anywhere.herokuapp.com/en.wikipedia.org:443/w/api.php?action=query&format=json&titles=${encodeURI(term)}&prop=images`,
-//////                        body: {
-//////                            foo: 'bar'
-//////                        },
-////                        handleAs: 'json'
-////                    });
-////                return this.$.xhr.completes
-////                    .then(xhrElem => {
-////                        //console.log('response', this.$.xhr.response, xhrElem.response);
-////                        return xhrElem.response;
-////                    })
-////                    .catch(err => console.error('Failed calling wikipedia'));
-//
-//                // Normal working Fetch
-//                return fetch(`https://cors-anywhere.herokuapp.com/en.wikipedia.org:443/w/api.php?action=query&format=json&list=search&srsearch=${encodeURI(term)}`, {
-//                    method: 'GET',
-//                    //mode: 'no-cors',
-//                    dataType: 'json',
-//                    headers: {
-//                        Accept: 'application/json',
-//                    },
-//                })
-//                    .then(response => {
-//                        if(response.ok) {
-//                            // https://stackoverflow.com/questions/36840396/react-fetch-gives-an-empty-response-body
-//                            return response.json(); // <- this might fail because no-cors returns an opaque response: https://stackoverflow.com/questions/36840396/react-fetch-gives-an-empty-response-body
-//                        }
-//                        console.error('response error');
-//                    })
-//                    .catch(err => console.error('Invalid JSON:', err));
-//
-////                return Rx.Observable.fromPromise(fetch(`https://cors-anywhere.herokuapp.com/en.wikipedia.org:443/w/api.php?action=query&format=json&list=search&srsearch=${encodeURI(term)}`, {
-////                    method: 'GET',
-////                    //mode: 'no-cors',
-////                    dataType: 'json',
-////                    headers: {
-////                        Accept: 'application/json',
-////                    },
-////                }));
-////                this.$.searchRequest.generateRequest();
-//            }
-
-//            _searchHandler() {
-//                console.log(response);
-//            }
-
             _searchIAInputChanged(term) {
-                //console.log(term);
                 if(term && term.length > 0) {
                     this._searchIAUrl = `https://cors-anywhere.herokuapp.com/en.wikipedia.org:443/w/api.php?action=query&format=json&list=search&srsearch=${encodeURI(term)}`;
                 }
@@ -235,26 +99,9 @@
                 }
             }
 
-//            _isOpenChanged() {
-//                this._toggleClass = '';
-//                if(this.isOpen) {
-//                    this._toggleClass = 'opened';
-//                }
-//            }
-
             ready() {
                 super.ready();
-                //this.isOpen = this.staticOpen;
-                //this._bindSearchObservableFetch();
             }
-
-//            fakeSearchAction() {
-//                console.log(`fakesearching "${this.$.searchFetchInput.value}".`);
-//            }
-
-            /*searchAction() {
-                this.searchService(this.$.searchInput.value);
-            }*/
 
         }
 
