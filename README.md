@@ -7,7 +7,7 @@ load photos in a instagram style
 * `nvm use 7.10.0`
 * First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed.
 * `polymer install`
-* `npm i redux`
+* `npm i redux redux-thunk` // in the example these are just checked in, in a libs dir
 * Then run `polymer serve` to serve your element locally.
 
 ## Viewing Your Element

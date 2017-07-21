@@ -3,7 +3,9 @@
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="../polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../polymer-redux/polymer-redux.html">
 <link rel="import" href="polygram-element-styles.html">
+<link rel="import" href="action.html">
 
 <dom-module id="polygram-searchbox">
     <template>
@@ -48,6 +50,9 @@
     </template>
 
     <script>
+        // TODO test demo/polygram-searchbox. what to do if it can't find ReduxMixin?
+        //const ReduxMixin = PolymerRedux(Polygram.reduxStore);
+
         /**
          * `polygram-searchbox`
          * load photos in instagram style
@@ -56,7 +61,7 @@
          * @polymer
          * @demo demo/polygram-searchbox/index.html
          */
-        class PolygramSearchbox extends Polymer.Element {
+        class PolygramSearchbox extends ReduxMixin(Polymer.Element) {
             static get is() {
                 return 'polygram-searchbox';
             }
@@ -65,6 +70,9 @@
 
             static get properties() {
                 return {
+                    state: {
+                        type: Object
+                    },
                     sourceName: {
                         type: String,
                         value: 'polygram-searchbox'
@@ -100,7 +108,9 @@
             }
 
             _handleClick(e) {
-                console.log('clicked', e.target.id);
+                console.log('clicked', e.target.id, typeof Polygram.ACTIONS.TERM_SELECTED.TERM_SELECTED);
+                //this.dispatch(Polygram.ACTIONS.TERM_SELECTED.TERM_SELECTED({selectedTerm: e.target.id}));
+                this.dispatch(Polygram.ACTIONS.TERM_SELECTED.TERM_SELECTED(e.target.id));
             }
 
             ready() {
