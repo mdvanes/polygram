@@ -1,3 +1,83 @@
+<!-- TODO redux https://github.com/jdomzhang/polymer-redux-example -->
+
+<!-- Redux start (could be moved to separate .html) -->
+<script src="../../../../node_modules/redux/dist/redux.js"></script>
+<link rel="import" href="../polymer-redux/polymer-redux.html">
+
+<!-- could be multiple reducers in reducers/[name]-reducer.html -->
+<link rel="import" href="reducer.html">
+<link rel="import" href="action.html">
+
+<script>
+    (function(Polygram) {
+        // ReduxThunk (optional) for services and Redux Devtools for debugging with Chrome extension
+        const store = Redux.createStore(
+            Redux.combineReducers(Polygram.REDUCERS),
+            Redux.compose(
+                // TODO Redux.applyMiddleware(window.ReduxThunk.default),
+                window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+
+        Polygram.reduxStore = store;
+
+        Polygram.ACTIONS = Polygram.ACTIONS || {};
+        Polygram.ACTIONS.TERM_SELECTED = Polygram.createTermActions();
+    })(window.Polygram || {});
+
+    const ReduxMixin = PolymerRedux(Polygram.reduxStore);
+</script>
+
+<!-- TODO
+ still needed for Redux: a wrapper component that adds  behaviors: [ReduxBehavior], and a store, and then of course the dispatcher and the listeners
+-->
+
+<!-- Redux end -->
+
+
+<!--<link rel="import" href="../polygram-element.html">-->
+<link rel="import" href="polygram-searchbox.html">
+<link rel="import" href="polygram-details.html">
+
+<dom-module id="polygram-element">
+    <template>
+        <polygram-searchbox state="[[state]]"></polygram-searchbox>
+        <polygram-details state="[[state]]"></polygram-details>
+    </template>
+    <script>
+
+
+        // TODO would the name polygram-app be better than polymer-element?
+        /**
+         * `polygram-element`
+         * load photos in instagram style
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/index.html
+         */
+        class PolygramElement extends ReduxMixin(Polymer.Element) {
+            static get is() {
+                return 'polygram-element';
+            }
+
+            static get properties() {
+                return {
+                    state: {
+                        type: Object,
+                        value: Polygram.reduxStore.getState()
+                    }
+                }
+            }
+
+            ready() {
+                super.ready()
+            }
+        }
+
+        window.customElements.define(PolygramElement.is, PolygramElement);
+    </script>
+</dom-module>
+
+<!--
 <link rel="import" href="../marked-element/marked-element.html">
 <link rel="import" href="../paper-input/paper-input.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
@@ -9,16 +89,16 @@
 
 <dom-module id="polygram-element">
     <template>
-        <!--<style>
+        &lt;!&ndash;<style>
             :host {
                 display: block;
             }
-        </style>-->
+        </style>&ndash;&gt;
         <style include="polygram-element-styles"></style>
         <style>
             :root {
-                --btn-toggle-color: #3335FF;
-                --btn-toggle-border-color: #3C70FF;
+                &#45;&#45;btn-toggle-color: #3335FF;
+                &#45;&#45;btn-toggle-border-color: #3C70FF;
             }
         </style>
         <div>
@@ -50,10 +130,10 @@
             <template is="dom-if" if="{{isOpen}}">
                 <div class="external-css">test external-css and dom-if</div>
             </template>
-            <!--<ul id="searchResults"></ul>-->
+            &lt;!&ndash;<ul id="searchResults"></ul>&ndash;&gt;
             <ul>
                 <template is="dom-repeat" items="{{_searchResultsFetchArr}}">
-                    <!--<li>a [[index]] [[item.title]]</li>-->
+                    &lt;!&ndash;<li>a [[index]] [[item.title]]</li>&ndash;&gt;
                     <li>[[item.title]]</li>
                 </template>
             </ul>
@@ -68,10 +148,10 @@
                 </template>
             </ul>
             <iron-request id="xhr"></iron-request>
-            <!--
+            &lt;!&ndash;
              Without auto, call manually with:
               this.$.searchIARequest.generateRequest() in e.g. ready()
-            -->
+            &ndash;&gt;
             <iron-ajax
                     auto
                     id="searchIARequest"
@@ -159,7 +239,7 @@
                 const searcher = observable.switchMap(term => this._searchWikipediaFetch(term));
                 //const searcher = observable.switchMap(this._searchWikipedia);
 
-                // TODO test `polymer build --preset es6-bundled`
+                // TODO test `polymer build &#45;&#45;preset es6-bundled`
                 // TODO test the ING the guide starter kit for Polymer!
 
                 searcher.subscribe(data => {
@@ -298,3 +378,4 @@
         window.customElements.define(PolygramElement.is, PolygramElement);
     </script>
 </dom-module>
+-->
