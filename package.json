@@ -1,0 +1,27 @@
+{
+  "name": "polygram",
+  "version": "1.0.0",
+  "description": "load photos in Instagram style",
+  "main": "polygram-element.html",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "redux-thunk": "^2.2.0",
+    "redux": "^3.7.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "postinstall": "polymer install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mdvanes/polygram.git"
+  },
+  "author": "M.D. van Es",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mdvanes/polygram/issues"
+  },
+  "homepage": "https://github.com/mdvanes/polygram#readme"
+}
