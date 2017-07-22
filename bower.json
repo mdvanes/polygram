@@ -1,10 +1,9 @@
 {
   "name": "polygram-element",
-  "description": "load photos in a instagram style",
+  "description": "load photos in Instagram style",
   "main": "polygram-element.html",
   "dependencies": {
     "polymer": "Polymer/polymer#^2.0.0",
-    "redux": "^3.7.2",
     "polymer-redux": "^1.0.1"
   },
   "devDependencies": {

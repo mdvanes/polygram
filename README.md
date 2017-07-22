@@ -93,9 +93,15 @@ available when running integrated as well as individually on an demo page.
 Since not only this snippet but also some libraries (polymer-redux, the reducer and action) are needed in each 
 instance, these are extracted to a new file: redux-mixin.html
 
+Polymer uses bower for depencencies, because there is long running issue with dependencies {refer to issue}.
+Unfortunately to use Redux, the redux dependency must be installed with npm (the bower packages does not contains a dist version).
+To provide for this I added a package.json to the project that has an postinstall hook that runs ```polymer serve```.
+So for installation, now use ```npm install``` and then both npm and polymer dependencies are installed
+and afterwards the server can be started normally with ```polymer serve```.
+
 Next container wrappers for different search engines.
 
-Next test cases.
+Next test cases and CI.
  
 
 
