@@ -35,3 +35,67 @@ native webcomponents and a Polymer component.
 * Use Redux to share data: if a search result is clicked (in polygram-searchbox) show the result (in polygram-details)
 * Higher order components for switching APIs (e.g. Wiki, Getty en Marvel?)
 * Test cases, source maps?
+
+
+# Talk
+
+... write about comparison between native web components and polymer ...
+
+When looking into Polymer for Web Components, to share state between components, Redux seems like a pretty good fit.
+
+I've found the docs on [Polymer Redux](https://tur-nr.github.io/polymer-redux/docs), but they don't really go into
+details of implementation.
+
+Also there is [this Polycast video](https://youtu.be/PahsgJn0sgU) but it applies to Polymer 1.x and I wanted
+to apply it to Polymer 2.
+
+In my [example project Polygram](https://github.com/mdvanes/polygram), everything went well from building two
+  separate components, one that provides a search functionality (polygram-searchbox) and the other a detailed view (polygram-details)
+  and defining actions, reducers, the store, and dispatching events work.
+  
+  
+... Diagram of how the (immutable) state is updated ...
+Click a search result
+dispatch is triggered
+store is updated (visible in Redux devtools)
+but the value is not updated in the details view. The observer on state is not triggered.
+  
+In the repo for Polymer Redux is a demo for [ready-state](https://github.com/tur-nr/polymer-redux/blob/master/demo/ready-state.html)
+ which shows how to initialise and pass the state. This is a very minimal but complete implementation
+ that has an observer on a field, when changing this field it emits a dispatch, that updates the state
+ and some other field refers to the state and updates its value. This is where I found the 
+ statePath property from Polymer Redux. It allows a component to bind a property directly to the state.
+ 
+Next up is to make the components function individually. Because at this point the demo page works where
+both components are integrated, but it only initializes the Redux store there and not on the separate pages.
+So I find that I have to move certain parts of the initialization (mainly this:
+```
+    (function(Polygram) {
+        // ReduxThunk (optional) for services and Redux Devtools for debugging with Chrome extension
+        const store = Redux.createStore(
+            Redux.combineReducers(Polygram.REDUCERS),
+            Redux.compose(
+                // TODO Redux.applyMiddleware(window.ReduxThunk.default),
+                window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+
+        Polygram.reduxStore = store;
+
+        Polygram.ACTIONS = Polygram.ACTIONS || {};
+        Polygram.ACTIONS.TERM_SELECTED = Polygram.createTermActions();
+    })(window.Polygram || {});
+
+    const ReduxMixin = PolymerRedux(Polygram.reduxStore);
+```
+)
+from polygram-element to the demo (or app) html that applies polygram-element. Now the same can be done for the
+demo pages of polygram-searchbox and polygram-details to make sure ReduxMixin (and with it a reduxStore) is 
+available when running integrated as well as individually on an demo page. 
+
+Next container wrappers for different search engines.
+
+Next test cases.
+ 
+
+
+... write about missing features/shortcomings of Polymer ....
+... also still have to try thunk ...
