@@ -1,0 +1,24 @@
+<script src="../../../node_modules/redux/dist/redux.js"></script>
+<link rel="import" href="../polymer-redux/polymer-redux.html">
+
+<!-- could be multiple reducers in reducers/[name]-reducer.html -->
+<link rel="import" href="reducer.html">
+<link rel="import" href="action.html">
+
+<script>
+    (function(Polygram) {
+        // ReduxThunk (optional) for services and Redux Devtools for debugging with Chrome extension
+        const store = Redux.createStore(
+            Redux.combineReducers(Polygram.REDUCERS),
+            Redux.compose(
+                // TODO Redux.applyMiddleware(window.ReduxThunk.default),
+                window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+
+        Polygram.reduxStore = store;
+
+        Polygram.ACTIONS = Polygram.ACTIONS || {};
+        Polygram.ACTIONS.TERM_SELECTED = Polygram.createTermActions();
+    })(window.Polygram || {});
+
+    const ReduxMixin = PolymerRedux(Polygram.reduxStore);
+</script>

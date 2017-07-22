@@ -32,9 +32,9 @@ native webcomponents and a Polymer component.
 
 # TODO
 
-* Use Redux to share data: if a search result is clicked (in polygram-searchbox) show the result (in polygram-details)
 * Higher order components for switching APIs (e.g. Wiki, Getty en Marvel?)
 * Test cases, source maps?
+* improvement paper-autocomplete?
 
 
 # Talk
@@ -90,6 +90,8 @@ So I find that I have to move certain parts of the initialization (mainly this:
 from polygram-element to the demo (or app) html that applies polygram-element. Now the same can be done for the
 demo pages of polygram-searchbox and polygram-details to make sure ReduxMixin (and with it a reduxStore) is 
 available when running integrated as well as individually on an demo page. 
+Since not only this snippet but also some libraries (polymer-redux, the reducer and action) are needed in each 
+instance, these are extracted to a new file: redux-mixin.html
 
 Next container wrappers for different search engines.
 
@@ -98,4 +100,4 @@ Next test cases.
 
 
 ... write about missing features/shortcomings of Polymer ....
-... also still have to try thunk ...
+... also still have to try Thunk for the async calls ...

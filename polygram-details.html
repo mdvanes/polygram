@@ -69,17 +69,8 @@
                     _searchResult: {
                         type: Object,
                         value: null
-                    },
-//                    state: {
-//                        type: Object,
-//                        observer: '_stateChanged'
-//                    }
+                    }
                 };
-            }
-
-            _stateChanged(state) {
-                console.log('new state', state);
-                this.term = state.term.selectedTerm;
             }
 
             _termChanged(term) {
@@ -99,11 +90,6 @@
                         summary: data.detail.response.query.search[0].snippet
                     }
                 }
-            }
-
-            ready() {
-                super.ready();
-                console.log(this.term, this.state);
             }
         }
 
