@@ -100,7 +100,6 @@
             }
 
             _searchIAHandler(data) {
-                console.log(data, data.detail, data.detail.response);
                 if(data && data.detail && data.detail.response && data.detail.response.query &&
                 data.detail.response.query.search) {
                     this._searchResultsIAArr = data.detail.response.query.search;
@@ -108,13 +107,7 @@
             }
 
             _handleClick(e) {
-                console.log('clicked', e.target.id, typeof Polygram.ACTIONS.TERM_SELECTED.TERM_SELECTED);
-                //this.dispatch(Polygram.ACTIONS.TERM_SELECTED.TERM_SELECTED({selectedTerm: e.target.id}));
                 this.dispatch(Polygram.ACTIONS.TERM_SELECTED.TERM_SELECTED(e.target.id));
-            }
-
-            ready() {
-                super.ready();
             }
 
         }
