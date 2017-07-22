@@ -32,7 +32,7 @@ native webcomponents and a Polymer component.
 # TODO
 
 * Higher order components for switching APIs (e.g. Wiki, Getty en Marvel?)
-* Test cases, source maps?
+* Test cases, source maps, breakpoints?
 * improvement paper-autocomplete?
 
 
@@ -108,6 +108,12 @@ Unfortunately to use Redux, the redux dependency must be installed with npm (the
 To provide for this I added a package.json to the project that has an postinstall hook that runs ```polymer serve```.
 So for installation, now use ```npm install``` and then both npm and polymer dependencies are installed
 and afterwards the server can be started normally with ```polymer serve```.
+
+Trying to improve polygram-details with hiding until a term is set.
+This works well on the integrated page,
+but this does not work well running in demo mode because I'm still
+using term="something" instead of state=[???]. Or is this state attribute
+not needed at all?
 
 Next container wrappers for different search engines.
 

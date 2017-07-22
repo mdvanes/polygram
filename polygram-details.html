@@ -13,15 +13,26 @@
             }
         </style>
         <div>
-            <h2>Details for [[term]]:</h2>
-
-            <template is="dom-if" if="{{!_searchResult}}">
-                Loading...
+            <template is="dom-if" if="{{!term}}">
+                <h2>No term selected to show details for.</h2>
             </template>
-
+            <h2>Details for [[term]]:</h2>
             <template is="dom-if" if="{{_searchResult}}">
                 <h3><a href="https://en.wikipedia.org/wiki/[[_searchResult.title]]">[[_searchResult.title]]</a> ([[_searchResult.size]])</h3>
                 <div>[[_searchResult.summary]]</div>
+            </template>
+
+            <template is="dom-if" if="{{term}}">
+                <h2>Details for [[term]]:</h2>
+
+                <template is="dom-if" if="{{!_searchResult}}">
+                    Loading...
+                </template>
+
+                <template is="dom-if" if="{{_searchResult}}">
+                    <h3><a href="https://en.wikipedia.org/wiki/[[_searchResult.title]]">[[_searchResult.title]]</a> ([[_searchResult.size]])</h3>
+                    <div>[[_searchResult.summary]]</div>
+                </template>
             </template>
 
             <iron-request id="xhr"></iron-request>
@@ -43,7 +54,6 @@
     <script>
         /**
          * `polygram-details`
-         * load photos in instagram style
          *
          * @customElement
          * @polymer
@@ -58,7 +68,6 @@
                 return {
                     term: {
                         type: String,
-//                        value: null,
                         observer: '_termChanged',
                         statePath: 'term.selectedTerm'
                     },
@@ -81,7 +90,7 @@
             }
 
             _searchIAHandler(data) {
-                console.log(data, data.detail, data.detail.response);
+                //console.log(data, data.detail, data.detail.response);
                 if(data && data.detail && data.detail.response &&
                     data.detail.response.query && data.detail.response.query.search) {
                     this._searchResult = {
