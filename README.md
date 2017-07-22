@@ -1,13 +1,12 @@
 # \<polygram-element\>
 
-load photos in a instagram style
+Load photos in Instagram style
 
 ## Install the Polymer-CLI
 
 * `nvm use 7.10.0`
 * First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed.
-* `polymer install`
-* `npm i redux redux-thunk` // in the example these are just checked in, in a libs dir
+* `npm i` will install npm and polymer dependencies
 * Then run `polymer serve` to serve your element locally.
 
 ## Viewing Your Element
@@ -70,21 +69,21 @@ Next up is to make the components function individually. Because at this point t
 both components are integrated, but it only initializes the Redux store there and not on the separate pages.
 So I find that I have to move certain parts of the initialization (mainly this:
 ```
-    (function(Polygram) {
-        // ReduxThunk (optional) for services and Redux Devtools for debugging with Chrome extension
-        const store = Redux.createStore(
-            Redux.combineReducers(Polygram.REDUCERS),
-            Redux.compose(
-                // TODO Redux.applyMiddleware(window.ReduxThunk.default),
-                window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
+(function(Polygram) {
+    // ReduxThunk (optional) for services and Redux Devtools for debugging with Chrome extension
+    const store = Redux.createStore(
+        Redux.combineReducers(Polygram.REDUCERS),
+        Redux.compose(
+            // TODO Redux.applyMiddleware(window.ReduxThunk.default),
+            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
 
-        Polygram.reduxStore = store;
+    Polygram.reduxStore = store;
 
-        Polygram.ACTIONS = Polygram.ACTIONS || {};
-        Polygram.ACTIONS.TERM_SELECTED = Polygram.createTermActions();
-    })(window.Polygram || {});
+    Polygram.ACTIONS = Polygram.ACTIONS || {};
+    Polygram.ACTIONS.TERM_SELECTED = Polygram.createTermActions();
+})(window.Polygram || {});
 
-    const ReduxMixin = PolymerRedux(Polygram.reduxStore);
+const ReduxMixin = PolymerRedux(Polygram.reduxStore);
 ```
 )
 from polygram-element to the demo (or app) html that applies polygram-element. Now the same can be done for the
@@ -92,6 +91,17 @@ demo pages of polygram-searchbox and polygram-details to make sure ReduxMixin (a
 available when running integrated as well as individually on an demo page. 
 Since not only this snippet but also some libraries (polymer-redux, the reducer and action) are needed in each 
 instance, these are extracted to a new file: redux-mixin.html
+
+Now the project works, you can use the Chrome plugin [Redux Devtools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en) to do "timetravel" debugging.
+You can try it out by 
+* opening Redux Devtools
+* search for "Cat"
+* click one of the results, e.g. "Bengal Cat"
+* click another result, e.g. "Schrödinger's cat"
+* now inspect the TERM_SELECTED entries in the Redux Devtools and click "jump" on the one that set "Bengal Cat".
+* The entire state is now reverted to that point. It's easy to imagine how this can be helpful with debugging
+ a big application, and it is even more helpful that state can be exported and imported.
+* dont forget to fastforward the debugger after you're done debugging! Otherwise you won't be able to use the application normally.
 
 Polymer uses bower for depencencies, because there is long running issue with dependencies {refer to issue}.
 Unfortunately to use Redux, the redux dependency must be installed with npm (the bower packages does not contains a dist version).
