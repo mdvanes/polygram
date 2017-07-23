@@ -36,7 +36,7 @@ native webcomponents and a Polymer component.
 * improvement paper-autocomplete?
 
 
-# Talk
+# Blog
 
 ... write about comparison between native web components and polymer ...
 
@@ -112,8 +112,22 @@ and afterwards the server can be started normally with ```polymer serve```.
 Trying to improve polygram-details with hiding until a term is set.
 This works well on the integrated page,
 but this does not work well running in demo mode because I'm still
-using term="something" instead of state=[???]. Or is this state attribute
-not needed at all?
+using term="something" instead of state=[???]. It is not needed to set
+state with an attribute, but setting the term attribute directly does not work,
+probably because it is overriden by `statePath` in
+
+```
+term: {
+    type: String,
+    observer: '_termChanged',
+    statePath: 'term.selectedTerm'
+},
+
+```
+                    
+So for now it's solved with a separate optional attribute standaloneTerm, that 
+dispatches its value to the Redux store.  
+Maybe there is a better way to re-use standalone elements with optional state via Redux?
 
 Next container wrappers for different search engines.
 
