@@ -6,12 +6,6 @@
 <dom-module id="polygram-details">
     <template>
         <style include="polygram-element-styles"></style>
-        <style>
-            :root {
-                --btn-toggle-color: #3335FF;
-                --btn-toggle-border-color: #3C70FF;
-            }
-        </style>
         <div>
             <template is="dom-if" if="{{!term}}">
                 <h2>No term selected to show details for.</h2>
@@ -31,10 +25,6 @@
             </template>
 
             <iron-request id="xhr"></iron-request>
-            <!--
-             Without auto, call manually with:
-              this.$.searchIARequest.generateRequest() in e.g. ready()
-            -->
             <iron-ajax
                     auto
                     id="searchIARequest"
@@ -95,7 +85,6 @@
             }
 
             _searchIAHandler(data) {
-                //console.log(data, data.detail, data.detail.response);
                 if(data && data.detail && data.detail.response &&
                     data.detail.response.query && data.detail.response.query.search) {
                     this._searchResult = {

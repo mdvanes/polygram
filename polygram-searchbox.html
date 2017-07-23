@@ -9,18 +9,7 @@
 
 <dom-module id="polygram-searchbox">
     <template>
-        <!--<style>
-            :host {
-                display: block;
-            }
-        </style>-->
         <style include="polygram-element-styles"></style>
-        <style>
-            :root {
-                --btn-toggle-color: #3335FF;
-                --btn-toggle-border-color: #3C70FF;
-            }
-        </style>
         <div>
             <h2>Search [[sourceName]]!</h2>
             <paper-input id="searchIAInput"
@@ -50,12 +39,8 @@
     </template>
 
     <script>
-        // TODO test demo/polygram-searchbox. what to do if it can't find ReduxMixin?
-        //const ReduxMixin = PolymerRedux(Polygram.reduxStore);
-
         /**
          * `polygram-searchbox`
-         * load photos in instagram style
          *
          * @customElement
          * @polymer
@@ -88,7 +73,7 @@
                     },
                     _searchResultsIAArr: {
                         type: Array,
-                        value: [] // [{title:"foo"}]
+                        value: []
                     }
                 };
             }
