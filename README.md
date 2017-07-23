@@ -31,14 +31,33 @@ native webcomponents and a Polymer component.
 
 # TODO
 
+* Test cases, source maps (bundler?), breakpoints?
+* Hydrolysis (now [Polymer Analyzer](https://github.com/Polymer/polymer-analyzer), used by linter and builder. 
+* Vulcanisation (now [Polymer Bundler??](https://github.com/Polymer/polymer-bundler)), used for packaging.
 * Higher order components for switching APIs (e.g. Wiki, Getty en Marvel?)
-* Test cases, source maps, breakpoints?
+* Add Ramdba to Redux, see [this article](https://alligator.io/react/functional-redux-reducers-with-ramda/).
 * improvement paper-autocomplete?
+
 
 
 # Blog
 
-... write about comparison between native web components and polymer ...
+Although I am used to component driven development like now common with Angular and React for instance where all resources are css/templates and tightly coherent js are grouped. 
+
+But I am not totally convinced of web components, mainly because there is no use of virtual dom as far as I know and the difficulty of linting, minifying, test coverage when everything is wrapped in html. 
+
+To investigate web components, I will first compare the syntax of vanilla web components and Polymer. The added benefit of Polymer being the catalog of existing components. 
+
+As is clear in example HelloWorld/my-shadow-component.js and HelloWorld/my-polymer-component.js the difference is minimal, 
+mainly
+
+* extends Polymer.Element instead of HTMLElement
+* Polymer default in shadow dom
+* getter/setter easier through properties (might also be possible in vanilla web components)
+* observer added directly in properties (might also be possible in vanilla web components) 
+
+Also note that Polymer favors the HTML form (which requires the webcomponent lite polyfill) over the js form.
+
 
 When looking into Polymer for Web Components, to share state between components, Redux seems like a pretty good fit.
 
