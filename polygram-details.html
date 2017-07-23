@@ -16,11 +16,6 @@
             <template is="dom-if" if="{{!term}}">
                 <h2>No term selected to show details for.</h2>
             </template>
-            <h2>Details for [[term]]:</h2>
-            <template is="dom-if" if="{{_searchResult}}">
-                <h3><a href="https://en.wikipedia.org/wiki/[[_searchResult.title]]">[[_searchResult.title]]</a> ([[_searchResult.size]])</h3>
-                <div>[[_searchResult.summary]]</div>
-            </template>
 
             <template is="dom-if" if="{{term}}">
                 <h2>Details for [[term]]:</h2>
@@ -71,6 +66,11 @@
                         observer: '_termChanged',
                         statePath: 'term.selectedTerm'
                     },
+                    standaloneTerm: {
+                        type: String,
+                        observer: '_standaloneTermChanged',
+                        value: null
+                    },
                     _searchIAUrl: {
                         type: String,
                         value: null
@@ -80,6 +80,11 @@
                         value: null
                     }
                 };
+            }
+
+            // Only for the demo page, when no term is set via Redux
+            _standaloneTermChanged(term) {
+                this.dispatch(Polygram.ACTIONS.TERM_SELECTED.TERM_SELECTED(term));
             }
 
             _termChanged(term) {
