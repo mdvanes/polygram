@@ -22,7 +22,7 @@
 
 <test-fixture id="ChangedPropertyTestFixture">
     <template>
-        <polygram-element prop1="new-prop1"></polygram-element>
+        <polygram-element></polygram-element>
     </template>
 </test-fixture>
 
@@ -31,10 +31,10 @@
 
         test('instantiating the element with default properties works', () => {
             const element = fixture('BasicTestFixture');
-            assert.equal(element.myName, 'polygram');
-            const elementShadowRoot = element.shadowRoot;
-            const elementHeader = elementShadowRoot.querySelector('h2');
-            assert.equal(elementHeader.innerHTML, 'Hello polygram!');
+            assert.equal(element.state.term.selectedTerm, null);
+//            const elementShadowRoot = element.shadowRoot;
+//            const elementHeader = elementShadowRoot.querySelector('h2');
+//            assert.equal(elementHeader.innerHTML, 'Hello polygram!');
         });
 
         test('setting a property on the element works', () => {
