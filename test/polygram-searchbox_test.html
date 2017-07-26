@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, minimum-scale=1, initial-scale=1, user-scalable=yes">
+
+    <title>polygram-element test</title>
+
+    <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
+    <script src="../../web-component-tester/browser.js"></script>
+
+    <link rel="import" href="../redux-mixin.html"/>
+    <link rel="import" href="../polygram-searchbox.html">
+</head>
+<body>
+
+<test-fixture id="BasicTestFixture">
+    <template>
+        <polygram-searchbox source-name="Wikipedia"></polygram-searchbox>
+    </template>
+</test-fixture>
+
+<test-fixture id="ChangedPropertyTestFixture">
+    <template>
+        <polygram-searchbox></polygram-searchbox>
+    </template>
+</test-fixture>
+
+<script>
+    suite('polygram-element', function () {
+
+        test('instantiating the element with default properties works', () => {
+            const element = fixture('BasicTestFixture');
+            assert.equal(element.sourceName, 'Wikipedia');
+        });
+
+    });
+</script>
+
+</body>
+</html>
