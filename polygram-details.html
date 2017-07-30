@@ -58,6 +58,7 @@
                     data.detail.response.query && data.detail.response.query.search) {
                     this._searchResult = {
                         title: data.detail.response.query.search[0].title,
+                        url: `https://en.wikipedia.org/wiki/${data.detail.response.query.search[0].title}`,
                         size: data.detail.response.query.search[0].size,
                         summary: data.detail.response.query.search[0].snippet
                     }
