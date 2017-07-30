@@ -13,7 +13,8 @@
   },
   "devDependencies": {},
   "scripts": {
-    "postinstall": "polymer install"
+    "postinstall": "polymer install",
+    "build": "mkdir public && cp -r node_modules public/ && mkdir public/a && cp -r bower_components public/a && mkdir public/a/bower_components/project && cp *.html public/a/bower_components/project && cp -r demo public/a/bower_components/project"
   },
   "repository": {
     "type": "git",
