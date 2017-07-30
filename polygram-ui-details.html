@@ -18,7 +18,7 @@
                 </template>
 
                 <template is="dom-if" if="{{searchResult}}">
-                    <h3><a href="https://en.wikipedia.org/wiki/[[searchResult.title]]">[[searchResult.title]]</a> ([[searchResult.size]])</h3>
+                    <h3><a href="[[searchResult.url]]">[[searchResult.title]]</a> ([[searchResult.size]])</h3>
                     <div>[[searchResult.summary]]</div>
                 </template>
             </template>

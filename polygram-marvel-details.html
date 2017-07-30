@@ -15,6 +15,9 @@
     </template>
 
     <script>
+        // Only works for pre-authenticated domains
+        const publicApiKey = '350837a4d90eef7a4d05c18510b694a9';
+
         /**
          * `polygram-marvel-details`
          *
@@ -49,17 +52,20 @@
             _termChanged(term) {
                 this._searchResult = null;
                 if(term && term.length > 0) {
-                    this._searchIAUrl = `https://cors-anywhere.herokuapp.com/en.wikipedia.org:443/w/api.php?action=query&format=json&list=search&srsearch=${encodeURI(term)}`;
+                    this._searchIAUrl = `https://gateway.marvel.com:443/v1/public/characters?name=${encodeURI(term)}&apikey=${publicApiKey}`;
                 }
             }
 
             _searchIAHandler(data) {
+                // TODO use lodash: const result = _.get(data, ['data', 'detail', 'response', 'data', 'results', '0']);
                 if(data && data.detail && data.detail.response &&
-                    data.detail.response.query && data.detail.response.query.search) {
+                    data.detail.response.data && data.detail.response.data.results &&
+                    data.detail.response.data.results.length > 0) {
                     this._searchResult = {
-                        title: data.detail.response.query.search[0].title,
-                        size: data.detail.response.query.search[0].size,
-                        summary: data.detail.response.query.search[0].snippet
+                        title: data.detail.response.data.results[0].name,
+                        url: data.detail.response.data.results[0].resourceURI,
+                        size: data.detail.response.data.results[0].id,
+                        summary: data.detail.response.data.results[0].description
                     }
                 }
             }
