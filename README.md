@@ -23,6 +23,15 @@ $ polymer test
 
 Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.
 
+
+## Deploying
+
+Deployed to Firebase, see [installation manual](https://firebase.google.com/docs/cli/).
+
+<!-- * run `polymer build` (TODO WIP) -->
+* run `firebase deploy --only hosting`
+* visit on: https://polygram-694a7.firebaseapp.com
+
 # Hello World
 
 When running `polymer serve`, it's also possible to open [http://localhost:8081/components/polygram-element/demo/HelloWorld/](http://localhost:8081/components/polygram-element/demo/HelloWorld/) for a case comparing very basic
@@ -31,6 +40,7 @@ native webcomponents and a Polymer component.
 
 # TODO
 
+* Copy a subset of the files before deploying to hosting
 * Add Thunk for API calls
 * Test cases, source maps (bundler?), breakpoints (breakpoints work)?
 * Hydrolysis (now [Polymer Analyzer](https://github.com/Polymer/polymer-analyzer), used by linter and builder. 
