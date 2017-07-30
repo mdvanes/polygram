@@ -2,7 +2,7 @@
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="polygram-ui-details.html">
 
-<dom-module id="polygram-details">
+<dom-module id="polygram-marvel-details">
     <template>
         <polygram-ui-details term="[[term]]" search-result="[[_searchResult]]"></polygram-ui-details>
         <iron-ajax
@@ -16,15 +16,15 @@
 
     <script>
         /**
-         * `polygram-details`
+         * `polygram-marvel-details`
          *
          * @customElement
          * @polymer
-         * @demo demo/polygram-details/index.html
+         * @demo demo/polygram-marvel-details/index.html
          */
-        class PolygramDetails extends Polymer.Element {
+        class PolygramMarvelDetails extends Polymer.Element {
             static get is() {
-                return 'polygram-details';
+                return 'polygram-marvel-details';
             }
 
             static get properties() {
@@ -65,6 +65,6 @@
             }
         }
 
-        window.customElements.define(PolygramDetails.is, PolygramDetails);
+        window.customElements.define(PolygramMarvelDetails.is, PolygramMarvelDetails);
     </script>
 </dom-module>
