@@ -1,6 +1,7 @@
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../polymer/polymer-element.html">
 <link rel="import" href="polygram-ui-details.html">
+<script src="../../../node_modules/lodash/lodash.js"></script>
 
 <dom-module id="polygram-marvel-details">
     <template>
@@ -57,15 +58,13 @@
             }
 
             _searchIAHandler(data) {
-                // TODO use lodash: const result = _.get(data, ['data', 'detail', 'response', 'data', 'results', '0']);
-                if(data && data.detail && data.detail.response &&
-                    data.detail.response.data && data.detail.response.data.results &&
-                    data.detail.response.data.results.length > 0) {
+                const result = _.get(data, ['detail', 'response', 'data', 'results', '0']);
+                if(result) {
                     this._searchResult = {
-                        title: data.detail.response.data.results[0].name,
-                        url: data.detail.response.data.results[0].resourceURI,
-                        size: data.detail.response.data.results[0].id,
-                        summary: data.detail.response.data.results[0].description
+                        title: result.name,
+                        url: result.resourceURI,
+                        size: result.id,
+                        summary: result.description
                     }
                 }
             }

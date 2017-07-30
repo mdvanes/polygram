@@ -31,6 +31,7 @@ native webcomponents and a Polymer component.
 
 # TODO
 
+* Add Thunk for API calls
 * Test cases, source maps (bundler?), breakpoints (breakpoints work)?
 * Hydrolysis (now [Polymer Analyzer](https://github.com/Polymer/polymer-analyzer), used by linter and builder. 
 * Vulcanisation (now [Polymer Bundler??](https://github.com/Polymer/polymer-bundler)), used for packaging.
