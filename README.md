@@ -45,6 +45,7 @@ native webcomponents and a Polymer component.
 
 # TODO
 
+* TypeScript
 * sources: Firebase, Meetup.com, Medium.com, Youtube, Twitter
 * Higher order components for switching APIs (e.g. Wiki, Getty en Marvel?)
 * Add Thunk for API calls
