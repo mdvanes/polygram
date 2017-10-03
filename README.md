@@ -45,6 +45,7 @@ native webcomponents and a Polymer component.
 
 # TODO
 
+* Webpack http://robdodson.me/how-to-use-polymer-with-webpack/
 * TypeScript
 * sources: Firebase, Meetup.com, Medium.com, Youtube, Twitter
 * Higher order components for switching APIs (e.g. Wiki, Getty en Marvel?)
