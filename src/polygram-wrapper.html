@@ -7,9 +7,9 @@
 <link rel="import" href="../bower_components/paper-styles/element-styles/paper-material-styles.html">
 <link rel="import" href="polygram-details.html">
 
-<dom-module id="my-element">
+<dom-module id="polygram-wrapper">
     <template>
-        <h1 class="paper-font-title">Hello, World! It's [[today]].</h1>
+        <h1 class="paper-font-title">Polygram [[today]].</h1>
         <polygram-details term="power cosmic"></polygram-details>
 
         <custom-style>
@@ -30,11 +30,11 @@
         </custom-style>
     </template>
     <script>
-        // Heyyyy, we're pulling in a Node module!
+        // Importing from node_modules
         import format from 'date-fns/format';
 
-        class MyElement extends Polymer.Element {
-            static get is() { return 'my-element'; }
+        class PolygramWrapper extends Polymer.Element {
+            static get is() { return 'polygram-wrapper'; }
             static get properties() {
                 return {
                     today: {
@@ -46,6 +46,6 @@
                 }
             }
         }
-        window.customElements.define(MyElement.is, MyElement);
+        window.customElements.define(PolygramWrapper.is, PolygramWrapper);
     </script>
 </dom-module>
