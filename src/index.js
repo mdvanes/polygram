@@ -1,1 +1,1 @@
-import './my-element.html';
+import './polygram-wrapper.html';
