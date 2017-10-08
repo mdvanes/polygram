@@ -5,24 +5,50 @@
 <link rel="import" href="../bower_components/paper-styles/default-theme.html">
 <link rel="import" href="../bower_components/paper-styles/element-styles/paper-item-styles.html">
 <link rel="import" href="../bower_components/paper-styles/element-styles/paper-material-styles.html">
+<link rel="import" href="../bower_components/paper-card/paper-card.html">
 <link rel="import" href="polygram-details.html">
 
 <dom-module id="polygram-wrapper">
     <template>
-        <style>
-            :host {
-                background-color: #e0e0e0;
-                display: block;
-                height: 100vh;
-                padding-top: 1em;
-            }
-        </style>
-        <h1 class="paper-font-title">Polygram</h1>
-        <small>[[today]]</small>
+
+        <paper-card class="title" heading="Polygram">
+            <div class="card-content">
+                <small>[[today]]</small>
+                ________________ (todo)
+            </div>
+            <div class="card-actions">action</div>
+        </paper-card>
+
+        <!--<h1 class="paper-font-title">Polygram</h1>-->
+
         <polygram-details term="power cosmic"></polygram-details>
 
         <custom-style>
             <style is="custom-style">
+                :host {
+                    @apply --paper-font-common-base;
+                    background-color: var(--paper-grey-300);
+                    display: block;
+                    font-size: 14px;
+                    height: 100vh;
+                    margin: 0;
+                    padding: 24px;
+                }
+
+                .title {
+                    --paper-card-background-color: var(--paper-purple-50);
+                }
+
+/*
+                body {
+                    @apply --paper-font-common-base;
+                    font-size: 14px;
+                    margin: 0;
+                    padding: 24px;
+                    background-color: var(--paper-grey-50);
+                }
+*/
+
                 .paper-font-display4 { @apply --paper-font-display4; }
                 .paper-font-display3 { @apply --paper-font-display3; }
                 .paper-font-display2 { @apply --paper-font-display2; }
