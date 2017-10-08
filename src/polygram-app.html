@@ -9,7 +9,7 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="polygram-details.html">
 
-<dom-module id="polygram-wrapper">
+<dom-module id="polygram-app">
     <template>
         <style include="iron-flex iron-flex-alignment"></style>
 
@@ -38,38 +38,41 @@
             </div>
         </div>
 
+        <style>
+            :host {
+                @apply --paper-font-common-base;
+                background-color: var(--paper-grey-300);
+                display: block;
+                font-size: 14px;
+                height: 100vh;
+                margin: 0;
+                padding: 24px;
+
+                --title-width: 400px;
+                --settings-width: 300px;
+                --settings-margin: 14px;
+                --main-width: calc(var(--title-width) + var(--settings-width) + var(--settings-margin));
+            }
+
+            .title {
+                --paper-card-background-color: var(--paper-blue-100);
+                width: var(--title-width);
+            }
+
+            .settings {
+                --paper-card-background-color: var(--paper-blue-50);
+                margin-left: var(--settings-margin);
+                width: var(--settings-width);
+            }
+
+            polygram-details {
+                width: var(--main-width);
+            }
+        </style>
+
         <custom-style>
             <style is="custom-style">
-                :host {
-                    @apply --paper-font-common-base;
-                    background-color: var(--paper-grey-300);
-                    display: block;
-                    font-size: 14px;
-                    height: 100vh;
-                    margin: 0;
-                    padding: 24px;
-
-                    --title-width: 400px;
-                    --settings-width: 300px;
-                    --settings-margin: 14px;
-                    --main-width: calc(var(--title-width) + var(--settings-width) + var(--settings-margin));
-                }
-
-                .title {
-                    --paper-card-background-color: var(--paper-blue-100);
-                    width: var(--title-width);
-                }
-
-                .settings {
-                    --paper-card-background-color: var(--paper-blue-50);
-                    margin-left: var(--settings-margin);
-                    width: var(--settings-width);
-                }
-
-                polygram-details {
-                    width: var(--main-width);
-                }
-
+                /* TODO these are document global styles? */
                 /*
                 body {
                     @apply --paper-font-common-base;
@@ -99,8 +102,8 @@
         // Importing from node_modules
         import format from 'date-fns/format';
 
-        class PolygramWrapper extends Polymer.Element {
-            static get is() { return 'polygram-wrapper'; }
+        class PolygramApp extends Polymer.Element {
+            static get is() { return 'polygram-app'; }
             static get properties() {
                 return {
                     today: {
@@ -112,6 +115,6 @@
                 }
             }
         }
-        window.customElements.define(PolygramWrapper.is, PolygramWrapper);
+        window.customElements.define(PolygramApp.is, PolygramApp);
     </script>
 </dom-module>
