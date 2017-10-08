@@ -1,1 +1,1 @@
-import './polygram-wrapper.html';
+import './polygram-app.html';
