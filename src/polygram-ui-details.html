@@ -1,0 +1,59 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="polygram-element-styles.html">
+
+<dom-module id="polygram-ui-details">
+    <template>
+        <style include="polygram-element-styles"></style>
+        <div>
+            <template is="dom-if" if="{{!term}}">
+                <h2>No term selected to show details for.</h2>
+            </template>
+
+            <template is="dom-if" if="{{term}}">
+                <h2>Details for [[term]]:</h2>
+
+                <template is="dom-if" if="{{!searchResult}}">
+                    Loading...
+                </template>
+
+                <template is="dom-if" if="{{searchResult}}">
+                    <h3><a href="[[searchResult.url]]">[[searchResult.title]]</a> ([[searchResult.size]])</h3>
+                    <div>[[searchResult.summary]]</div>
+                </template>
+            </template>
+        </div>
+    </template>
+
+    <script>
+        /**
+         * `polygram-ui-details`
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/polygram-ui-details/index.html
+         */
+        class PolygramUiDetails extends Polymer.Element {
+            static get is() {
+                return 'polygram-ui-details';
+            }
+
+            static get properties() {
+                return {
+                    term: {
+                        type: String,
+                        value: null,
+                        reflectToAttribute: true // for now, just to be able to see it in the DOM console
+                    },
+                    searchResult: {
+                        type: Object,
+                        value: null,
+                        reflectToAttribute: true // for now, just to be able to see it in the DOM console
+                    }
+                };
+            }
+        }
+
+        window.customElements.define(PolygramUiDetails.is, PolygramUiDetails);
+    </script>
+</dom-module>

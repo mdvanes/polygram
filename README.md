@@ -46,7 +46,11 @@ native webcomponents and a Polymer component.
 # TODO
 
 * Webpack http://robdodson.me/how-to-use-polymer-with-webpack/
+    * advantage: can import node_module with `import` syntax
+    * uses babel
+    * run with ./node_modules/.bin/webpack-dev-server --config webpack.config.js
 * TypeScript
+* improve styling a bit with https://www.webcomponents.org/element/PolymerElements/paper-styles and https://www.webcomponents.org/element/PolymerElements/paper-card/demo/demo/index.html
 * sources: Firebase, Meetup.com, Medium.com, Youtube, Twitter
 * Higher order components for switching APIs (e.g. Wiki, Getty en Marvel?)
 * Add Thunk for API calls
