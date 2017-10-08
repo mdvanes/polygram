@@ -1,0 +1,17 @@
+<script>
+    (function(Polygram) {
+        Polygram.createTermActions = function() {
+            var ACTIONS = {
+                TERM_SELECTED : function(selectedTerm) {
+                    return {
+                        type: Polygram.CONSTANTS.TERM_SELECTED,
+                        selectedTerm
+                    };
+                }
+            };
+            return ACTIONS;
+        };
+
+        window.Polygram = Polygram;
+    })(window.Polygram || {});
+</script>

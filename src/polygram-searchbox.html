@@ -1,0 +1,103 @@
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
+<link rel="import" href="../bower_components/polymer-redux/polymer-redux.html">
+<link rel="import" href="polygram-element-styles.html">
+<link rel="import" href="action.html">
+
+<dom-module id="polygram-searchbox">
+    <template>
+        <style include="polygram-element-styles"></style>
+        <div>
+            <!--<h2>Search [[sourceName]]!</h2>-->
+            <paper-input id="searchIAInput"
+                         value="{{_searchIAInput}}"
+                         label="Search" charcounter="true" maxlength="100">
+                <iron-icon icon="close" slot="prefix"></iron-icon>
+            </paper-input>
+            <ul>
+                <!-- TODO results with slots under this box -->
+                <template is="dom-repeat" items="{{_searchResultsIAArr}}">
+                    <li id="[[item.title]]" on-click="_handleClick">[[index]]. [[item.title]]</li>
+                </template>
+            </ul>
+            <iron-request id="xhr"></iron-request>
+            <!--
+             Without auto, call manually with:
+              this.$.searchIARequest.generateRequest() in e.g. ready()
+            -->
+            <iron-ajax
+                    auto
+                    id="searchIARequest"
+                    url="{{_searchIAUrl}}"
+                    handle-as="json"
+                    debounce-duration="500"
+                    on-response="_searchIAHandler"></iron-ajax>
+        </div>
+
+    </template>
+
+    <script>
+        /**
+         * `polygram-searchbox`
+         *
+         * @customElement
+         * @polymer
+         * @demo demo/polygram-searchbox/index.html
+         */
+        class PolygramSearchbox extends Polymer.Element { // TODO fix Redux ReduxMixin(Polymer.Element) {
+            static get is() {
+                return 'polygram-searchbox';
+            }
+
+            // TODO search type (wikipedia/images/etc) via Higher Order Component also containing the Redux bindings
+
+            static get properties() {
+                return {
+                    state: {
+                        type: Object
+                    },
+                    sourceName: {
+                        type: String,
+                        value: 'polygram-searchbox'
+                    },
+                    _searchIAInput: {
+                        type: String,
+                        value: null,
+                        observer: '_searchIAInputChanged'
+                    },
+                    _searchIAUrl: {
+                        type: String,
+                        value: null
+                    },
+                    _searchResultsIAArr: {
+                        type: Array,
+                        value: []
+                    }
+                };
+            }
+
+            _searchIAInputChanged(term) {
+                if(term && term.length > 0) {
+                    this._searchIAUrl = `https://cors-anywhere.herokuapp.com/en.wikipedia.org:443/w/api.php?action=query&format=json&list=search&srsearch=${encodeURI(term)}`;
+                }
+            }
+
+            _searchIAHandler(data) {
+                if(data && data.detail && data.detail.response && data.detail.response.query &&
+                data.detail.response.query.search) {
+                    this._searchResultsIAArr = data.detail.response.query.search;
+                }
+            }
+
+            _handleClick(e) {
+                this.dispatch(Polygram.ACTIONS.TERM_SELECTED.TERM_SELECTED(e.target.id));
+            }
+
+        }
+
+        window.customElements.define(PolygramSearchbox.is, PolygramSearchbox);
+    </script>
+</dom-module>
