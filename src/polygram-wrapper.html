@@ -9,7 +9,16 @@
 
 <dom-module id="polygram-wrapper">
     <template>
-        <h1 class="paper-font-title">Polygram [[today]].</h1>
+        <style>
+            :host {
+                background-color: #e0e0e0;
+                display: block;
+                height: 100vh;
+                padding-top: 1em;
+            }
+        </style>
+        <h1 class="paper-font-title">Polygram</h1>
+        <small>[[today]]</small>
         <polygram-details term="power cosmic"></polygram-details>
 
         <custom-style>
