@@ -59,7 +59,8 @@ module.exports = {
         // and it will handle injecting our bundle for us.
         new HtmlWebpackPlugin({
             template: path.resolve(__dirname, 'src/index.ejs'),
-            inject: false
+            inject: false,
+            favicon: 'src/favicon.png'
         }),
         // This plugin will copy files over for us without transforming them.
         // That's important because the custom-elements-es5-adapter.js MUST
