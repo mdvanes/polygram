@@ -6,22 +6,37 @@
 <link rel="import" href="../bower_components/paper-styles/element-styles/paper-item-styles.html">
 <link rel="import" href="../bower_components/paper-styles/element-styles/paper-material-styles.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="polygram-details.html">
 
 <dom-module id="polygram-wrapper">
     <template>
+        <style include="iron-flex iron-flex-alignment"></style>
 
-        <paper-card class="title" heading="Polygram">
-            <div class="card-content">
-                <small>[[today]]</small>
-                ________________ (todo)
+        <div class="layout vertical">
+            <div class="layout horizontal center-justified">
+                <paper-card class="title" heading="Polygram">
+                    <div class="card-content">
+                        <small>[[today]]</small>
+                        ________________ (todo)
+                    </div>
+                    <div class="card-actions">action</div>
+                </paper-card>
+
+                <paper-card class="settings" heading="Settings">
+                    <div class="card-content">
+                        ... <br><br><br>...
+                        ... <br><br><br>...
+                    </div>
+                </paper-card>
             </div>
-            <div class="card-actions">action</div>
-        </paper-card>
 
-        <!--<h1 class="paper-font-title">Polygram</h1>-->
+            <!--<h1 class="paper-font-title">Polygram</h1>-->
 
-        <polygram-details term="power cosmic"></polygram-details>
+            <div class="layout horizontal center-justified">
+                <polygram-details term="power cosmic"></polygram-details>
+            </div>
+        </div>
 
         <custom-style>
             <style is="custom-style">
@@ -33,13 +48,29 @@
                     height: 100vh;
                     margin: 0;
                     padding: 24px;
+
+                    --title-width: 400px;
+                    --settings-width: 300px;
+                    --settings-margin: 14px;
+                    --main-width: calc(var(--title-width) + var(--settings-width) + var(--settings-margin));
                 }
 
                 .title {
-                    --paper-card-background-color: var(--paper-purple-50);
+                    --paper-card-background-color: var(--paper-blue-100);
+                    width: var(--title-width);
                 }
 
-/*
+                .settings {
+                    --paper-card-background-color: var(--paper-blue-50);
+                    margin-left: var(--settings-margin);
+                    width: var(--settings-width);
+                }
+
+                polygram-details {
+                    width: var(--main-width);
+                }
+
+                /*
                 body {
                     @apply --paper-font-common-base;
                     font-size: 14px;
