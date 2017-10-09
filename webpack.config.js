@@ -1,10 +1,11 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const TSLintPlugin = require('tslint-webpack-plugin');
 const path = require('path');
 
 module.exports = {
     // Tell Webpack which file kicks off our app.
-    entry: path.resolve(__dirname, 'src/index.js'),
+    entry: path.resolve(__dirname, 'src/index.ts'),
     // Tell Weback to output our bundle to ./dist/bundle.js
     output: {
         filename: 'bundle.js',
@@ -15,6 +16,7 @@ module.exports = {
     // the property we’ll need to tell it to look there in addition to the
     // bower_components folder.
     resolve: {
+        extensions: ['.ts', '.js'],
         modules: [
             path.resolve(__dirname, 'node_modules'),
             path.resolve(__dirname, 'bower_components')
@@ -31,9 +33,10 @@ module.exports = {
                 // This is an example of chained loaders in Webpack.
                 // Chained loaders run last to first. So it will run
                 // polymer-webpack-loader, and hand the output to
-                // babel-loader. This let's us transpile JS in our `<script>` elements.
+                // babel-loader. This lets us transpile JS in our `<script>` elements.
                 use: [
                     { loader: 'babel-loader' },
+                    //{ loader: 'ts-loader' },
                     { loader: 'polymer-webpack-loader' }
                 ]
             },
@@ -43,9 +46,15 @@ module.exports = {
                 use: 'babel-loader'
                 // Optionally exclude node_modules from transpilation except for polymer-webpack-loader:
                 // exclude: /node_modules\/(?!polymer-webpack-loader\/).*/
+            },
+            // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
+            {
+                test: /\.ts?$/,
+                use: 'ts-loader'
             }
         ]
     },
+    devtool: 'inline-source-map',
     // Enable the Webpack dev server which will build, serve, and reload our
     // project on changes.
     devServer: {
@@ -68,6 +77,9 @@ module.exports = {
         new CopyWebpackPlugin([{
             from: path.resolve(__dirname, 'bower_components/webcomponentsjs/*.js'),
             to: 'bower_components/webcomponentsjs/[name].[ext]'
-        }])
+        }]),
+        new TSLintPlugin({
+            files: ['./src/**/*.ts'] // TODO so, this requires all the .ts not to be inline in HTML?
+        })
     ]
 };
