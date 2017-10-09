@@ -17,12 +17,24 @@
                          label="Search" charcounter="true" maxlength="100">
                 <iron-icon icon="close" slot="prefix"></iron-icon>
             </paper-input>
-            <ul>
-                <!-- TODO results with slots under this box -->
-                <template is="dom-repeat" items="{{_searchResultsIAArr}}">
-                    <li id="[[item.title]]" on-click="_handleClick">[[index]]. [[item.title]]</li>
-                </template>
-            </ul>
+            <table>
+                <thead>
+                    <tr>
+                        <th>type</th>
+                        <th>index</th>
+                        <th>name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template is="dom-repeat" items="{{_searchResultsIAArr}}">
+                        <tr id="[[item.title]]" on-click="_handleClick">
+                            <td>W</td>
+                            <td>[[index]]</td>
+                            <td>[[item.title]]</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
             <iron-request id="xhr"></iron-request>
             <!--
              Without auto, call manually with:
