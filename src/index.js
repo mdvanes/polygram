@@ -1,1 +1,0 @@
-import './polygram-app.html';
