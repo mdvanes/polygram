@@ -45,14 +45,19 @@ native webcomponents and a Polymer component.
 
 # TODO
 
-* Webpack http://robdodson.me/how-to-use-polymer-with-webpack/
+* 3-10 Webpack http://robdodson.me/how-to-use-polymer-with-webpack/
     * advantage: can import node_module with `import` syntax
     * uses babel
-    * run with ./node_modules/.bin/webpack-dev-server --config webpack.config.js
-* TypeScript
+    * run with ```./node_modules/.bin/webpack-dev-server --config webpack.config.js```
 * improve styling a bit with https://www.webcomponents.org/element/PolymerElements/paper-styles and https://www.webcomponents.org/element/PolymerElements/paper-card/demo/demo/index.html
 * sources: Firebase, Meetup.com, Medium.com, Youtube, Twitter
 * Higher order components for switching APIs (e.g. Wiki, Getty en Marvel?)
+* 10-10 TypeScript
+    * https://github.com/daflair/nerdy-stack-client/blob/feature/Nerdy_Components_Prototype_1/components/hello-world.tsx
+    * tslint
+* 17-10 typescript + polymer in CI
+* 31-10 typescript + scala mapping
+* rxjs + web sockets
 * Add Thunk for API calls
 * Add Ramdba to Redux, see [this article](https://alligator.io/react/functional-redux-reducers-with-ramda/).
 * Test cases, source maps (bundler?), breakpoints (breakpoints work)?
