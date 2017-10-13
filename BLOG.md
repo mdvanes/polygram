@@ -30,6 +30,46 @@ to modify the paths to the bower_components and it would basically work. Except 
 
 The article uses Babel and import from npm modules. Was easy to migrate, but loses polyserve / the poly serve/demo pages / polylint still possible? wct still possible? @
 
+# Adding ts-loader
+
+Normally, to migrate from JavaScript to TypeScript with Webpack, it would be enough to add the [ts-loader] to the Webpack
+config and to rename the JavaScript files to TypeScript files. 
+
+So I started with changing the extention for the bootstrapping index.js and adding .ts as a resolved extension:
+
+```javascript
+...
+entry: path.resolve(__dirname, 'src/index.ts'),
+...
+resolve: {
+        extensions: ['.ts', '.js'],
+...
+```
+
+And adding this loader:
+
+```javascript
+            {
+                test: /\.ts?$/,
+                use: 'ts-loader'
+            }
+```
+
+And creating a tsconfig.json:
+```javascript
+{
+  "compilerOptions": {
+    "sourceMap": true,
+  }
+}
+```
+
+Everything still compiles, but the JavaScript is embedded in the HTML and is ignored by the ts-loader.
+
+... 
+
+
+
 It was not just a matter of adding ts loader (and changing the extensions.)  @
 Show first html webpack config
 
@@ -111,6 +151,18 @@ Demos and stuff are now gone
 * Linting
 * Unit and e2e and coverage
 * Rxjs
+
+The way that TSLint was now added to Webpack, means that it will only lint TS that is not embedded in HTML (I assume:)
+```javascript
+new TSLintPlugin({
+            files: ['./src/**/*.ts'] // TODO so, this requires all the .ts not to be inline in HTML?
+        })
+```
+
+Added `devtool: 'inline-source-map'` and it is possible to see both the source TS and source HTML files in Chrome. 
+
+* Flow better?
+* workaround with `/// ref style` ts imports?
 
 
 # long term
