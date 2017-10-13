@@ -28,7 +28,7 @@ to modify the paths to the bower_components and it would basically work. Except 
 
 
 
-The article uses Babel and import from npm modules. Was easy to migrate, but loses the poly serve/demo pages. @
+The article uses Babel and import from npm modules. Was easy to migrate, but loses polyserve / the poly serve/demo pages / polylint still possible? wct still possible? @
 
 It was not just a matter of adding ts loader (and changing the extensions.)  @
 Show first html webpack config
@@ -62,19 +62,68 @@ https://github.com/jekyll/jekyll-gist
 
 Even without changing any code it fails..
 Filed a bug and will look into the code myself.
+
 Workaround :
 So extracting ts to separate file, so webpack match for tsloader can be... instead of part of the html match...  .
 How to load? Now using import (code example)  but would script tag work?
+
+## Failing date-fns import
+
+It works with babel, but fails with ts
+Warning in the IDE: 
+TS2307 Cannot find module date-fns
+Compliation succeeds
+and
+Runtime error that
+(2,8): error TS1192: Module ''date-fns/format'' has no default export.
+
+I first thought that this was caused by missing typings for the date-fns library, so I tried
+`npm install @types/date-fns` but this logs that date-fns actually provides typings.
+
+Then changed in polygramApp.ts
+
+`import format from 'date-fns/format';`
+
+to
+
+`import { format } from 'date-fns';`
+
+That fixes the runtime error.
+
+In the tsconfig.json added `"moduleResolution": "node"` to complilerOptions, that fixes the IDE warning.
+
+
+## Failing Polymer.Element import
+HOF/Factory
 Next problem: ts file does not import the html imports (code example) like Polymer.Element. Stubbed it and that compiles. Next step: HOF that accepts the html imports
 
+
+# App vs Element
 One thing to do Typescript for poly app, other thing for reusable poly component.
 The current solution will generate a compiled app, but does not allow importing (check?) and how about lazy loading?
 
 
 Demos and stuff are now gone
 
-To do
+# To do for this article
+
 * Fix Redux
 * Linting
 * Unit and e2e and coverage
 * Rxjs
+
+
+# long term
+
+So for now it's solved with a separate optional attribute standaloneTerm, that 
+dispatches its value to the Redux store.  
+Maybe there is a better way to re-use standalone elements with optional state via Redux?
+
+Next container wrappers for different search engines.
+
+Next test cases and CI.
+ 
+
+
+... write about missing features/shortcomings of Polymer ....
+... also still have to try Thunk for the async calls ...
