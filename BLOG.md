@@ -38,6 +38,7 @@ config and to rename the JavaScript files to TypeScript files.
 So I started with changing the extention for the bootstrapping index.js and adding .ts as a resolved extension:
 
 ```javascript
+// webpack.config.js
 ...
 entry: path.resolve(__dirname, 'src/index.ts'),
 ...
@@ -49,10 +50,11 @@ resolve: {
 And adding this loader:
 
 ```javascript
-            {
-                test: /\.ts?$/,
-                use: 'ts-loader'
-            }
+// webpack.config.js
+{
+    test: /\.ts?$/,
+    use: 'ts-loader'
+}
 ```
 
 And creating a tsconfig.json:
@@ -66,42 +68,83 @@ And creating a tsconfig.json:
 
 Everything still compiles, but the JavaScript is embedded in the HTML and is ignored by the ts-loader.
 
-... 
-
-
-
-It was not just a matter of adding ts loader (and changing the extensions.)  @
-Show first html webpack config
+Adding the ts-loader to the chain breaks the compilation:
 
 ```javascript
+// webpack.config.js
 {
     test: /\.html$/,
     use: [
         { loader: 'babel-loader' },
+        { loader: 'ts-loader' }, // <--
         { loader: 'polymer-webpack-loader' }
     ]
 },
 ```
 
-```javascript
-{
-    test: /\.html$/,
-    use: [
-        { loader: 'babel-loader' },
-        { loader: 'ts-loader' }, // https://github.com/webpack-contrib/polymer-webpack-loader/issues/64
-        { loader: 'polymer-webpack-loader' }
-    ]
-},
+
+Even without changing any of the code itself, compilation fails with:
+
+`
+ERROR in ./src/polygram-app.html
+Module build failed: Error: Could not find file: '/home/me/polygram/src/polygram-app.html'.
+`
+
+Well, that just doesn't look healthy. I filed [a bug](https://github.com/webpack-contrib/polymer-webpack-loader/issues/64) 
+and will look into the code of the polymer-webpack-loader later to see if this can be solved, but for the moment I will
+try to work around it by extracting the TypeScript code to a separate file.
+
+
+## Workaround for ts compilation in a Polymer element
+
+After removing the `ts-loader` line from the html rule in the webpack.config.js I set out to extract TypeScript to a
+separate file so it can be compiled with the rule that matches ts files. 
+
+Rougly, the main entry point for the Polymer elements `polygram-app.html` contains:
+
+```html
+// imports
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+...
+<link rel="import" href="polygram-details.html">
+<link rel="import" href="polygram-searchbox.html">
+
+<dom-module id="polygram-app">
+    <template>
+        <!-- Style -->
+        <style include="iron-flex iron-flex-alignment"></style>
+
+        <!-- Markup -->
+        <div class="layout vertical">
+            ...
+        </div>
+        ...
+    </template>
+    <script>
+        // Script
+        import format from 'date-fns/format';
+
+        class PolygramApp extends Polymer.Element {
+            static get is() { return 'polygram-app'; }
+            static get properties() {
+                return {
+                    today: {
+                        type: String,
+                        value: function() {
+                            return format(new Date(), 'MM/DD/YYYY');
+                        }
+                    }
+                }
+            }
+        }
+        window.customElements.define(PolygramApp.is, PolygramApp);
+    </script>
+</dom-module>
 ```
 
-Does such a Gist works in Jekyll?
-https://github.com/jekyll/jekyll-gist
-<script src="https://gist.github.com/robdodson/4270ff2dbd0852b34ad849e723bc4592.js"></script>
+Since I know the `import` statement in the script tag works, I can use this to my advantage.
 
-
-
-Even without changing any code it fails..
-Filed a bug and will look into the code myself.
+* script tag
 
 Workaround :
 So extracting ts to separate file, so webpack match for tsloader can be... instead of part of the html match...  .
@@ -179,3 +222,8 @@ Next test cases and CI.
 
 ... write about missing features/shortcomings of Polymer ....
 ... also still have to try Thunk for the async calls ...
+
+
+Does such a Gist works in Jekyll?
+https://github.com/jekyll/jekyll-gist
+<script src="https://gist.github.com/robdodson/4270ff2dbd0852b34ad849e723bc4592.js"></script>
