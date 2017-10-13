@@ -1,117 +1,80 @@
-# Blog
+# Polymer 2 and TypeScript
 
-Although I am used to component driven development like now common with Angular and React for instance where all resources are css/templates and tightly coherent js are grouped. 
+For [reasons beyond my control](http://mdworld.nl/blog/webdevelopment/2017/07/30/polymer2-redux/) I'm working with
+Polymer 2 at the moment. Although the idea of web components is great, the choice for HTML imports that comes with
+Polymer 2 makes integration into a modern development stack cumbersome, as will become clear soon.
 
-But I am not totally convinced of web components, mainly because there is no use of virtual dom as far as I know and the difficulty of linting, minifying, test coverage when everything is wrapped in html. 
+**polyfills for html imports are available, but these are pretty intransparent**
 
-To investigate web components, I will first compare the syntax of [vanilla web components](https://developer.mozilla.org/en-US/docs/Web/Web_Components/Custom_Elements) and [Polymer 2](https://www.polymer-project.org/) (I am still a novice in both). 
-The added benefit of Polymer being the catalog of existing components (also a lot of polyfills, e.g. for html import, but those can also be used with native web components). 
+Using TypeScript seems like a good choice, because strong typing helps prevent runtime errors. Additionally it would a
+good opportunity to try out the [Scala-TS-interfaces project](https://github.com/code-star/scala-ts-interfaces) by my
+colleagues, that can generate TypeScript from a Scala domain model. Unfortunately, adding TypeScript to a Polymer 2
+development stack proves to be cumbersome, whereas using it with Polymer 3 seems trivial. Polymer 3 is currently in
+preview so it is not a viable option for me for the moment, but it will exchange HTML imports for ES6 Modules. This will
+make integrating it into a modern development stack much easier. An [example](https://github.com/mdvanes/polymer3-typescript)
+already exists, by [Paolo Ferretti](https://github.com/pferretti) and follows normal conventions for a TypeScript project.
 
-As is clear in example HelloWorld/my-shadow-component.js and HelloWorld/my-polymer-component.js the difference is minimal, 
-mainly
+If you're adventurous, don't need any [existing Polymer 2 elements](https://www.webcomponents.org/) and don't need to
+run production stop reading here and use Polymer 3. If you need Polymer 2 read on, but be warned that it won't be pretty.
 
-* extends Polymer.Element instead of HTMLElement
-* Polymer default in shadow dom
-* getter/setter easier through properties (might also be possible in vanilla web components)
-* observer added directly in properties (might also be possible in vanilla web components) 
+The first challenge is to use webpack with Polymer 2. Although not strictly necessary for TypeScript compilation, it would
+make sense for importing HTML as modules. Fortunately, [Rob Doddson himself](https://www.youtube.com/playlist?list=PLOU2XLYxmsII5c3Mgw6fNYCzaWrsM3sMN) wrote an
+article [How to use Polymer with Webpack](http://robdodson.me/how-to-use-polymer-with-webpack/). It even mentions TypeScript!
+The article introduces the webpack loader [https://github.com/webpack-contrib/polymer-webpack-loader](https://github.com/webpack-contrib/polymer-webpack-loader) and
+explains how it extracts the JavaScript from the HTMl of Polymer elements and eventually combines everything into one
+JavaScript file. I was basically able to copy the webpack.config.js and index.ejs and that would compile. I moved my
+[custom elements](https://github.com/mdvanes/polygram/tree/webpack) from the root of the project to the src dir and I had
+to modify the paths to the bower_components and it would basically work. Except for Redux, because @TODO
 
-Also note that Polymer favors the HTML form (which requires the webcomponent lite polyfill) over the js form.
 
 
-When looking into Polymer for Web Components, to share state between components, Redux seems like a pretty good fit.
+The article uses Babel and import from npm modules. Was easy to migrate, but loses the poly serve/demo pages. @
 
-I've found the docs on [Polymer Redux](https://tur-nr.github.io/polymer-redux/docs), but they don't really go into
-details of implementation.
+It was not just a matter of adding ts loader (and changing the extensions.)  @
+Show first html webpack config
 
-Also there is [this Polycast video](https://youtu.be/PahsgJn0sgU) but it applies to Polymer 1.x and I wanted
-to apply it to Polymer 2.
-
-In my [example project Polygram](https://github.com/mdvanes/polygram), everything went well from building two
-  separate components, one that provides a search functionality (polygram-searchbox) and the other a detailed view (polygram-details)
-  and defining actions, reducers, the store, and dispatching events work.
-  
-  
-... Diagram of how the (immutable) state is updated ...
-Click a search result
-dispatch is triggered
-store is updated (visible in Redux devtools)
-but the value is not updated in the details view. The observer on state is not triggered.
-  
-In the repo for Polymer Redux is a demo for [ready-state](https://github.com/tur-nr/polymer-redux/blob/master/demo/ready-state.html)
- which shows how to initialise and pass the state. This is a very minimal but complete implementation
- that has an observer on a field, when changing this field it emits a dispatch, that updates the state
- and some other field refers to the state and updates its value. This is where I found the 
- statePath property from Polymer Redux. It allows a component to bind a property directly to the state.
- 
-Next up is to make the components function individually. Because at this point the demo page works where
-both components are integrated, but it only initializes the Redux store there and not on the separate pages.
-So I find that I have to move certain parts of the initialization (mainly this:
-```
-(function(Polygram) {
-    // ReduxThunk (optional) for services and Redux Devtools for debugging with Chrome extension
-    const store = Redux.createStore(
-        Redux.combineReducers(Polygram.REDUCERS),
-        Redux.compose(
-            // TODO Redux.applyMiddleware(window.ReduxThunk.default),
-            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
-
-    Polygram.reduxStore = store;
-
-    Polygram.ACTIONS = Polygram.ACTIONS || {};
-    Polygram.ACTIONS.TERM_SELECTED = Polygram.createTermActions();
-})(window.Polygram || {});
-
-const ReduxMixin = PolymerRedux(Polygram.reduxStore);
-```
-)
-from polygram-element to the demo (or app) html that applies polygram-element. Now the same can be done for the
-demo pages of polygram-searchbox and polygram-details to make sure ReduxMixin (and with it a reduxStore) is 
-available when running integrated as well as individually on an demo page. 
-Since not only this snippet but also some libraries (polymer-redux, the reducer and action) are needed in each 
-instance, these are extracted to a new file: redux-mixin.html
-
-Now the project works, you can use the Chrome plugin [Redux Devtools](https://chrome.google.com/webstore/detail/redux-devtools/lmhkpmbekcpmknklioeibfkpmmfibljd?hl=en) to do "timetravel" debugging.
-You can try it out by 
-* opening Redux Devtools
-* search for "Cat"
-* click one of the results, e.g. "Bengal Cat"
-* click another result, e.g. "Schrödinger's cat"
-* now inspect the TERM_SELECTED entries in the Redux Devtools and click "jump" on the one that set "Bengal Cat".
-* The entire state is now reverted to that point. It's easy to imagine how this can be helpful with debugging
- a big application, and it is even more helpful that state can be exported and imported.
-* dont forget to fastforward the debugger after you're done debugging! Otherwise you won't be able to use the application normally.
-
-Polymer uses bower for depencencies, because there is long running issue with dependencies {refer to issue}.
-Unfortunately to use Redux, the redux dependency must be installed with npm (the bower packages does not contains a dist version).
-To provide for this I added a package.json to the project that has an postinstall hook that runs ```polymer serve```.
-So for installation, now use ```npm install``` and then both npm and polymer dependencies are installed
-and afterwards the server can be started normally with ```polymer serve```.
-
-Trying to improve polygram-details with hiding until a term is set.
-This works well on the integrated page,
-but this does not work well running in demo mode because I'm still
-using term="something" instead of state=[???]. It is not needed to set
-state with an attribute, but setting the term attribute directly does not work,
-probably because it is overriden by `statePath` in
-
-```
-term: {
-    type: String,
-    observer: '_termChanged',
-    statePath: 'term.selectedTerm'
+```javascript
+{
+    test: /\.html$/,
+    use: [
+        { loader: 'babel-loader' },
+        { loader: 'polymer-webpack-loader' }
+    ]
 },
-
 ```
-                    
-So for now it's solved with a separate optional attribute standaloneTerm, that 
-dispatches its value to the Redux store.  
-Maybe there is a better way to re-use standalone elements with optional state via Redux?
 
-Next container wrappers for different search engines.
+```javascript
+{
+    test: /\.html$/,
+    use: [
+        { loader: 'babel-loader' },
+        { loader: 'ts-loader' }, // https://github.com/webpack-contrib/polymer-webpack-loader/issues/64
+        { loader: 'polymer-webpack-loader' }
+    ]
+},
+```
 
-Next test cases and CI.
- 
+Does such a Gist works in Jekyll?
+https://github.com/jekyll/jekyll-gist
+<script src="https://gist.github.com/robdodson/4270ff2dbd0852b34ad849e723bc4592.js"></script>
 
 
-... write about missing features/shortcomings of Polymer ....
-... also still have to try Thunk for the async calls ...
+
+Even without changing any code it fails..
+Filed a bug and will look into the code myself.
+Workaround :
+So extracting ts to separate file, so webpack match for tsloader can be... instead of part of the html match...  .
+How to load? Now using import (code example)  but would script tag work?
+Next problem: ts file does not import the html imports (code example) like Polymer.Element. Stubbed it and that compiles. Next step: HOF that accepts the html imports
+
+One thing to do Typescript for poly app, other thing for reusable poly component.
+The current solution will generate a compiled app, but does not allow importing (check?) and how about lazy loading?
+
+
+Demos and stuff are now gone
+
+To do
+* Fix Redux
+* Linting
+* Unit and e2e and coverage
+* Rxjs
