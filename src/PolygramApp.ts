@@ -1,5 +1,6 @@
 // Importing from node_modules
 import format from 'date-fns/format';
+//import '../bower_components/polymer/polymer-element.html'
 //import { format } from 'date-fns';
 // @TODO to fix this import: npm i -g typings && typings install &&
 // That syntax is actually deprecated, use: npm install @types/<package>
@@ -39,7 +40,7 @@ there is still a compiler warning in the IDE, adding this to tsconfig.json helps
 //
 // console.log('PolygramApp.ts', Polymer.Element);
 
-export default class PolygramApp extends Polymer.Element {
+export default class PolygramApp /*extends Polymer.Element*/ {
     static get is() { return 'polygram-app'; }
     static get properties() {
         return {
