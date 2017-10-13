@@ -197,11 +197,43 @@ ES target is ES3, but it's no problem to use ESNext here, because we can add Bab
 
 In the tsconfig.json added `"target": "ESNext"` to compilerOptions, that fixes this error.
 
+## Failing Polymer import
+
+`Polymer` can't be found for the `extends`. This is the most difficult of these errors to solve, because it is caused by the preferred module 
+architecture of Polymer 2: because HTML imports are used, it is not possible to use `import Polymer from '../bower_components/polymer/polymer-element.html'`
+because this polymer-element does not export `Polymer` as an ES6 module. The webpack-polymer-loader can resolve HTML
+imports, but using `import '../bower_components/polymer/polymer-element.html'` results in an `error TS2304: Cannot find name 'Polymer'`
+I assume because it results in an HTML import @@@
+ 
+For the moment, I'm just removing the `extends Polymer.Element` from PolygrayApps.ts and `window.customElements.define(PolygramApp.is, PolygramApp);` from polygram-app.html.
+@@@ try with html import/require/ts ref imports
+
+
 ## Failing date-fns import
 
-The import of date-fns fails in the TypeScript compilation with 
-`error TS1192: Module ''date-fns/format'' has no default export.`
+To be able to continue resolving the compilation errors, I add a log statement to polygram-app.html:
 
+```html
+<!-- polygram-app.html -->
+...
+
+<dom-module id="polygram-app">
+    ...
+    <script>
+        // Script
+        import PolygramApp from './polygramApp';
+        console.log(PolygramApp.properties.today.value());
+    </script>
+</dom-module>
+```
+
+The import of date-fns originally failed in the TypeScript compilation with 
+`error TS1192: Module ''date-fns/format'' has no default export.` but at this point
+
+* ide warning
+* error in the browser
+
+...
 
 I first thought that this was caused by missing typings for the date-fns library, so I tried
 `npm install @types/date-fns` but this logs that date-fns actually provides typings.
