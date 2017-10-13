@@ -36,7 +36,7 @@ module.exports = {
                 // babel-loader. This lets us transpile JS in our `<script>` elements.
                 use: [
                     { loader: 'babel-loader' },
-                    //{ loader: 'ts-loader' }, // https://github.com/webpack-contrib/polymer-webpack-loader/issues/64
+                    //{ loader: 'ts-loader' },
                     { loader: 'polymer-webpack-loader' }
                 ]
             },
