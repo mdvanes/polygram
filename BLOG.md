@@ -142,23 +142,66 @@ Rougly, the main entry point for the Polymer elements `polygram-app.html` contai
 </dom-module>
 ```
 
-Since I know the `import` statement in the script tag works, I can use this to my advantage.
+Since I know the `import` statement in the script tag works, I can use this to my advantage. Lets create a companion
+TypeScript file for polygram-app.html named PolygramApp.ts.
 
-* script tag
+```typescript
+// PolygramApp.ts
+import format from 'date-fns/format';
+
+export default class PolygramApp extends Polymer.Element {
+    static get is() { return 'polygram-app'; }
+    static get properties() {
+        return {
+            today: {
+                type: String,
+                value: function() {
+                    return format(new Date(), 'MM/DD/YYYY');
+                }
+            }
+        }
+    }
+}
+``` 
+
+and to import this in the HTML:
+
+```html
+<!-- polygram-app.html -->
+...
+
+<dom-module id="polygram-app">
+    ...
+    <script>
+        // Script
+        import PolygramApp from './polygramApp';
+        window.customElements.define(PolygramApp.is, PolygramApp);
+    </script>
+</dom-module>
+```
+
+Compilation fails with 4 errors.
+
+*now to add some typings*
+*script tag*
 
 Workaround :
 So extracting ts to separate file, so webpack match for tsloader can be... instead of part of the html match...  .
 How to load? Now using import (code example)  but would script tag work?
 
+## Failing accessors
+
+The `is` and `properties` getters require a specifically set target ECMAScript version, the compilation error is:
+`error TS1056: Accessors are only available when targeting ECMAScript 5 and higher`. It surprises me that the default
+ES target is ES3, but it's no problem to use ESNext here, because we can add Babel transpilation later.
+
+In the tsconfig.json added `"target": "ESNext"` to compilerOptions, that fixes this error.
+
 ## Failing date-fns import
 
-It works with babel, but fails with ts
-Warning in the IDE: 
-TS2307 Cannot find module date-fns
-Compliation succeeds
-and
-Runtime error that
-(2,8): error TS1192: Module ''date-fns/format'' has no default export.
+The import of date-fns fails in the TypeScript compilation with 
+`error TS1192: Module ''date-fns/format'' has no default export.`
+
 
 I first thought that this was caused by missing typings for the date-fns library, so I tried
 `npm install @types/date-fns` but this logs that date-fns actually provides typings.
@@ -173,7 +216,20 @@ to
 
 That fixes the runtime error.
 
-In the tsconfig.json added `"moduleResolution": "node"` to complilerOptions, that fixes the IDE warning.
+
+
+
+
+It works with babel, but fails with ts
+Warning in the IDE: 
+TS2307 Cannot find module date-fns
+Compliation succeeds
+and
+Runtime error that
+(2,8): error TS1192: Module ''date-fns/format'' has no default export.
+
+
+In the tsconfig.json added `"moduleResolution": "node"` to compilerOptions, that fixes the IDE warning.
 
 
 ## Failing Polymer.Element import

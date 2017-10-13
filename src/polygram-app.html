@@ -35,9 +35,9 @@
 
             <!--<h1 class="paper-font-title">Polygram</h1>-->
 
-            <!--<div class="layout horizontal center-justified">-->
-                <!--<polygram-details term="power cosmic"></polygram-details>-->
-            <!--</div>-->
+            <div class="layout horizontal center-justified">
+                <polygram-details term="power cosmic"></polygram-details>
+            </div>
         </div>
 
         <style>
@@ -101,26 +101,26 @@
         </custom-style>
     </template>
     <script>
-//        import PolygramApp from './polygramApp';
-//        const x = new PolygramApp();
-//        console.log(x.test());
-//        window.customElements.define(PolygramApp.is, PolygramApp);
-        // Importing from node_modules
-        import format from 'date-fns/format';
-
-        class PolygramApp extends Polymer.Element {
-            static get is() { return 'polygram-app'; }
-            static get properties() {
-                return {
-                    today: {
-                        type: String,
-                        value: function() {
-                            return format(new Date(), 'MM/DD/YYYY');
-                        }
-                    }
-                }
-            }
-        }
+        import PolygramApp from './PolygramApp';
+        const x = new PolygramApp();
+        console.log(x.test());
         window.customElements.define(PolygramApp.is, PolygramApp);
+        // Importing from node_modules
+//        import format from 'date-fns/format';
+//
+//        class PolygramApp extends Polymer.Element {
+//            static get is() { return 'polygram-app'; }
+//            static get properties() {
+//                return {
+//                    today: {
+//                        type: String,
+//                        value: function() {
+//                            return format(new Date(), 'MM/DD/YYYY');
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//        window.customElements.define(PolygramApp.is, PolygramApp);
     </script>
 </dom-module>

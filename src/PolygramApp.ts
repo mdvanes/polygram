@@ -1,6 +1,6 @@
 // Importing from node_modules
-//import format from 'date-fns/format';
-import { format } from 'date-fns';
+import format from 'date-fns/format';
+//import { format } from 'date-fns';
 // @TODO to fix this import: npm i -g typings && typings install &&
 // That syntax is actually deprecated, use: npm install @types/<package>
 // in this case: npm install @types/date-fns
@@ -32,28 +32,28 @@ there is still a compiler warning in the IDE, adding this to tsconfig.json helps
 
 //import Polymer from '../bower_components/polymer/polymer-element.html';
 //const Polymer = require('../bower_components/polymer/polymer-element.html');
-class StubElem {}
-const Polymer = {
-    Element: StubElem
-}; // TODO unstub / HoF/factory ... alternatively try https://github.com/aruntk/wc-loader ?
-
-console.log('polygramApp.ts', Polymer.Element);
+// class StubElem {}
+// const Polymer = {
+//     Element: StubElem
+// }; // TODO unstub / HoF/factory ... alternatively try https://github.com/aruntk/wc-loader ?
+//
+// console.log('PolygramApp.ts', Polymer.Element);
 
 export default class PolygramApp extends Polymer.Element {
-    // static get is() { return 'polygram-app'; }
-    // static get properties() {
-    //     return {
-    //         today: {
-    //             type: String,
-    //             value: function() {
-    //                 return format(new Date(), 'MM/DD/YYYY');
-    //             }
-    //         }
-    //     }
-    // }
-
-    test() {
-        return format(new Date(), 'YYYY-MM-DD');
+    static get is() { return 'polygram-app'; }
+    static get properties() {
+        return {
+            today: {
+                type: String,
+                value: function() {
+                    return format(new Date(), 'MM/DD/YYYY');
+                }
+            }
+        }
     }
+
+    // test() {
+    //     return format(new Date(), 'YYYY-MM-DD');
+    // }
 }
 // window.customElements.define(PolygramApp.is, PolygramApp);
