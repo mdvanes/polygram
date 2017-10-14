@@ -101,10 +101,11 @@
         </custom-style>
     </template>
     <script>
-        import PolygramApp from './PolygramApp';
-        console.log(PolygramApp.properties.today.value());
-        //console.log(x.test());
-        //window.customElements.define(PolygramApp.is, PolygramApp);
+        import PolygramAppFactory from './PolygramApp';
+        const PolygramApp = PolygramAppFactory.create(Polymer);
+//        console.log(PolygramApp.properties.today.value(), PolygramApp.is);
+//        console.log(PolygramApp);
+        window.customElements.define(PolygramApp.is, PolygramApp);
         // Importing from node_modules
 //        import format from 'date-fns/format';
 //

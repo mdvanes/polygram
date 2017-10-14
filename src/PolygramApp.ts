@@ -13,17 +13,35 @@ import { format } from 'date-fns';
 
 const label: string = 'Current Date: ';
 
-export default class PolygramApp /*extends Polymer.Element*/ {
-    static get is() { return 'polygram-app'; }
-    static get properties() {
-        return {
-            today: {
-                type: String,
-                value: function() {
-                    return label + format(new Date(), 'YYYY-MM-DD');
+// class PolygramApp /*extends Polymer.Element*/ {
+//     static get is() { return 'polygram-app'; }
+//     static get properties() {
+//         return {
+//             today: {
+//                 type: String,
+//                 value: function() {
+//                     return label + format(new Date(), 'YYYY-MM-DD');
+//                 }
+//             }
+//         }
+//     }
+// }
+
+function create(Polymer) {
+    return class PolygramApp extends Polymer.Element {
+        static get is() { return 'polygram-app'; }
+        static get properties() {
+            return {
+                today: {
+                    type: String,
+                    value: function() {
+                        return label + format(new Date(), 'YYYY-MM-DD');
+                    }
                 }
             }
         }
     }
 }
+
+export default { create }
 // window.customElements.define(PolygramApp.is, PolygramApp);
