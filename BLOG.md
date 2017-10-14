@@ -266,22 +266,48 @@ A possible workaround will be to not try to import HTML imports in the TypeScrip
 through the HTML that is importing the TypeScript file. To do this, I change:
 
 ```html
-// polygram-app.html
+<!-- polygram-app.html -->
+...
+
+<dom-module id="polygram-app">
+    ...
+    <script>
+        // Script
+        import PolygramAppFactory from './PolygramApp';
+        const PolygramApp = PolygramAppFactory.create(Polymer);
+        window.customElements.define(PolygramApp.is, PolygramApp);
+    </script>
+</dom-module>
 ```
 
-```javascript
+```typescript
 // PolygramApp.ts
+import { format } from 'date-fns';
+const label: string = 'Current Date: ';
+
+function create(Polymer) {
+    return class PolygramApp extends Polymer.Element {
+        static get is() { return 'polygram-app'; }
+        static get properties() {
+            return {
+                today: {
+                    type: String,
+                    value: function() {
+                        return label + format(new Date(), 'YYYY-MM-DD');
+                    }
+                }
+            }
+        }
+    }
+}
+
+export default { create }
 ``` 
- 
- 
 
-But it would be better to see why polymer-webpack-loader is not importing Polymer when using `import Polymer from '../bower_components/polymer/polymer-element.html'`
+Now everything compiles without errors and the custom elements are rendered again!
+ 
+@@@ But it would be better to see why polymer-webpack-loader is not importing Polymer when using `import Polymer from '../bower_components/polymer/polymer-element.html'`
 or `import '../bower_components/polymer/polymer-element.html'`.
-
- 
-
-HOF/Factory
-Next problem: ts file does not import the html imports (code example) like Polymer.Element. Stubbed it and that compiles. Next step: HOF that accepts the html imports
 
 
 # App vs Element
@@ -289,7 +315,6 @@ One thing to do Typescript for poly app, other thing for reusable poly component
 The current solution will generate a compiled app, but does not allow importing (check?) and how about lazy loading?
 
 
-Demos and stuff are now gone
 
 # To do for this article
 
