@@ -11,6 +11,8 @@ import { format } from 'date-fns';
 //
 // console.log('PolygramApp.ts', Polymer.Element);
 
+const label: string = 'Current Date: ';
+
 export default class PolygramApp /*extends Polymer.Element*/ {
     static get is() { return 'polygram-app'; }
     static get properties() {
@@ -18,7 +20,7 @@ export default class PolygramApp /*extends Polymer.Element*/ {
             today: {
                 type: String,
                 value: function() {
-                    return format(new Date(), 'YYYY-MM-DD');
+                    return label + format(new Date(), 'YYYY-MM-DD');
                 }
             }
         }
