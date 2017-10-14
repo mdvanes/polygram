@@ -50,7 +50,10 @@ module.exports = {
             // all files with a `.ts` or `.tsx` extension will be handled by `ts-loader`
             {
                 test: /\.ts?$/,
-                use: 'ts-loader'
+                use: [
+                    { loader: 'babel-loader' },
+                    { loader: 'ts-loader' }
+                ]
             }
         ]
     },

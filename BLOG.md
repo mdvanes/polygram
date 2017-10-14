@@ -28,7 +28,8 @@ to modify the paths to the bower_components and it would basically work. Except 
 
 
 
-The article uses Babel and import from npm modules. Was easy to migrate, but loses polyserve / the poly serve/demo pages / polylint still possible? wct still possible? @
+The article uses Babel and import from npm modules. Was easy to migrate, but loses polyserve / the 
+poly serve/demo pages / polylint still possible? wct still possible? Lazy loading PRPL? @
 
 # Adding ts-loader
 
@@ -53,7 +54,10 @@ And adding this loader:
 // webpack.config.js
 {
     test: /\.ts?$/,
-    use: 'ts-loader'
+    use: [
+        { loader: 'babel-loader' },
+        { loader: 'ts-loader' }
+    ]
 }
 ```
 
@@ -193,7 +197,7 @@ How to load? Now using import (code example)  but would script tag work?
 
 The `is` and `properties` getters require a specifically set target ECMAScript version, the compilation error is:
 `error TS1056: Accessors are only available when targeting ECMAScript 5 and higher`. It surprises me that the default
-ES target is ES3, but it's no problem to use ESNext here, because we can add Babel transpilation later.
+ES target is ES3, but it's no problem to use ESNext here, because the babel-loader will transpile it back to ES5.
 
 In the tsconfig.json added `"target": "ESNext"` to compilerOptions, that fixes this error.
 
@@ -253,8 +257,29 @@ And the IDE warning by adding `"moduleResolution": "node"` to the compilerOption
 At this point, nothing is rendered, but because of the added log statement, the current date is logged in the browser console. 
 
 
+## Failing Polymer import, continued
 
-## Failing Polymer.Element import
+Now the import succeeds and it is clear that the TypeScript compiler correctly processes PolygramApp.ts, it is time to 
+try to fix the import of the `Polymer` module in PolygramApp.ts.
+
+A possible workaround will be to not try to import HTML imports in the TypeScript file, but instead to supply those dependencies
+through the HTML that is importing the TypeScript file. To do this, I change:
+
+```html
+// polygram-app.html
+```
+
+```javascript
+// PolygramApp.ts
+``` 
+ 
+ 
+
+But it would be better to see why polymer-webpack-loader is not importing Polymer when using `import Polymer from '../bower_components/polymer/polymer-element.html'`
+or `import '../bower_components/polymer/polymer-element.html'`.
+
+ 
+
 HOF/Factory
 Next problem: ts file does not import the html imports (code example) like Polymer.Element. Stubbed it and that compiles. Next step: HOF that accepts the html imports
 
