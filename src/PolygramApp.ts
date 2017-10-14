@@ -1,7 +1,7 @@
 // Importing from node_modules
-import format from 'date-fns/format';
+//import format from 'date-fns/format';
 //import '../bower_components/polymer/polymer-element.html'
-//import { format } from 'date-fns';
+import { format } from 'date-fns';
 // @TODO to fix this import: npm i -g typings && typings install &&
 // That syntax is actually deprecated, use: npm install @types/<package>
 // in this case: npm install @types/date-fns

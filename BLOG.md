@@ -228,40 +228,30 @@ To be able to continue resolving the compilation errors, I add a log statement t
 ```
 
 The import of date-fns originally failed in the TypeScript compilation with 
-`error TS1192: Module ''date-fns/format'' has no default export.` but at this point
+`error TS1192: Module ''date-fns/format'' has no default export.` but at this point that has two different behaviors:
 
-* ide warning
-* error in the browser
-
-...
+* The IDE warns `TS2307 Cannot find module date-fns`
+* Compilation succeeds, but this error is logged in the browser: `Uncaught TypeError: format_1.default is not a function(…)`
 
 I first thought that this was caused by missing typings for the date-fns library, so I tried
 `npm install @types/date-fns` but this logs that date-fns actually provides typings.
 
-Then changed in polygramApp.ts
+Eventually I was able to fix the Uncaught TypeError by changing the import in PolygramApp.ts from
 
-`import format from 'date-fns/format';`
+```javascript
+import format from 'date-fns/format';
+```
 
 to
 
-`import { format } from 'date-fns';`
+```javascript
+import { format } from 'date-fns';
+```
 
-That fixes the runtime error.
+And the IDE warning by adding `"moduleResolution": "node"` to the compilerOptions in tsconfig.json.
 
+At this point, nothing is rendered, but because of the added log statement, the current date is logged in the browser console. 
 
-
-
-
-It works with babel, but fails with ts
-Warning in the IDE: 
-TS2307 Cannot find module date-fns
-Compliation succeeds
-and
-Runtime error that
-(2,8): error TS1192: Module ''date-fns/format'' has no default export.
-
-
-In the tsconfig.json added `"moduleResolution": "node"` to compilerOptions, that fixes the IDE warning.
 
 
 ## Failing Polymer.Element import
