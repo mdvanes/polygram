@@ -2,8 +2,6 @@
   "compilerOptions": {
     "sourceMap": true,
     "target": "ESNext",
-//
-//    "moduleResolution": "node"
-
+    "moduleResolution": "node"
   }
 }
