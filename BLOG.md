@@ -24,7 +24,18 @@ The article introduces the webpack loader [https://github.com/webpack-contrib/po
 explains how it extracts the JavaScript from the HTMl of Polymer elements and eventually combines everything into one
 JavaScript file. I was basically able to copy the webpack.config.js and index.ejs and that would compile. I moved my
 [custom elements](https://github.com/mdvanes/polygram/tree/webpack) from the root of the project to the src dir and I had
-to modify the paths to the bower_components and it would basically work. Except for Redux, because @TODO
+to modify the paths to the bower_components and it would basically work. 
+
+The most important exception is Redux, the redux-mixin.html can't resolve the PolymerRedux.html dependency. The polymer-webpack-loader
+should resolve this, but runtime it logs `Uncaught ReferenceError: PolymerRedux is not defined`. The loader seems to
+import the HTML element that goes into the `template` element, but not the JavaScript variables that go into the `script` element.
+The PolymerRedux code is distributed as JavaScript wrapped in a `script` tag in mainly one file, so it would be easy to
+extract it into a JavaScript file. Or even to import `polymer-redux/src/index.js` instead of `polymer-redux/polymer-redux.html` 
+(this does not work because it is uncompiled and misses external dependencies that are not installed in bower_components)
+
+webpack: how to import global var? -> exports-loader
+Importing the manually unwrapped JS from bower_components/polymer-redux/dist/polymer-redux.html to src/PolymerRedux.js
+import like this `const PolymerRedux = require('exports-loader?PolymerRedux!./PolymerRedux');` in redux-mixin.html gives no errors.
 
 
 
