@@ -1,5 +1,5 @@
 <!--<script src="../node_modules/redux/dist/redux.js"></script>-->
-<link rel="import" href="../bower_components/polymer-redux/polymer-redux.html">
+<!--<link rel="import" href="../bower_components/polymer-redux/polymer-redux.html">-->
 
 <!-- could be multiple reducers in reducers/[name]-reducer.html -->
 <link rel="import" href="reducer.html">
@@ -7,6 +7,8 @@
 
 <script>
     import {createStore, combineReducers, compose} from 'redux';
+    //import './PolymerRedux';
+    const PolymerRedux = require('exports-loader?PolymerRedux!./PolymerRedux');
 
     (function(Polygram) {
         // ReduxThunk (optional) for services and Redux Devtools for debugging with Chrome extension
