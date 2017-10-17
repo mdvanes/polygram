@@ -33,7 +33,7 @@ function create(Polymer) {
         _termChanged(term: string) {
             this._searchResult = null;
             if(term && term.length > 0) {
-                this._searchIAUrl = `https://cors-anywhere.herokuapp.com/en.wikipedia.org:443/w/api.php?action=query&format=json&list=search&srsearch=${encodeURI(term)}`;
+                this._searchIAUrl = `http://127.0.0.1:8080/en.wikipedia.org:443/w/api.php?action=query&format=json&list=search&srsearch=${encodeURI(term)}`;
             }
         }
 
