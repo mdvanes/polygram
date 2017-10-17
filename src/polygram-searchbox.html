@@ -42,10 +42,10 @@
                 </thead>
                 <tbody>
                     <template is="dom-repeat" items="{{_searchResultsIAArr}}">
-                        <tr id="[[item.title]]" on-click="_handleClick">
+                        <tr>
                             <td>W</td>
                             <td>[[index]]</td>
-                            <td>[[item.title]]</td>
+                            <td id="[[item.title]]" on-click="_handleClick">[[item.title]]</td>
                         </tr>
                     </template>
                 </tbody>
