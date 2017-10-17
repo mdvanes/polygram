@@ -367,6 +367,14 @@ export default { create }
 After making similar modifications for polygram-searchbox, the Redux events work again as before introducing TypeScript. 
 
 @@@ in state/ReduxMixin.ts, load PolymerRedux directly from bower_components.
+old: const PolymerRedux = require('exports-loader?PolymerRedux!./PolymerRedux');
+want to load PolymerRedux directly from bower_components.
+Apparently, this does not work:
+const PolymerRedux = require('exports-loader?PolymerRedux!polymer-webpack-loader!debug-loader?id=raw!../../bower_components/polymer-redux/dist/polymer-redux.html');
+but this does: (so <script>foo()</script> is read as foo() and webpack-polymer-loader is not needed in this case. I do think this only works when the file is completely self contained and does not have dependencies with other Polymer HTML files)
+const PolymerRedux = require('exports-loader?PolymerRedux!debug-loader?id=raw!../../bower_components/polymer-redux/dist/polymer-redux.html');
+A great help was debug-loader, which made it quickly visible that the first loader already gets the content of the HTML with stripped script tags and also
+some helper functions prepended.
 
 @@@ improvement? https://www.npmjs.com/package/tslint-plugin-prettier 
 
