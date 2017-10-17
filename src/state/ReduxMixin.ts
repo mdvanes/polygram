@@ -1,6 +1,6 @@
 import {createStore, combineReducers, compose} from 'redux';
 declare let __REDUX_DEVTOOLS_EXTENSION__: any; // May be added by the Chrome plugin
-const PolymerRedux = require('exports-loader?PolymerRedux!../PolymerRedux'); // TODO attempt to use polymer-loader to get from bower
+const PolymerRedux = require('exports-loader?PolymerRedux!./PolymerRedux'); // TODO attempt to use polymer-loader to get from bower
 import REDUCERS from './reducers';
 
 // ReduxThunk (optional) for services and Redux Devtools for debugging with Chrome extension
