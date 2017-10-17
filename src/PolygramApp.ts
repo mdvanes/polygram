@@ -29,7 +29,7 @@ const label: string = 'Current Date: ';
 // }
 
 //const Polygram = require('imports-loader?window=>{}!exports-loader?window.Polygram!polymer-webpack-loader!./redux-mixin.html');
-import {ReduxMixin, reduxStore} from './ReduxMixin';
+import {ReduxMixin, reduxStore} from './state/ReduxMixin';
 
 function create(Polymer) {
     return class PolygramApp extends ReduxMixin(Polymer.Element) {
