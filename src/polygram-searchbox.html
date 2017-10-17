@@ -3,10 +3,11 @@
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/polymer/lib/elements/dom-repeat.html">
-<link rel="import" href="../bower_components/polymer-redux/polymer-redux.html">
+<!--<link rel="import" href="../bower_components/polymer-redux/polymer-redux.html">-->
 <link rel="import" href="../bower_components/paper-styles/color.html">
+<!--<link rel="import" href="redux-mixin.html"/>-->
 <link rel="import" href="polygram-element-styles.html">
-<link rel="import" href="action.html">
+<!--<link rel="import" href="action.html">-->
 
 <dom-module id="polygram-searchbox">
     <template>
@@ -66,63 +67,8 @@
     </template>
 
     <script>
-        /**
-         * `polygram-searchbox`
-         *
-         * @customElement
-         * @polymer
-         * @demo demo/polygram-searchbox/index.html
-         */
-        class PolygramSearchbox extends Polymer.Element { // TODO fix Redux ReduxMixin(Polymer.Element) {
-            static get is() {
-                return 'polygram-searchbox';
-            }
-
-            // TODO search type (wikipedia/images/etc) via Higher Order Component also containing the Redux bindings
-
-            static get properties() {
-                return {
-                    state: {
-                        type: Object
-                    },
-                    sourceName: {
-                        type: String,
-                        value: 'polygram-searchbox'
-                    },
-                    _searchIAInput: {
-                        type: String,
-                        value: null,
-                        observer: '_searchIAInputChanged'
-                    },
-                    _searchIAUrl: {
-                        type: String,
-                        value: null
-                    },
-                    _searchResultsIAArr: {
-                        type: Array,
-                        value: []
-                    }
-                };
-            }
-
-            _searchIAInputChanged(term) {
-                if(term && term.length > 0) {
-                    this._searchIAUrl = `https://cors-anywhere.herokuapp.com/en.wikipedia.org:443/w/api.php?action=query&format=json&list=search&srsearch=${encodeURI(term)}`;
-                }
-            }
-
-            _searchIAHandler(data) {
-                if(data && data.detail && data.detail.response && data.detail.response.query &&
-                data.detail.response.query.search) {
-                    this._searchResultsIAArr = data.detail.response.query.search;
-                }
-            }
-
-            _handleClick(e) {
-                this.dispatch(Polygram.ACTIONS.TERM_SELECTED.TERM_SELECTED(e.target.id));
-            }
-
-        }
+        import PolygramSearchboxFactory from './PolygramSearchbox';
+        const PolygramSearchbox = PolygramSearchboxFactory.create(Polymer);
 
         window.customElements.define(PolygramSearchbox.is, PolygramSearchbox);
     </script>
