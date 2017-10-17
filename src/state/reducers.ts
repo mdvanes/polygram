@@ -1,12 +1,12 @@
 import CONSTANTS from './constants';
 
-const REDUCERS:any = {};
+const REDUCERS: any = {};
 
 const initialState = {
     selectedTerm: null
 };
 
-REDUCERS.term = function (state, action) {
+REDUCERS.term = function(state, action) {
     if (typeof state === 'undefined') {
         state = initialState;
     }

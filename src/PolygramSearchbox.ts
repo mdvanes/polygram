@@ -16,19 +16,20 @@ function create(Polymer) {
 
         // TODO search type (wikipedia/images/etc) via Higher Order Component also containing the Redux bindings
 
+        /* tslint:disable */
         static get properties() {
             return {
-                state: {
-                    type: Object
-                },
                 sourceName: {
                     type: String,
                     value: 'polygram-searchbox'
                 },
+                state: {
+                    type: Object
+                },
                 _searchIAInput: {
+                    observer: '_searchIAInputChanged',
                     type: String,
-                    value: null,
-                    observer: '_searchIAInputChanged'
+                    value: null
                 },
                 _searchIAUrl: {
                     type: String,
@@ -42,13 +43,13 @@ function create(Polymer) {
         }
 
         _searchIAInputChanged(term) {
-            if(term && term.length > 0) {
+            if (term && term.length > 0) {
                 this._searchIAUrl = `http://127.0.0.1:8080/https://en.wikipedia.org/w/api.php?action=query&format=json&list=search&srsearch=${encodeURI(term)}`;
             }
         }
 
         _searchIAHandler(data) {
-            if(data && data.detail && data.detail.response && data.detail.response.query &&
+            if (data && data.detail && data.detail.response && data.detail.response.query &&
                 data.detail.response.query.search) {
                 this._searchResultsIAArr = data.detail.response.query.search;
             }
@@ -58,7 +59,7 @@ function create(Polymer) {
             this.dispatch(ACTIONS.TERM_SELECTED.TERM_SELECTED(e.target.id));
         }
 
-    }
+    };
 }
 
 export default { create };

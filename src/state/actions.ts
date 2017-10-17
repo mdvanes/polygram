@@ -1,18 +1,18 @@
 import CONSTANTS from './constants';
 
 const createTermActions = function() {
-    var ACTIONS = {
-        TERM_SELECTED : function(selectedTerm) {
+    const createdActions = {
+        TERM_SELECTED(selectedTerm) {
             return {
-                type: CONSTANTS.TERM_SELECTED,
-                selectedTerm
+                selectedTerm,
+                type: CONSTANTS.TERM_SELECTED
             };
         }
     };
-    return ACTIONS;
+    return createdActions;
 };
 
-const ACTIONS:any = {
+const ACTIONS: any = {
     TERM_SELECTED: createTermActions()
 };
 
