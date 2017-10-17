@@ -364,13 +364,9 @@ function create(Polymer) {
 export default { create }
 ```
 
+After making similar modifications for polygram-searchbox, the Redux events work again as before introducing TypeScript. 
 
-webpack: how to import global var? -> exports-loader
-Importing the manually unwrapped JS from bower_components/polymer-redux/dist/polymer-redux.html to src/PolymerRedux.js
-import like this `const PolymerRedux = require('exports-loader?PolymerRedux!./PolymerRedux');` in redux-mixin.html gives no errors.
-Now polygram-searchbox.html must be modified to use this redux-mixin.html. @@@
-
-
+@@@ in state/ReduxMixin.ts, load PolymerRedux directly from bower_components.
 
 
 # App vs Element
