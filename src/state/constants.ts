@@ -1,4 +1,4 @@
-const CONSTANTS:any = {
+const CONSTANTS: any = {
     TERM_SELECTED: 'TERM_SELECTED'
 };
 

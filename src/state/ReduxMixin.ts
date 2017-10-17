@@ -1,7 +1,8 @@
-import {createStore, combineReducers, compose} from 'redux';
+import {combineReducers, compose, createStore} from 'redux';
 declare let __REDUX_DEVTOOLS_EXTENSION__: any; // May be added by the Chrome plugin
-//const Polygram = require('imports-loader?window=>{}!exports-loader?window.Polygram!polymer-webpack-loader!./redux-mixin.html');
+// const Polygram = require('imports-loader?window=>{}!exports-loader?window.Polygram!polymer-webpack-loader!./redux-mixin.html');
 
+// tslint:disable-next-line
 const PolymerRedux = require('exports-loader?PolymerRedux!./PolymerRedux'); // TODO attempt to use polymer-loader to get from bower
 import REDUCERS from './reducers';
 
@@ -13,5 +14,5 @@ export const reduxStore = createStore(
         __REDUX_DEVTOOLS_EXTENSION__ && __REDUX_DEVTOOLS_EXTENSION__()
     ));
 
-//export const store;
+// export const store;
 export const ReduxMixin = PolymerRedux(reduxStore);
