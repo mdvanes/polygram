@@ -31,11 +31,10 @@ should resolve this, but runtime it logs `Uncaught ReferenceError: PolymerRedux 
 import the HTML element that goes into the `template` element, but not the JavaScript variables that go into the `script` element.
 The PolymerRedux code is distributed as JavaScript wrapped in a `script` tag in mainly one file, so it would be easy to
 extract it into a JavaScript file. Or even to import `polymer-redux/src/index.js` instead of `polymer-redux/polymer-redux.html` 
-(this does not work because it is uncompiled and misses external dependencies that are not installed in bower_components)
+(this does not work because it is uncompiled and misses external dependencies that are not installed in bower_components). For now, I just 
+comment out the Redux dependencies.
 
-webpack: how to import global var? -> exports-loader
-Importing the manually unwrapped JS from bower_components/polymer-redux/dist/polymer-redux.html to src/PolymerRedux.js
-import like this `const PolymerRedux = require('exports-loader?PolymerRedux!./PolymerRedux');` in redux-mixin.html gives no errors.
+
 
 
 
@@ -321,8 +320,61 @@ Now everything compiles without errors and the custom elements are rendered agai
 or `import '../bower_components/polymer/polymer-element.html'`.
 
 
+## Re-enabling Redux
+
+Earlier, Redux was disabled to test Webpack. To re-enable it, I convert the `polymer-redux/polymer-redux.html` from 
+bower_components to a local PolymerRedux.js, by just removing the `script` tags.
+
+Because redux-mixin.html, action.html, and reducer.html actually are already JavaScript wrapped in `script` tags, I just convert
+them to TypeScript files.
+
+```typescript
+// ReduxMixin.ts
+import {createStore, combineReducers, compose} from 'redux';
+const PolymerRedux = require('exports-loader?PolymerRedux!./PolymerRedux');
+...
+export const ReduxMixin = PolymerRedux(reduxStore);
+```
+
+To use it in PolygramApp.ts, it can now be imported normally:
+
+```typescript
+// PolygramApp.ts
+import { format } from 'date-fns';
+const label: string = 'Current Date: ';
+import {ReduxMixin, reduxStore} from './ReduxMixin';
+
+function create(Polymer) {
+    return class PolygramApp extends ReduxMixin(Polymer.Element) {
+        static get is() { return 'polygram-app'; }
+
+        static get properties() {
+            // Added Redux code here
+            ...
+        }
+
+        ready() {
+            // Added Redux code here
+            ...
+        }
+
+    }
+}
+
+export default { create }
+```
+
+
+webpack: how to import global var? -> exports-loader
+Importing the manually unwrapped JS from bower_components/polymer-redux/dist/polymer-redux.html to src/PolymerRedux.js
+import like this `const PolymerRedux = require('exports-loader?PolymerRedux!./PolymerRedux');` in redux-mixin.html gives no errors.
+Now polygram-searchbox.html must be modified to use this redux-mixin.html. @@@
+
+
+
+
 # App vs Element
-One thing to do Typescript for poly app, other thing for reusable poly component.
+One thing to do Typescript for polymer app, other thing for reusable poly component.
 The current solution will generate a compiled app, but does not allow importing (check?) and how about lazy loading?
 
 
