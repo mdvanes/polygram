@@ -5,6 +5,7 @@ declare let __REDUX_DEVTOOLS_EXTENSION__: any; // May be added by the Chrome plu
 // const PolymerRedux = require('exports-loader?PolymerRedux!polymer-webpack-loader!debug-loader?id=raw!../../bower_components/polymer-redux/dist/polymer-redux.html');
 // tslint:disable-next-line
 const PolymerRedux = require('exports-loader?PolymerRedux!../../bower_components/polymer-redux/dist/polymer-redux.html');
+// import PolymerRedux from 'exports-loader?PolymerRedux!../../bower_components/polymer-redux/dist/polymer-redux.html';
 // const PolymerRedux = require('exports-loader?PolymerRedux!debug-loader?id=raw!../../bower_components/polymer-redux/dist/polymer-redux.html');
 // FALSE --- Seems to ignore the lines with the <script> tags on it, which includes the `var PolymerRedux =` part...
 // Actually seems to add lines to the beginning of the raw import ?? Possibly: https://github.com/babel/babel/issues/4709
