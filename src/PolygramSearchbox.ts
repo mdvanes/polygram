@@ -1,4 +1,5 @@
 import ACTIONS from './state/actions';
+import {ReduxMixin} from './state/ReduxMixin';
 
 function create(Polymer) {
     /**
@@ -8,7 +9,7 @@ function create(Polymer) {
      * @polymer
      * @demo demo/polygram-searchbox/index.html
      */
-    return class PolygramSearchbox extends /*ReduxMixin(Polymer.Element)*/ Polymer.Element {
+    return class PolygramSearchbox extends ReduxMixin(Polymer.Element) {
         static get is() {
             return 'polygram-searchbox';
         }
