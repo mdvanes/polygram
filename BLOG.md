@@ -368,6 +368,8 @@ After making similar modifications for polygram-searchbox, the Redux events work
 
 @@@ in state/ReduxMixin.ts, load PolymerRedux directly from bower_components.
 
+@@@ improvement? https://www.npmjs.com/package/tslint-plugin-prettier 
+
 
 # App vs Element
 One thing to do Typescript for polymer app, other thing for reusable poly component.
