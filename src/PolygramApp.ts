@@ -16,6 +16,10 @@ function create(Polymer) {
 
         static get properties() {
             return {
+                message: {
+                    type: String,
+                    value: ''
+                },
                 selectedTerm: String,
                 state: {
                     type: Object,
@@ -34,10 +38,6 @@ function create(Polymer) {
                 useWikipedia: {
                     type: Boolean,
                     value: true
-                },
-                message: {
-                    type: String,
-                    value: ''
                 }
             };
         }
@@ -49,9 +49,9 @@ function create(Polymer) {
         }
 
         public updateApiFilters(useMarvel, useWikipedia) {
-            console.log(useMarvel, useWikipedia);
-            const nrOfActiveFilters = [useMarvel, useWikipedia].filter(x => x).length;
-            if(nrOfActiveFilters > 1) {
+            // console.log(useMarvel, useWikipedia);
+            const nrOfActiveFilters = [useMarvel, useWikipedia].filter((x) => x).length;
+            if (nrOfActiveFilters > 1) {
                 this.message = 'Please use only one API at the time';
             } else {
                 this.message = '';
