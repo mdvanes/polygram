@@ -82,7 +82,7 @@ module.exports = {
             to: 'bower_components/webcomponentsjs/[name].[ext]'
         }]),
         new TSLintPlugin({
-            files: ['./src/**/*.ts'] // TODO so, this requires all the .ts not to be inline in HTML?
+            files: ['./src/**/*.ts']
         })
     ]
 };
