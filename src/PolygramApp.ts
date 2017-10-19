@@ -26,8 +26,36 @@ function create(Polymer) {
                     value() {
                         return label + format(new Date(), 'YYYY-MM-DD');
                     }
+                },
+                useMarvel: {
+                    type: Boolean,
+                    value: false
+                },
+                useWikipedia: {
+                    type: Boolean,
+                    value: true
+                },
+                message: {
+                    type: String,
+                    value: ''
                 }
             };
+        }
+
+        static get observers() {
+            return [
+                'updateApiFilters(useMarvel, useWikipedia)'
+            ];
+        }
+
+        public updateApiFilters(useMarvel, useWikipedia) {
+            console.log(useMarvel, useWikipedia);
+            const nrOfActiveFilters = [useMarvel, useWikipedia].filter(x => x).length;
+            if(nrOfActiveFilters > 1) {
+                this.message = 'Please use only one API at the time';
+            } else {
+                this.message = '';
+            }
         }
 
         public ready() {
