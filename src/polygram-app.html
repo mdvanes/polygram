@@ -7,7 +7,12 @@
 <link rel="import" href="../bower_components/paper-styles/element-styles/paper-item-styles.html">
 <link rel="import" href="../bower_components/paper-styles/element-styles/paper-material-styles.html">
 <link rel="import" href="../bower_components/paper-card/paper-card.html">
+<link rel="import" href="../bower_components/paper-checkbox/paper-checkbox.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html"/>
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
+<!--<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">-->
 <link rel="import" href="polygram-details.html">
 <link rel="import" href="polygram-searchbox.html">
 
@@ -19,23 +24,40 @@
             <div class="layout horizontal center-justified">
                 <paper-card class="title" heading="Polygram">
                     <div class="card-content">
-                        <h3>Search API aggregator</h3>
+                        <h3 class="paper-font-title">Search API aggregator</h3>
                         <polygram-searchbox source-name="Wikipedia"></polygram-searchbox>
                     </div>
-                    <div class="card-actions">action</div>
+                    <div class="card-actions">
+                        <paper-button toggles raised class="blue">
+                            <!-- iron-icon also supports external images: src="star.png" -->
+                            <iron-icon icon="menu"></iron-icon>
+                            A button
+                        </paper-button>
+                    </div>
                 </paper-card>
 
                 <paper-card class="settings" heading="Settings">
                     <div class="card-content">
-                        <input type="checkbox"> Wikipedia API
-                        <input type="checkbox"> Marvel API
+                        <paper-checkbox checked="{{useWikipedia}}">Wikipedia API</paper-checkbox>
+                        <br>
+                        <paper-checkbox checked="{{useMarvel}}">Marvel API</paper-checkbox>
+                        <br>
                         <!--<input type="checkbox"> Getty Images API
                         <input type="checkbox"> Custom Firebase API-->
+
+                        <template is="dom-if" if="{{message.length > 0}}">
+                            <div style="background-color: rosybrown">
+                                <iron-icon icon="error"></iron-icon>
+                                [[message]]
+                                <br>
+                                [[message.length]]
+                                <br>
+                                useWikipedia:[[useWikipedia]]
+                            </div>
+                        </template>
                     </div>
                 </paper-card>
             </div>
-
-            <!--<h1 class="paper-font-title">Polygram</h1>-->
 
             <div class="layout horizontal center-justified">
                 <polygram-details term="[[selectedTerm]]"></polygram-details>
@@ -72,6 +94,10 @@
             polygram-details {
                 width: var(--main-width);
             }
+
+            paper-button.blue {
+                background: var(--paper-blue-300);
+            }
         </style>
 
         <custom-style>
@@ -85,8 +111,7 @@
                     padding: 24px;
                     background-color: var(--paper-grey-50);
                 }
-*/
-
+                */
                 .paper-font-display4 { @apply --paper-font-display4; }
                 .paper-font-display3 { @apply --paper-font-display3; }
                 .paper-font-display2 { @apply --paper-font-display2; }
