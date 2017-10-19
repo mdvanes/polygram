@@ -366,17 +366,59 @@ export default { create }
 
 After making similar modifications for polygram-searchbox, the Redux events work again as before introducing TypeScript. 
 
-@@@ in state/ReduxMixin.ts, load PolymerRedux directly from bower_components.
-old: const PolymerRedux = require('exports-loader?PolymerRedux!./PolymerRedux');
-want to load PolymerRedux directly from bower_components.
-Apparently, this does not work:
-const PolymerRedux = require('exports-loader?PolymerRedux!polymer-webpack-loader!debug-loader?id=raw!../../bower_components/polymer-redux/dist/polymer-redux.html');
-but this does: (so <script>foo()</script> is read as foo() and webpack-polymer-loader is not needed in this case. I do think this only works when the file is completely self contained and does not have dependencies with other Polymer HTML files)
-const PolymerRedux = require('exports-loader?PolymerRedux!debug-loader?id=raw!../../bower_components/polymer-redux/dist/polymer-redux.html');
-A great help was debug-loader, which made it quickly visible that the first loader already gets the content of the HTML with stripped script tags and also
-some helper functions prepended.
+# Importing a global variable from HTML
 
-@@@ improvement? https://www.npmjs.com/package/tslint-plugin-prettier 
+Now PolymerRedux is loaded from a custom PolymerRedux.js that I made by removing the `<script>` tags from the file in bower_components,
+and although this works, it would be better to use the file in bower_components directly because it will be easier to handle
+upgrades.
+
+Currently I import the custom PolymerRedux.js in state/ReduxMixin.ts with:
+
+```typescript
+const PolymerRedux = require('exports-loader?PolymerRedux!./PolymerRedux');
+```
+ 
+To load the HTML from the bower_components, I expect to have to use the polymer-webpack-loader to extract the JavaScript
+from the `script` tags:
+
+```typescript
+const PolymerRedux = require('exports-loader?PolymerRedux!polymer-webpack-loader!../../bower_components/polymer-redux/dist/polymer-redux.html');
+``` 
+
+This fails to compile with the message that PolymerRedux is undefined, so I add the [debug-loader](https://github.com/ianwalter/debug-loader) to
+investigate what the result of each step looks like:
+
+```typescript
+const PolymerRedux = require('exports-loader?PolymerRedux!polymer-webpack-loader!debug-loader?id=raw!../../bower_components/polymer-redux/dist/polymer-redux.html');
+``` 
+
+Thanks to debug-loader it is immediately clear that already before going into the polymer-webpack-loader the `script` tags have
+been stripped. Just using require without any loaders turns something likes this `<script>foo()</script>` into `foo()`
+and webpack-polymer-loader is not needed in this case. I do think this only works when the file is completely self 
+contained and does not have dependencies with other Polymer HTML files.
+
+This is the final working import:
+
+```typescript
+// tslint:disable-next-line
+const PolymerRedux = require('exports-loader?PolymerRedux!../../bower_components/polymer-redux/dist/polymer-redux.html');
+``` 
+
+# Linting
+
+Although there is a [polymer-linter](https://github.com/Polymer/polymer-linter), it is [advised](https://github.com/Polymer/polymer-linter#use-with-other-tools) to 
+use Polymer Linter combined with other linters, and a obvious choice is TSLint.
+
+The way that TSLint was now added to Webpack, means that it will only lint TypeScript that is not embedded in HTML:
+
+```javascript
+// webpack.config.js
+new TSLintPlugin({
+            files: ['./src/**/*.ts'] // TODO so, this requires all the .ts not to be inline in HTML?
+        })
+```
+
+
 
 
 # App vs Element
@@ -387,22 +429,13 @@ The current solution will generate a compiled app, but does not allow importing 
 
 # To do for this article
 
-* Fix Redux
 * Linting
 * Unit and e2e and coverage
 * Rxjs
-
-The way that TSLint was now added to Webpack, means that it will only lint TS that is not embedded in HTML (I assume:)
-```javascript
-new TSLintPlugin({
-            files: ['./src/**/*.ts'] // TODO so, this requires all the .ts not to be inline in HTML?
-        })
-```
-
-Added `devtool: 'inline-source-map'` and it is possible to see both the source TS and source HTML files in Chrome. 
-
 * Flow better?
 * workaround with `/// ref style` ts imports?
+* @@@ improvement? https://www.npmjs.com/package/tslint-plugin-prettier 
+* Added `devtool: 'inline-source-map'` and it is possible to see both the source TS and source HTML files in Chrome. 
 
 
 # long term
