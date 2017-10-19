@@ -5,10 +5,7 @@ import {ReduxMixin, reduxStore} from './state/ReduxMixin';
 // import '../bower_components/polymer/polymer-element.html'
 // import Polymer from '../bower_components/polymer/polymer-element.html';
 // const Polymer = require('../bower_components/polymer/polymer-element.html');
-// class StubElem {}
-// const Polymer = {
-//     Element: StubElem
-// }; // TODO unstub / HoF/factory ... alternatively try https://github.com/aruntk/wc-loader ?
+// }; // Now using a Factory Pattern to import Polymer, maybe try https://github.com/aruntk/wc-loader ?
 
 const label: string = 'Current Date: ';
 
