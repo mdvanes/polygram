@@ -19,9 +19,7 @@
             <div class="layout horizontal center-justified">
                 <paper-card class="title" heading="Polygram">
                     <div class="card-content">
-                        <small>Search API aggregator</small>
-                        <small>debug: [[today]]</small><!-- TODO remove "today" when something else is imported with node_modules
-                        <!-- TODO Redux, TypeScript -->
+                        <h3>Search API aggregator</h3>
                         <polygram-searchbox source-name="Wikipedia"></polygram-searchbox>
                     </div>
                     <div class="card-actions">action</div>
@@ -29,6 +27,10 @@
 
                 <paper-card class="settings" heading="Settings">
                     <div class="card-content">
+                        <input type="checkbox"> Wikipedia API
+                        <input type="checkbox"> Marvel API
+                        <!--<input type="checkbox"> Getty Images API
+                        <input type="checkbox"> Custom Firebase API-->
                     </div>
                 </paper-card>
             </div>
@@ -103,25 +105,6 @@
     <script>
         import PolygramAppFactory from './PolygramApp';
         const PolygramApp = PolygramAppFactory.create(Polymer);
-//        console.log(PolygramApp.properties.today.value(), PolygramApp.is);
-//        console.log(PolygramApp);
         window.customElements.define(PolygramApp.is, PolygramApp);
-        // Importing from node_modules
-//        import format from 'date-fns/format';
-//
-//        class PolygramApp extends Polymer.Element {
-//            static get is() { return 'polygram-app'; }
-//            static get properties() {
-//                return {
-//                    today: {
-//                        type: String,
-//                        value: function() {
-//                            return format(new Date(), 'MM/DD/YYYY');
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//        window.customElements.define(PolygramApp.is, PolygramApp);
     </script>
 </dom-module>
