@@ -409,7 +409,7 @@ const PolymerRedux = require('exports-loader?PolymerRedux!../../bower_components
 Although there is a [polymer-linter](https://github.com/Polymer/polymer-linter), it is [advised](https://github.com/Polymer/polymer-linter#use-with-other-tools) to 
 use Polymer Linter combined with other linters, and a obvious choice is TSLint.
 
-The way that TSLint was now added to Webpack, means that it will only lint TypeScript that is not embedded in HTML:
+The way that TSLint is configured with Webpack, means that it will only lint TypeScript that is not embedded in HTML:
 
 ```javascript
 // webpack.config.js
@@ -418,12 +418,17 @@ new TSLintPlugin({
         })
 ```
 
+Before I started with this experiment, I thought this might be a problem, but now almost all script has been extracted to
+separate TypeScript files anyway, so this works quite well. 
+
+It is still required to run `polymer lint` manually. As far as I know there is no integration for Webpack yet.
 
 
 
 # App vs Element
-One thing to do Typescript for polymer app, other thing for reusable poly component.
+One thing to do Typescript for polymer app, other thing for reusable polymer component.
 The current solution will generate a compiled app, but does not allow importing (check?) and how about lazy loading?
+Current compilation is one huge blob.
 
 
 
