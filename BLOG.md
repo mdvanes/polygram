@@ -423,18 +423,19 @@ separate TypeScript files anyway, so this works quite well.
 
 It is still required to run `polymer lint` manually. As far as I know there is no integration for Webpack yet.
 
-
-
 # App vs Element
 One thing to do Typescript for polymer app, other thing for reusable polymer component.
 The current solution will generate a compiled app, but does not allow importing (check?) and how about lazy loading?
 Current compilation is one huge blob.
 
+Next attempt will be to make a standard demo page for one of the elements: these demo pages have a standard layout and just
+load in one stand-alone Polymer Element.
+@@@   
+
 
 
 # To do for this article
 
-* Linting
 * Unit and e2e and coverage
 * Rxjs
 * Flow better?
