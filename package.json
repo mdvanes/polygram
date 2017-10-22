@@ -10,7 +10,6 @@
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.0",
-    "copy-webpack-plugin": "^4.1.0",
     "date-fns": "^1.28.5",
     "exports-loader": "^0.6.4",
     "html-webpack-plugin": "^2.30.1",
@@ -24,6 +23,7 @@
     "typescript": "^2.5.3"
   },
   "devDependencies": {
+    "copy-webpack-plugin": "^4.2.0",
     "cors-anywhere": "^0.4.0",
     "debug-loader": "0.0.1",
     "polymer-webpack-loader": "^2.0.0",

@@ -43,7 +43,13 @@
                 <tbody>
                     <template is="dom-repeat" items="{{_searchResultsIAArr}}">
                         <tr>
-                            <td>W</td>
+                            <td>
+                                <!-- TODO complication: how to webpack load an image? -
+                                workaround with https://github.com/webpack-contrib/copy-webpack-plugin ?
+                                Since webpack does not "see" src=""
+                                -->
+                                <iron-icon src="src/wikipedia.png"></iron-icon>
+                            </td>
                             <td>[[index]]</td>
                             <td id="[[item.title]]" on-click="_handleClick">[[item.title]]</td>
                         </tr>

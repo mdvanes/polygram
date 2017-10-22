@@ -430,16 +430,19 @@ Current compilation is one huge blob.
 
 Next attempt will be to make a standard demo page for one of the elements: these demo pages have a standard layout and just
 load in one stand-alone Polymer Element.
-@@@   
+@@@ Build or livereload the demo?
 
+
+@@@
+Also see polygram-searchbox and webpack.config.js for PNG workaround.
 
 
 # To do for this article
 
 * Unit and e2e and coverage
 * Rxjs
-* Flow better?
-* workaround with `/// ref style` ts imports?
+* Is Flow a better fit than TypeScript?
+* Workaround with `/// ref style` ts imports?
 * @@@ improvement? https://www.npmjs.com/package/tslint-plugin-prettier 
 * Added `devtool: 'inline-source-map'` and it is possible to see both the source TS and source HTML files in Chrome. 
 

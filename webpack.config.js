@@ -83,6 +83,9 @@ module.exports = {
         }]),
         new TSLintPlugin({
             files: ['./src/**/*.ts']
-        })
+        }),
+        new CopyWebpackPlugin([
+            { from: 'src/img/*.png' }
+        ])
     ]
 };
