@@ -31,6 +31,10 @@ function create(Polymer) {
                         return label + format(new Date(), 'YYYY-MM-DD');
                     }
                 },
+                useGetty: {
+                    type: Boolean,
+                    value: false
+                },
                 useMarvel: {
                     type: Boolean,
                     value: false
@@ -44,18 +48,25 @@ function create(Polymer) {
 
         static get observers() {
             return [
-                'updateApiFilters(useMarvel, useWikipedia)'
+                'updateApiFilters(useGetty, useMarvel, useWikipedia)'
             ];
         }
 
-        public updateApiFilters(useMarvel, useWikipedia) {
-            // console.log(useMarvel, useWikipedia);
-            const nrOfActiveFilters = [useMarvel, useWikipedia].filter((x) => x).length;
+        /**
+         * Each argument is an API filter boolean
+         */
+        public updateApiFilters() {
+            const apiFiltersArr = Array.from(arguments);
+            const nrOfActiveFilters = apiFiltersArr.filter((x) => x).length;
             if (nrOfActiveFilters > 1) {
                 this.message = 'Please use only one API at the time';
             } else {
                 this.message = '';
             }
+        }
+
+        public _showMessage(msg) {
+            return msg && msg.length > 0;
         }
 
         public ready() {
