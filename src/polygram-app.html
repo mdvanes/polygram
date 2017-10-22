@@ -12,7 +12,6 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html"/>
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
-<!--<link rel="import" href="../bower_components/polymer/lib/elements/dom-if.html">-->
 <link rel="import" href="polygram-details.html">
 <link rel="import" href="polygram-searchbox.html">
 
@@ -21,6 +20,7 @@
         <style include="iron-flex iron-flex-alignment"></style>
 
         <div class="layout vertical">
+
             <div class="layout horizontal center-justified">
                 <paper-card class="title" heading="Polygram">
                     <div class="card-content">
@@ -38,21 +38,23 @@
 
                 <paper-card class="settings" heading="Settings">
                     <div class="card-content">
-                        <paper-checkbox checked="{{useWikipedia}}">Wikipedia API</paper-checkbox>
-                        <br>
-                        <paper-checkbox checked="{{useMarvel}}">Marvel API</paper-checkbox>
-                        <br>
-                        <!--<input type="checkbox"> Getty Images API
-                        <input type="checkbox"> Custom Firebase API-->
+                        <ul class="api-checkboxes">
+                            <li>
+                                <paper-checkbox checked="{{useWikipedia}}">Wikipedia API</paper-checkbox>
+                            </li>
+                            <li>
+                                <paper-checkbox checked="{{useMarvel}}">Marvel API</paper-checkbox>
+                            </li>
+                            <li>
+                                <paper-checkbox checked="{{useGetty}}">Getty Images API</paper-checkbox>
+                            </li>
+                        </ul>
+                        <!-- TODO <input type="checkbox"> Custom Firebase API-->
 
-                        <template is="dom-if" if="{{message.length > 0}}">
-                            <div style="background-color: rosybrown">
+                        <template is="dom-if" if="{{_showMessage(message)}}">
+                            <div class="error">
                                 <iron-icon icon="error"></iron-icon>
                                 [[message]]
-                                <br>
-                                [[message.length]]
-                                <br>
-                                useWikipedia:[[useWikipedia]]
                             </div>
                         </template>
                     </div>
@@ -97,6 +99,19 @@
 
             paper-button.blue {
                 background: var(--paper-blue-300);
+            }
+
+            .error {
+                background: var(--paper-red-500);
+                color: white;
+            }
+
+            .api-checkboxes {
+                list-style-type: none;
+                padding-left: 0;
+            }
+            .api-checkboxes li {
+                margin-bottom: 0.5em;
             }
         </style>
 
