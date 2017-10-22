@@ -59,7 +59,7 @@ function create(Polymer) {
             const apiFiltersArr = Array.from(arguments);
             const nrOfActiveFilters = apiFiltersArr.filter((x) => x).length;
             if (nrOfActiveFilters > 1) {
-                this.message = 'Please use only one API at the time';
+                this.message = 'Please use only one API at the time. At the moment only Wikipedia works.';
             } else {
                 this.message = '';
             }
