@@ -1,6 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const TSLintPlugin = require('tslint-webpack-plugin');
+const UglifyJSPlugin = require('uglifyjs-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -87,6 +88,7 @@ module.exports = {
         new CopyWebpackPlugin([
             { from: 'src/img/*.png' },
             { from: 'src/img/*.svg' }
-        ])
+        ]),
+        //new UglifyJSPlugin()
     ]
 };
