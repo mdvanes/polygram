@@ -440,6 +440,10 @@ distribute a polymer component because:
 * the bundle.js contains not only the compiled code for the component, but also TypeScript, Webpack and Polymer polyfills and libraries (like lodash in this case)
 that you would want to load once and not for every component. The bundle.js is already 2.8MB in size (unminified) / 347KB (minified).
 
+Would it be possible to make a Polymer component that uses the `<script src="foo.js">` style import and then do a "naive"
+compilation from foo.ts to foo.js? Would this be possible with tsc or also via Webpack?
+Would this work with ES6 imports? Seems to work in the wc-loader project.
+
 
 @@@
 Also see polygram-searchbox and webpack.config.js for PNG workaround.
