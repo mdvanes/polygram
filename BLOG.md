@@ -431,6 +431,14 @@ Current compilation is one huge blob.
 Next attempt will be to make a standard demo page for one of the elements: these demo pages have a standard layout and just
 load in one stand-alone Polymer Element.
 @@@ Build or livereload the demo?
+Must be with webpack build and not webpack dev server. A good way to test would be to import it into the demo page and serve
+the demo page with `polymer serve`
+If I just run `./node_modules/.bin/webpack --config webpack.config.js` with the current project, it will build a 
+dist dir containing amongst others an index.html and a bundle.js. This is a standalone app, but this would not be a good workflow to 
+distribute a polymer component because:
+* the index.html is a complete HTML document, not just a `dom-module`
+* the bundle.js contains not only the compiled code for the component, but also TypeScript, Webpack and Polymer polyfills and libraries (like lodash in this case)
+that you would want to load once and not for every component. The bundle.js is already 2.8MB in size (unminified) / 347KB (minified).
 
 
 @@@
