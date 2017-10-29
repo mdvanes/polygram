@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "ESNext",
+    "moduleResolution": "node"
+  },
+  "include": [
+    "*.ts"
+  ]
+}

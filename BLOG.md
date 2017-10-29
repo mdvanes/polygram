@@ -489,9 +489,27 @@ Packaging CSS as a module can be used as a way of scoping CSS, but this is actua
 in Polymer with Shadow DOM.  
 
 
+## Automatic compilation
 
+It would be unpractical to do manual transformation after each change in a TypeScript file, so now we want to automate it
+without using Webpack.
 
+First I make a new tsconfig named `tsconfig.inline.json` for this use case:
 
+```json
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "ES6"
+  },
+  "include": [
+    "*.ts"
+  ]
+}
+```
+
+To compile run `./node_modules/.bin/tsc -w -p tsconfig.inline.json`. The `-w` flag keeps the process running and watches for
+changes in the included TypeScript files. 
 
 
 * compile multiple files - `tsc -p` (project dir)
