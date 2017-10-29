@@ -447,13 +447,37 @@ Try this out as small as possible:
 * using /polygram-details.html (the old, non-TS version) and demo/polygram-details (already using version /polygram-details)
 * do not run webpack, but `polymer serve` and test demo page -> works (of course)
 * replace `<script>... code ...</script>` by `<script src="polygram-details.js"></script>`, extract js to polygram-details.js and test demo page -> works
-* install tsc
+
+Now to TS
+
+* rename `polygram-detail.js` and the reference to it in `polygram-details.html` to `polygram-details.ts` 
+* because the package typescript was installed before, I can use `tsc`: `./node_modules/.bin/tsc polygram-details.ts` ->
+    this gives errors, but does generate code. The resulting code does not run.
+    The errors:
+polygram-details.ts(8,31): error TS2304: Cannot find name 'Polymer'.
+polygram-details.ts(33,14): error TS2339: Property '_searchResult' does not exist on type 'PolygramDetails'.
+polygram-details.ts(35,18): error TS2339: Property '_searchIAUrl' does not exist on type 'PolygramDetails'.
+polygram-details.ts(42,18): error TS2339: Property '_searchResult' does not exist on type 'PolygramDetails'.
+-> adding `declare const Polymer: any;` fixes these 4 errors. It tells TypeScript a global variable `Polymer` can be expected.  
+
+polygram-details.ts(9,16): error TS1056: Accessors are only available when targeting ECMAScript 5 and higher.
+polygram-details.ts(13,16): error TS1056: Accessors are only available when targeting ECMAScript 5 and higher.
+-> it seems to ignore the tsconfig.json, because this was solved earlier by adding `"target": "ESNext"` in the config.
+Specifying on the command line: `./node_modules/.bin/tsc --target ES6 polygram-details.ts`
+This runs without errors and works in the browser!
+
+This much simpeler approach without Webpack seems to provide a more realistic workflow. Can we skip Webpack and Babel?
+Let's reiterate their use:
+* Babel -> transpilation to ES5. We don't need Babel, the TypeScript compliler can do this.
+* Webpack 
+
 * later: use webpack? babel? - dont try to use Modules, because your not using modules. your using polymer components. so you can just do
     declare Polymer instead of trying to import it somehow. And use a watcher (pref npm watch) to auto build .ts to .js and import that into script? 
     I mean that is the best you can do, right? 
     Webpack will just give you an overhead per file. 
     There are no js modules to resolve.
     Style is already scoped per polymer element, so no use for modules there.
+* compile multiple files - `tsc -p` (project dir)
 * npm watch
 * test/add tslint
 

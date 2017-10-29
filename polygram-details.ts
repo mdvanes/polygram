@@ -1,3 +1,5 @@
+declare const Polymer: any;
+
 /**
  * `polygram-details`
  *
