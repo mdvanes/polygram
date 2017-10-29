@@ -484,7 +484,11 @@ Although Polymer 3 will use ES6 modules, a tool is supposed to become available 
 Without Webpack we lose the module polyfill that is injected per file, which potentially saves an enormous amount of overhead
 while staying closer to the concept of Polymer Element development.
 External JavaScript files can not be resolved with `import`, but instead the placeholder `declare` can be used. We would
-lose the possibility to import from `node_modules`.
+lose the possibility to import from `node_modules`. (actually, this is not true. You can still use `import` but when module is set to `none` it will just put in 
+ on "global" scope. Of course, it is then contained by the Polymer element, so it is on the Polymer Element scope, and should
+ not leak to the actual global scope. This should still used with caution though, because it could lead to code duplication
+ if 2 TypeScript files import the same dependency. In that case it would be better to import that dependency via HTML import
+ because the Polymer compiler can deduplicate it.)
 Packaging CSS as a module can be used as a way of scoping CSS, but this is actually something that is already solved very well
 in Polymer with Shadow DOM.  
 
@@ -511,10 +515,28 @@ First I make a new tsconfig named `tsconfig.inline.json` for this use case:
 To compile run `./node_modules/.bin/tsc -w -p tsconfig.inline.json`. The `-w` flag keeps the process running and watches for
 changes in the included TypeScript files. 
 
+An interesting side-effect occurs: naturally, each TypeScript file is going to need the `declare const Polymer: any;` workaround,
+but because we now use `-p`, the project flag, the compiler expects all files to see each other scope. And the second file
+using `declare const Polymer: any;` will get an error: `Cannot redeclare block-scoped variable 'Polymer'`. How can we use
+the project flag, without letting the compiler sharing the scope of all the files?
 
+A workaround would be to create a TypeScript file that just imports all the expected global variables once, but continuing 
+this way also loses the possibility to explicitly compile with a scope per file in general, so it would also error if
+more than one file would e.g. define a const 'name' `const name = 'NAME';` 
+
+`./node_modules/.bin/tsc -w -p tsconfig.inline.json --listEmittedFiles --pretty`
+
+@@@ Isolate scope of each TS file - https://github.com/Microsoft/TypeScript/issues/1516 https://www.typescriptlang.org/docs/handbook/module-resolution.html
+really needed to have seperate project files (tconfigs) for each TS? With `tsc -w -p tsconfig.fileA.json && tsc -w -p tsconfig.fileB.json`?
+In that case it would already be better to forget about `-w`, use `npm watch` combined with `tsc [changedfile]`. You won't be able to use
+a tsconfig.json combined with an input file path for tsc, so specify all options as flags: `tsc --target ES6 --sourceMap [changedFile]`
+
+
+
+* test/add tslint
 * compile multiple files - `tsc -p` (project dir)
 * npm watch
-* test/add tslint
+
 
 
 @@@
@@ -523,6 +545,7 @@ Also see polygram-searchbox and webpack.config.js for PNG workaround.
 
 # To do for this article
 
+* tsc: --experimentalDecorators[1]	boolean	false	Enables experimental support for ES decorators.
 * Unit and e2e and coverage
 * Rxjs
 * Is Flow a better fit than TypeScript?
