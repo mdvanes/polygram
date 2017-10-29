@@ -443,6 +443,19 @@ that you would want to load once and not for every component. The bundle.js is a
 Would it be possible to make a Polymer component that uses the `<script src="foo.js">` style import and then do a "naive"
 compilation from foo.ts to foo.js? Would this be possible with tsc or also via Webpack?
 Would this work with ES6 imports? Seems to work in the wc-loader project.
+Try this out as small as possible:
+* using /polygram-details.html (the old, non-TS version) and demo/polygram-details (already using version /polygram-details)
+* do not run webpack, but `polymer serve` and test demo page -> works (of course)
+* replace `<script>... code ...</script>` by `<script src="polygram-details.js"></script>`, extract js to polygram-details.js and test demo page -> works
+* install tsc
+* later: use webpack? babel? - dont try to use Modules, because your not using modules. your using polymer components. so you can just do
+    declare Polymer instead of trying to import it somehow. And use a watcher (pref npm watch) to auto build .ts to .js and import that into script? 
+    I mean that is the best you can do, right? 
+    Webpack will just give you an overhead per file. 
+    There are no js modules to resolve.
+    Style is already scoped per polymer element, so no use for modules there.
+* npm watch
+* test/add tslint
 
 
 @@@
