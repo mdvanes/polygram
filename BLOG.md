@@ -46,7 +46,7 @@ poly serve/demo pages / polylint still possible? wct still possible? Lazy loadin
 Normally, to migrate from JavaScript to TypeScript with Webpack, it would be enough to add the [ts-loader] to the Webpack
 config and to rename the JavaScript files to TypeScript files. 
 
-So I started with changing the extention for the bootstrapping index.js and adding .ts as a resolved extension:
+So I started with changing the extension for the bootstrapping index.js and adding .ts as a resolved extension:
 
 ```javascript
 // webpack.config.js
@@ -466,17 +466,34 @@ polygram-details.ts(13,16): error TS1056: Accessors are only available when targ
 Specifying on the command line: `./node_modules/.bin/tsc --target ES6 polygram-details.ts`
 This runs without errors and works in the browser!
 
-This much simpeler approach without Webpack seems to provide a more realistic workflow. Can we skip Webpack and Babel?
-Let's reiterate their use:
-* Babel -> transpilation to ES5. We don't need Babel, the TypeScript compliler can do this.
-* Webpack 
+This much simpler approach without Webpack seems to provide a more realistic workflow. Can we skip Webpack? Let's reiterate its use:
 
-* later: use webpack? babel? - dont try to use Modules, because your not using modules. your using polymer components. so you can just do
-    declare Polymer instead of trying to import it somehow. And use a watcher (pref npm watch) to auto build .ts to .js and import that into script? 
-    I mean that is the best you can do, right? 
-    Webpack will just give you an overhead per file. 
-    There are no js modules to resolve.
-    Style is already scoped per polymer element, so no use for modules there.
+**Webpack transpiles to ES5 with Babel.** 
+
+As mentioned before we don't need Babel for transpilation, the TypeScript compiler can be set to ES6 or ES5. 
+
+**Webpack provides a development server with hot module reloading**
+
+Hot Module Replacement is mainly to ease development, but we can use livereload combined with polyserve instead which would be acceptable for this use case.  
+
+**Webpack handles module bundling**
+
+We can do without ES6 modules or packaging other resources like images as JavaScript modules, because we already have to
+deal with Polymer Elements as a component system. We have to distribute the end result as Polymer Elements to be able to add it to the catalog.
+Although Polymer 3 will use ES6 modules, a tool is supposed to become available that should handle this conversion.
+Without Webpack we lose the module polyfill that is injected per file, which potentially saves an enormous amount of overhead
+while staying closer to the concept of Polymer Element development.
+External JavaScript files can not be resolved with `import`, but instead the placeholder `declare` can be used. We would
+lose the possibility to import from `node_modules`.
+Packaging CSS as a module can be used as a way of scoping CSS, but this is actually something that is already solved very well
+in Polymer with Shadow DOM.  
+
+
+
+
+
+
+
 * compile multiple files - `tsc -p` (project dir)
 * npm watch
 * test/add tslint
