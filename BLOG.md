@@ -531,6 +531,33 @@ really needed to have seperate project files (tconfigs) for each TS? With `tsc -
 In that case it would already be better to forget about `-w`, use `npm watch` combined with `tsc [changedfile]`. You won't be able to use
 a tsconfig.json combined with an input file path for tsc, so specify all options as flags: `tsc --target ES6 --sourceMap [changedFile]`
 
+I could not get this to work with [nodemon] or [watch], so I wrote a small script
+
+```javascript
+// ts-poly-watch.js, run with: node ts-poly-watch.js
+const watch = require('watch');
+const path = require('path');
+const chalk = require('chalk');
+const tsc = require('node-typescript-compiler');
+
+watch.createMonitor(__dirname, { interval: 1 }, function (monitor) {
+    console.log(chalk.gray.bgGreen.bold('TS-POLY-WATCH started'));
+    monitor.on('changed', function (f, curr, prev) {
+        const ext = path.extname(f);
+        if(ext === '.ts') {
+            console.log(f + ' changed');
+            tsc.compile(
+                {
+                    'target': 'ES6',
+                    'sourceMap': true
+                },
+                f
+            );
+        }
+    });
+});
+```
+
 
 
 * test/add tslint
