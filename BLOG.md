@@ -531,7 +531,7 @@ really needed to have seperate project files (tconfigs) for each TS? With `tsc -
 In that case it would already be better to forget about `-w`, use `npm watch` combined with `tsc [changedfile]`. You won't be able to use
 a tsconfig.json combined with an input file path for tsc, so specify all options as flags: `tsc --target ES6 --sourceMap [changedFile]`
 
-I could not get this to work with [nodemon] or [watch], so I wrote a small script
+I could not get this to work with [nodemon](https://www.npmjs.com/package/nodemon), [npm-watch](https://www.npmjs.com/package/npm-watch) or [watch](https://www.npmjs.com/package/watch), so I wrote a small script
 
 ```javascript
 // ts-poly-watch.js, run with: node ts-poly-watch.js
@@ -558,11 +558,11 @@ watch.createMonitor(__dirname, { interval: 1 }, function (monitor) {
 });
 ```
 
-
+Now it is possible to watch each TypeScript file and compile it with its scope isolated from the other TypeScript files, 
+as is expected for use as the main JavaScript per Polygram element.
 
 * test/add tslint
-* compile multiple files - `tsc -p` (project dir)
-* npm watch
+* @@@ improvement? https://www.npmjs.com/package/tslint-plugin-prettier 
 
 
 
@@ -574,10 +574,11 @@ Also see polygram-searchbox and webpack.config.js for PNG workaround.
 
 * tsc: --experimentalDecorators[1]	boolean	false	Enables experimental support for ES decorators.
 * Unit and e2e and coverage
+
 * Rxjs
+
 * Is Flow a better fit than TypeScript?
 * Workaround with `/// ref style` ts imports?
-* @@@ improvement? https://www.npmjs.com/package/tslint-plugin-prettier 
 * Added `devtool: 'inline-source-map'` and it is possible to see both the source TS and source HTML files in Chrome. 
 
 
