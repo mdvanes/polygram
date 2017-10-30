@@ -561,7 +561,9 @@ watch.createMonitor(__dirname, { interval: 1 }, function (monitor) {
 Now it is possible to watch each TypeScript file and compile it with its scope isolated from the other TypeScript files, 
 as is expected for use as the main JavaScript per Polygram element.
 
-* test/add tslint
+* test/add tslint 
+    * ./node_modules/.bin/tslint --config tslint.json polygram-marvel-details.ts 
+    * https://palantir.github.io/tslint/usage/library/
 * @@@ improvement? https://www.npmjs.com/package/tslint-plugin-prettier 
 
 
