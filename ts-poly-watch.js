@@ -9,7 +9,8 @@ const compileOptions = {
     'sourceMap': true
 };
 
-const isLintEnabled = true;
+const isLintEnabled = true; // TODO could be flag
+const failOnLint = false; // TODO could be flag
 const tslint = require('tslint');
 const fs = require('fs');
 const configurationFilename = 'tslint.json';
@@ -42,12 +43,21 @@ function compileTs(path) {
     tsc.compile(compileOptions, path)
         .then(_ => {
             if(isLintEnabled) {
-                lintTs(path)
-                    .forEach(r => console.log(chalk.yellow.bold(r)));
+                const failures = lintTs(path);
+                failures.forEach(r => console.log(chalk.yellow.bold(r)));
+                if(failOnLint && failures.length > 0) {
+                    throw new Error('stopped because failOnLint is on and there were linting errors')
+                }
             }
         })
         .then(_ => console.log(chalk.green.bold(`👍${path}`)))
-        .catch(err => console.log(chalk.red(err.stdout)));
+        .catch(err => {
+            let message = err;
+            if(err.stdout) {
+                message = err.stdout;
+            }
+            console.log(chalk.red(message))
+        });
 }
 
 watch.createMonitor(__dirname, { interval: 1 }, function (monitor) {
