@@ -30,6 +30,7 @@
     "node-typescript-compiler": "^1.1.1",
     "nodemon": "^1.12.1",
     "polymer-webpack-loader": "^2.0.0",
+    "twc": "^0.4.6-rc",
     "uglify-js": "^3.1.5",
     "uglifyjs-webpack-plugin": "^1.0.1",
     "watch": "^1.0.2",

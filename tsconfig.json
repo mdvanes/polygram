@@ -4,5 +4,8 @@
     "target": "ESNext",
     "moduleResolution": "node",
     "experimentalDecorators": true
-  }
+  },
+  "include": [
+    "node_modules/twc/types/polymer.decorators.d.ts"
+  ]
 }
