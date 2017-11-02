@@ -564,7 +564,7 @@ as is expected for use as the main JavaScript per Polygram element.
 * test/add tslint 
     * ./node_modules/.bin/tslint --config tslint.json polygram-marvel-details.ts 
     * https://palantir.github.io/tslint/usage/library/
-* Compare twc https://github.com/Draccoz/twc
+* Compare twc https://github.com/Draccoz/twc -> very experimental? big difference between 0.4.2-rc and 0.4.6-rc? See also https://github.com/Draccoz/twc/wiki/Creating-a-simple-component
 * @@@ improvement? https://www.npmjs.com/package/tslint-plugin-prettier 
 
 
