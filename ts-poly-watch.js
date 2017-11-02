@@ -4,9 +4,11 @@ const path = require('path');
 const chalk = require('chalk');
 const tsc = require('node-typescript-compiler');
 
+// TODO improvement: read from tsconfig.json
 const compileOptions = {
     'target': 'ES6',
-    'sourceMap': true
+    'sourceMap': true,
+    'experimentalDecorators': true
 };
 
 const isLintEnabled = true; // TODO could be flag
