@@ -573,6 +573,36 @@ as is expected for use as the main JavaScript per Polygram element.
 Also see polygram-searchbox and webpack.config.js for PNG workaround.
 
 
+# Decorators
+
+I want to see if I can use ES decorators, because they fit with the Mixin concept used on Polymer...
+
+adding an example decorator (example taken from https://medium.com/google-developers/exploring-es7-decorators-76ecb65fb841) to the class in polygram-details.ts
+
+```typescript
+    @readonly
+    foo() {
+        // This works, but prepends a polyfill to the output
+        return 'just testing a decorator';
+    }
+```
+
+and outside the class:
+
+```typescript
+function readonly(target, key, descriptor) {
+    descriptor.writable = false;
+    return descriptor;
+}
+```
+
+The compiler fails with: `error TS1219: Experimental support for decorators is a feature that is subject to change in a future release. Set the 'experimentalDecorators' option to remove this warning.`
+
+So I add to the compile options in ts-poly-watch.js: `'experimentalDecorators': true`.  This works, but prepends a small
+polyfill for `decorator` to the output. So take this into account when using decorator in many files, it will cause overhead.
+
+
+
 # To do for this article
 
 * tsc: --experimentalDecorators[1]	boolean	false	Enables experimental support for ES decorators.

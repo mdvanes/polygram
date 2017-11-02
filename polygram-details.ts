@@ -1,5 +1,10 @@
 declare const Polymer: any;
 
+function readonly(target, key, descriptor) {
+    descriptor.writable = false;
+    return descriptor;
+}
+
 /**
  * `polygram-details`
  *
@@ -48,6 +53,12 @@ class PolygramDetails extends Polymer.Element {
                 summary: data.detail.response.query.search[0].snippet
             }
         }
+    }
+
+    @readonly
+    foo() {
+        // This works, but prepends a polyfill to the output
+        return 'just testing a decorator';
     }
 }
 
