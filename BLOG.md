@@ -561,13 +561,6 @@ watch.createMonitor(__dirname, { interval: 1 }, function (monitor) {
 Now it is possible to watch each TypeScript file and compile it with its scope isolated from the other TypeScript files, 
 as is expected for use as the main JavaScript per Polygram element.
 
-* test/add tslint 
-    * ./node_modules/.bin/tslint --config tslint.json polygram-marvel-details.ts 
-    * https://palantir.github.io/tslint/usage/library/
-* Compare twc https://github.com/Draccoz/twc -> very experimental? big difference between 0.4.2-rc and 0.4.6-rc? See also https://github.com/Draccoz/twc/wiki/Creating-a-simple-component
-* @@@ improvement? https://www.npmjs.com/package/tslint-plugin-prettier 
-
-
 
 @@@
 Also see polygram-searchbox and webpack.config.js for PNG workaround.
@@ -602,11 +595,37 @@ So I add to the compile options in ts-poly-watch.js: `'experimentalDecorators': 
 polyfill for `decorator` to the output. So take this into account when using decorator in many files, it will cause overhead.
 
 
+# twc 
+
+With `ts-poly-watch.js` it looks like we finally have an acceptable working environment. I will extract this to it's own project
+[typescript-batch-compiler](usecase: a batch, in contrast to a project, of ts files that must be watched and 
+compiled. These all have individual scopes, for example see this blog post about Polymer 2 with TypeScript.) and an [npm package]()
+
+So are we now done? In fact there is one more thing I want to explore. During the research I ran into [twc](https://github.com/Draccoz/twc).
+This is a compiler for *TypeScript Web Components* and can be used to compile TypeScript classes to Polymer 2 elements.
+Although this sounds like it is similar to my `typescript-batch-compiler`, there are some preliminary findings:
+
+1. it assumes a TypeScript file is the entrypoint: i.e. in my setup I still stay close to the Polymer setup with a 
+Polymer element that includes a script file. With `twc` the entrypoint is a TypeScript file that imports an HTML template.
+A great advantage is that this is much more like Polymer 3 will be and also similar to other component driven frameworks
+like React, Vue and Angular. The disadvantage is of course that the style will be foreign to other developers.
+2. it's still very experimental. There is no example in the repo or an explanation of how to set up a basic element in the
+README, but a general approach is outlined here: https://github.com/Draccoz/twc/wiki/Creating-a-simple-component and an example
+of use can be found here: https://github.com/mlisook/generator-polymer-init-twc-starter-kit (he also has other examples).
+
+@@@ Compare twc https://github.com/Draccoz/twc -> very experimental? big difference between 0.4.2-rc and 0.4.6-rc? See also https://github.com/Draccoz/twc/wiki/Creating-a-simple-component
+
+
+* test/add tslint 
+    * ./node_modules/.bin/tslint --config tslint.json polygram-marvel-details.ts 
+    * https://palantir.github.io/tslint/usage/library/
+* @@@ improvement? https://www.npmjs.com/package/tslint-plugin-prettier 
+
+
 
 # To do for this article
 
-* tsc: --experimentalDecorators[1]	boolean	false	Enables experimental support for ES decorators.
-* Unit and e2e and coverage
+* Unit and e2e and coverage (unchanged! because still using polymer. But should mention this)
 
 * Rxjs
 
