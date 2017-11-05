@@ -598,8 +598,8 @@ polyfill for `decorator` to the output. So take this into account when using dec
 # twc 
 
 With `ts-poly-watch.js` it looks like we finally have an acceptable working environment. I will extract this to it's own project
-[typescript-batch-compiler](usecase: a batch, in contrast to a project, of ts files that must be watched and 
-compiled. These all have individual scopes, for example see this blog post about Polymer 2 with TypeScript.) and an [npm package]()
+[typescript-batch-compiler](https://github.com/mdvanes/typescript-batch-compiler) and an [npm package](https://www.npmjs.com/package/typescript-batch-compiler) because
+there is some much room for improvement and it will be easy to use in other projects if it is an npm package.
 
 So are we now done? In fact there is one more thing I want to explore. During the research I ran into [twc](https://github.com/Draccoz/twc).
 This is a compiler for *TypeScript Web Components* and can be used to compile TypeScript classes to Polymer 2 elements.
