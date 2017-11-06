@@ -17,6 +17,8 @@ already exists, by [Paolo Ferretti](https://github.com/pferretti) and follows no
 If you're adventurous, don't need any [existing Polymer 2 elements](https://www.webcomponents.org/) and don't need to
 run production stop reading here and use Polymer 3. If you need Polymer 2 read on, but be warned that it won't be pretty.
 
+**TL;DR to use TypeScript with Polymer use [typescript-batch-compiler](https://github.com/mdvanes/typescript-batch-compiler) or even better [twc](https://github.com/Draccoz/twc).**
+
 The first challenge is to use webpack with Polymer 2. Although not strictly necessary for TypeScript compilation, it would
 make sense for importing HTML as modules. Fortunately, [Rob Doddson himself](https://www.youtube.com/playlist?list=PLOU2XLYxmsII5c3Mgw6fNYCzaWrsM3sMN) wrote an
 article [How to use Polymer with Webpack](http://robdodson.me/how-to-use-polymer-with-webpack/). It even mentions TypeScript!
