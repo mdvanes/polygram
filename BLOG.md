@@ -647,11 +647,21 @@ class OnlineState extends Polymer.Element {
 }
 ```
 * I do `tsc --init` to create a new tsconfig.json -> this is important. When I re-use my existing tsconfig.json the build fails with `Error: Debug Failure.`
-    * works fine with the default `"target": "ESNext"`
+    * works fine with the default `"target": "ES5"` but also with `"target": "ESNext"`
+    * "strict": true makes no difference
+    * "sourceMap": true, makes no difference
+    * "experimentalDecorators": true makes no difference (in fact, twc uses decorators)
+    * "moduleResolution": "node" is what causes this error
 * `Please note. To have types properly handled, add node_modules/twc/types/polymer.decorators.d.ts to include section in your tsconfig.json!`
 * I build in the twc dir with `../node_modules/.bin/twc polygram-twc.ts`
 * A polygram-twc.html is created.
 
+Now I will try to convert the original polygram-details.html (the one with the embedded JavaScript) to this format.
+
+Mayor difference?
+* `customElements.define(PolygramDetails.is, PolygramDetails);` is auto-injected
+* `import './polygram-ui-details';` is converted to `<link rel="import" href="./polygram-ui-details.html">`
+* jsdoc is moved to an HTML comment. This seems to be a bug, but this is still a release candidate.
 
 @@@ Compare twc https://github.com/Draccoz/twc -> very experimental? big difference between 0.4.2-rc and 0.4.6-rc? See also https://github.com/Draccoz/twc/wiki/Creating-a-simple-component
 
