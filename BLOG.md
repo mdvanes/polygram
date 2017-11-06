@@ -661,9 +661,16 @@ Now I will try to convert the original polygram-details.html (the one with the e
 Mayor difference?
 * `customElements.define(PolygramDetails.is, PolygramDetails);` is auto-injected
 * `import './polygram-ui-details';` is converted to `<link rel="import" href="./polygram-ui-details.html">`
+* this
+```typescript
+static get is() {
+    return 'polygram-details';
+}
+```
+is auto generated from the class name.
 * jsdoc is moved to an HTML comment. This seems to be a bug, but this is still a release candidate.
 
-@@@ Compare twc https://github.com/Draccoz/twc -> very experimental? big difference between 0.4.2-rc and 0.4.6-rc? See also https://github.com/Draccoz/twc/wiki/Creating-a-simple-component
+
 
 
 * test/add tslint 

@@ -12,9 +12,6 @@ import './polygram-ui-details';
  */
 @CustomElement()
 class PolygramDetails extends Polymer.Element {
-    static get is() {
-        return 'polygram-details';
-    }
     static get properties() {
         return {
             term: {
@@ -64,4 +61,3 @@ class PolygramDetails extends Polymer.Element {
         `;
     }
 }
-window.customElements.define(PolygramDetails.is, PolygramDetails);
