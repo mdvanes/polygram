@@ -1,0 +1,37 @@
+<link rel="import" href="../polymer/polymer-element.html">
+<!--
+`online-state`
+Lets you select an online state (online or offline) and reflect the change on a host attribute.
+
+@customElement
+@polymer
+@demo demo/index.html
+-->
+<dom-module id="online-state">
+  <template>
+
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+    <h2>Hello [[prop1]]!</h2>
+  </template>
+  <script>
+    "use strict";
+    class OnlineState extends Polymer.Element {
+      static get is() {
+        return 'online-state';
+      }
+      static get properties() {
+        return {
+          prop1: {
+            type: String,
+            value: 'online-state'
+          }
+        };
+      }
+    }
+    customElements.define(OnlineState.is, OnlineState);
+  </script>
+</dom-module>
