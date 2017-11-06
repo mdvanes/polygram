@@ -423,6 +423,11 @@ separate TypeScript files anyway, so this works quite well.
 
 It is still required to run `polymer lint` manually. As far as I know there is no integration for Webpack yet.
 
+To run manually per file, use e.g. `./node_modules/.bin/tslint --config tslint.json polygram-marvel-details.ts`
+
+@@@ improvement? https://www.npmjs.com/package/tslint-plugin-prettier 
+
+
 # App vs Element
 One thing to do Typescript for polymer app, other thing for reusable polymer component.
 The current solution will generate a compiled app, but does not allow importing (check?) and how about lazy loading?
@@ -672,17 +677,13 @@ is auto generated from the class name.
 
 
 
-
-* test/add tslint 
-    * ./node_modules/.bin/tslint --config tslint.json polygram-marvel-details.ts 
-    * https://palantir.github.io/tslint/usage/library/
-* @@@ improvement? https://www.npmjs.com/package/tslint-plugin-prettier 
-
-
-
 # To do for this article
 
-* Unit and e2e and coverage (unchanged! because still using polymer. But should mention this)
+* @@@ Unit and e2e and coverage (unchanged! because still using polymer. But should mention this)
+
+
+
+# To do (later)
 
 * Rxjs
 
