@@ -613,6 +613,46 @@ like React, Vue and Angular. The disadvantage is of course that the style will b
 README, but a general approach is outlined here: https://github.com/Draccoz/twc/wiki/Creating-a-simple-component and an example
 of use can be found here: https://github.com/mlisook/generator-polymer-init-twc-starter-kit (he also has other examples).
 
+With the aforementioned wiki, I take these steps:
+
+* in a subdir `twc`
+* I make a very basic polygram-twc.ts conforming to the style as outlined in the wiki:
+
+```
+import { CustomElement } from 'twc/polymer';
+import 'bower:polymer/polymer-element.html';
+
+/**
+ * `online-state`
+ * Lets you select an online state (online or offline) and reflect the change on a host attribute.
+ *
+ * @customElement
+ * @polymer
+ * @demo demo/index.html
+ */
+@CustomElement()
+class OnlineState extends Polymer.Element {
+    prop1: string = "online-state";
+
+    template() {
+        return `
+          <style>
+            :host {
+              display: block;
+            }
+          </style>
+          <h2>Hello [[prop1]]!</h2>
+        `;
+    }
+}
+```
+* I do `tsc --init` to create a new tsconfig.json -> this is important. When I re-use my existing tsconfig.json the build fails with `Error: Debug Failure.`
+    * works fine with the default `"target": "ESNext"`
+* `Please note. To have types properly handled, add node_modules/twc/types/polymer.decorators.d.ts to include section in your tsconfig.json!`
+* I build in the twc dir with `../node_modules/.bin/twc polygram-twc.ts`
+* A polygram-twc.html is created.
+
+
 @@@ Compare twc https://github.com/Draccoz/twc -> very experimental? big difference between 0.4.2-rc and 0.4.6-rc? See also https://github.com/Draccoz/twc/wiki/Creating-a-simple-component
 
 
