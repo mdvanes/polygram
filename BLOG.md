@@ -677,7 +677,32 @@ static get is() {
 is auto generated from the class name.
 * jsdoc is moved to an HTML comment. This seems to be a bug, but this is still a release candidate.
 
+This syntax is plain ES modules and therefore also closer to Polymer 3. Still there are plenty of differences.
 
+@@@ the same as above in poly 3 syntax. this is a different example
+```typescript
+import { Element as PolymerElement } from '@polymer/polymer/polymer-element';
+
+import * as view from './app.template.html';
+
+export class MyApp extends PolymerElement {
+    constructor() {
+        super();
+        console.log('my app');
+    }
+
+    static get template() {
+        return view;
+    }
+}
+```
+
+```html
+<h1>Hello world</h1>
+```
+
+Also poly 3 will (prob?) supply an auto converter from (normal) poly 2 syntax. You could use that converter on the output
+of twc and now already get used to [proper] syntax.
 
 # To do for this article
 
