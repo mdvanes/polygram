@@ -31,7 +31,7 @@
     "nodemon": "^1.12.1",
     "polymer-webpack-loader": "^2.0.0",
     "twc": "^0.4.6-rc",
-    "typescript-batch-compiler": "^0.2.3",
+    "typescript-batch-compiler": "^0.3.2",
     "uglify-js": "^3.1.5",
     "uglifyjs-webpack-plugin": "^1.0.1",
     "watch": "^1.0.2",
