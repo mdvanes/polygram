@@ -116,7 +116,7 @@ try to work around it by extracting the TypeScript code to a separate file.
 After removing the `ts-loader` line from the html rule in the webpack.config.js I set out to extract TypeScript to a
 separate file so it can be compiled with the rule that matches ts files. 
 
-Rougly, the main entry point for the Polymer elements `polygram-app.html` contains:
+Roughly, the main entry point for the Polymer elements `polygram-app.html` contains:
 
 ```html
 // imports
@@ -409,7 +409,7 @@ const PolymerRedux = require('exports-loader?PolymerRedux!../../bower_components
 # Linting
 
 Although there is a [polymer-linter](https://github.com/Polymer/polymer-linter), it is [advised](https://github.com/Polymer/polymer-linter#use-with-other-tools) to 
-use Polymer Linter combined with other linters, and a obvious choice is TSLint.
+use Polymer Linter combined with other linters, and an obvious choice is TSLint.
 
 The way that TSLint is configured with Webpack, means that it will only lint TypeScript that is not embedded in HTML:
 
@@ -431,7 +431,7 @@ To run manually per file, use e.g. `./node_modules/.bin/tslint --config tslint.j
 
 
 # App vs Element
-One thing to do Typescript for polymer app, other thing for reusable polymer component.
+It is one thing to do Typescript for polymer app, but another thing for reusable polymer component.
 The current solution will generate a compiled app, but does not allow importing (check?) and how about lazy loading?
 Current compilation is one huge blob.
 
@@ -604,7 +604,7 @@ polyfill for `decorator` to the output. So take this into account when using dec
 
 # twc 
 
-With `ts-poly-watch.js` it looks like we finally have an acceptable working environment. I will extract this to it's own project
+With `ts-poly-watch.js` it looks like we finally have an acceptable working environment. I will extract this to its own project
 [typescript-batch-compiler](https://github.com/mdvanes/typescript-batch-compiler) and an [npm package](https://www.npmjs.com/package/typescript-batch-compiler) because
 there is some much room for improvement and it will be easy to use in other projects if it is an npm package.
 
