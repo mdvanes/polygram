@@ -15,7 +15,7 @@ Visit demo on [firebase](https://polygram-694a7.firebaseapp.com/a/bower_componen
     * `npm run dev`
     * http://localhost:9000/
 * For the TypeScript versions with typescript-batch-compiler (single component):
-    * `./node_modules/.bin/typescript-batch-compiler -b` (needs new version, old version will require file to be touched)
+    * `./node_modules/.bin/typescript-batch-compiler` and modify a TS file (e.g. polygram-marvel-details.ts) (note that `./node_modules/.bin/typescript-batch-compiler -b` will try to build TS files that should be out of scope. Make "ignore" dir configurable)
     * JS will be generated in the same dir (e.g. for polygram-marvel-details.ts)
     * HTML imports the JS
     * `polymer serve`
