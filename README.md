@@ -10,7 +10,19 @@ Visit demo on [firebase](https://polygram-694a7.firebaseapp.com/a/bower_componen
 * `nvm use`
 * First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed.
 * `npm i` will install npm and polymer dependencies
-* Then run `polymer serve` to serve your element locally.
+* For the non-TypeScript versions: Then run `polymer serve` to serve your element locally.
+* For the TypeScript versions with Webpack (full app): 
+    * `npm run dev`
+    * http://localhost:9000/
+* For the TypeScript versions with typescript-batch-compiler (single component):
+    * `./node_modules/.bin/typescript-batch-compiler -b` (needs new version, old version will require file to be touched)
+    * JS will be generated in the same dir (e.g. for polygram-marvel-details.ts)
+    * HTML imports the JS
+    * `polymer serve`
+    * HTML is imported by demo page (e.g. http://localhost:8081/components/polygram-element/demo/polygram-marvel-details/)
+* For the TypeScript versions with twc:
+    * in the twc dir build with `../node_modules/.bin/twc polygram-twc.ts`
+    * A polygram-twc.html is created.
 
 ## Viewing Your Element
 
