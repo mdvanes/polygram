@@ -2,9 +2,9 @@
 
 For [reasons beyond my control](http://mdworld.nl/blog/webdevelopment/2017/07/30/polymer2-redux/) I'm working with
 Polymer 2 at the moment. Although the idea of web components is great, the choice for HTML imports that comes with
-Polymer 2 makes integration into a modern development stack cumbersome, as will become clear soon.
-
-**polyfills for html imports are available, but these are pretty intransparent**
+Polymer 2 makes integration into a modern development stack cumbersome, as will become clear soon. Also, HTML
+imports are not widely supported by browsers and although polyfills exist, only [Chrome (surprise!)](https://caniuse.com/#search=html%20imports) 
+will have native support for the foreseeable future.
 
 Using TypeScript seems like a good choice, because strong typing helps prevent runtime errors. Additionally it would a
 good opportunity to try out the [Scala-TS-interfaces project](https://github.com/code-star/scala-ts-interfaces) by my
@@ -19,10 +19,13 @@ run production stop reading here and use Polymer 3. If you need Polymer 2 read o
 
 **TL;DR to use TypeScript with Polymer use [typescript-batch-compiler](https://github.com/mdvanes/typescript-batch-compiler) or even better [twc](https://github.com/Draccoz/twc).**
 
-The first challenge is to use webpack with Polymer 2. Although not strictly necessary for TypeScript compilation, it would
-make sense for importing HTML as modules. Fortunately, [Rob Doddson himself](https://www.youtube.com/playlist?list=PLOU2XLYxmsII5c3Mgw6fNYCzaWrsM3sMN) wrote an
+
+## Webpack
+
+The first challenge is to use Webpack with Polymer 2. Although not strictly necessary for TypeScript compilation, it would
+make sense for importing HTML as modules. Fortunately, [Rob Dodson himself](https://www.youtube.com/playlist?list=PLOU2XLYxmsII5c3Mgw6fNYCzaWrsM3sMN) wrote an
 article [How to use Polymer with Webpack](http://robdodson.me/how-to-use-polymer-with-webpack/). It even mentions TypeScript!
-The article introduces the webpack loader [https://github.com/webpack-contrib/polymer-webpack-loader](https://github.com/webpack-contrib/polymer-webpack-loader) and
+The article introduces the Webpack loader [https://github.com/webpack-contrib/polymer-webpack-loader](https://github.com/webpack-contrib/polymer-webpack-loader) and
 explains how it extracts the JavaScript from the HTMl of Polymer elements and eventually combines everything into one
 JavaScript file. I was basically able to copy the webpack.config.js and index.ejs and that would compile. I moved my
 [custom elements](https://github.com/mdvanes/polygram/tree/webpack) from the root of the project to the src dir and I had
@@ -43,7 +46,7 @@ comment out the Redux dependencies.
 The article uses Babel and import from npm modules. Was easy to migrate, but loses polyserve / the 
 poly serve/demo pages / polylint still possible? wct still possible? Lazy loading PRPL? @
 
-# Adding ts-loader
+## Adding ts-loader
 
 Normally, to migrate from JavaScript to TypeScript with Webpack, it would be enough to add the [ts-loader] to the Webpack
 config and to rename the JavaScript files to TypeScript files. 
@@ -108,10 +111,11 @@ Module build failed: Error: Could not find file: '/home/me/polygram/src/polygram
 
 Well, that just doesn't look healthy. I filed [a bug](https://github.com/webpack-contrib/polymer-webpack-loader/issues/64) 
 and will look into the code of the polymer-webpack-loader later to see if this can be solved, but for the moment I will
-try to work around it by extracting the TypeScript code to a separate file.
+try to work around it by extracting the TypeScript code to a separate file. Got an update on the bug report: the root cause
+is with Webpack, so I don't see this will be resolved any time soon.
 
 
-## Workaround for ts compilation in a Polymer element
+### Workaround for ts compilation in a Polymer element
 
 After removing the `ts-loader` line from the html rule in the webpack.config.js I set out to extract TypeScript to a
 separate file so it can be compiled with the rule that matches ts files. 
@@ -205,7 +209,7 @@ Workaround :
 So extracting ts to separate file, so webpack match for tsloader can be... instead of part of the html match...  .
 How to load? Now using import (code example)  but would script tag work?
 
-## Failing accessors
+### Failing accessors
 
 The `is` and `properties` getters require a specifically set target ECMAScript version, the compilation error is:
 `error TS1056: Accessors are only available when targeting ECMAScript 5 and higher`. It surprises me that the default
@@ -213,7 +217,7 @@ ES target is ES3, but it's no problem to use ESNext here, because the babel-load
 
 In the tsconfig.json added `"target": "ESNext"` to compilerOptions, that fixes this error.
 
-## Failing Polymer import
+### Failing Polymer import
 
 `Polymer` can't be found for the `extends`. This is the most difficult of these errors to solve, because it is caused by the preferred module 
 architecture of Polymer 2: because HTML imports are used, it is not possible to use `import Polymer from '../bower_components/polymer/polymer-element.html'`
@@ -225,7 +229,7 @@ For the moment, I'm just removing the `extends Polymer.Element` from PolygrayApp
 @@@ try with html import/require/ts ref imports
 
 
-## Failing date-fns import
+### Failing date-fns import
 
 To be able to continue resolving the compilation errors, I add a log statement to polygram-app.html:
 
@@ -269,7 +273,7 @@ And the IDE warning by adding `"moduleResolution": "node"` to the compilerOption
 At this point, nothing is rendered, but because of the added log statement, the current date is logged in the browser console. 
 
 
-## Failing Polymer import, continued
+### Failing Polymer import, continued
 
 Now the import succeeds and it is clear that the TypeScript compiler correctly processes PolygramApp.ts, it is time to 
 try to fix the import of the `Polymer` module in PolygramApp.ts.
@@ -322,7 +326,7 @@ Now everything compiles without errors and the custom elements are rendered agai
 or `import '../bower_components/polymer/polymer-element.html'`.
 
 
-## Re-enabling Redux
+### Re-enabling Redux
 
 Earlier, Redux was disabled to test Webpack. To re-enable it, I convert the `polymer-redux/polymer-redux.html` from 
 bower_components to a local PolymerRedux.js, by just removing the `script` tags.
@@ -368,7 +372,7 @@ export default { create }
 
 After making similar modifications for polygram-searchbox, the Redux events work again as before introducing TypeScript. 
 
-# Importing a global variable from HTML
+## Importing a global variable from HTML
 
 Now PolymerRedux is loaded from a custom PolymerRedux.js that I made by removing the `<script>` tags from the file in bower_components,
 and although this works, it would be better to use the file in bower_components directly because it will be easier to handle
@@ -406,7 +410,7 @@ This is the final working import:
 const PolymerRedux = require('exports-loader?PolymerRedux!../../bower_components/polymer-redux/dist/polymer-redux.html');
 ``` 
 
-# Linting
+## Linting
 
 Although there is a [polymer-linter](https://github.com/Polymer/polymer-linter), it is [advised](https://github.com/Polymer/polymer-linter#use-with-other-tools) to 
 use Polymer Linter combined with other linters, and an obvious choice is TSLint.
@@ -430,7 +434,7 @@ To run manually per file, use e.g. `./node_modules/.bin/tslint --config tslint.j
 @@@ improvement? https://www.npmjs.com/package/tslint-plugin-prettier 
 
 
-# App vs Element
+## App vs Element
 It is one thing to do Typescript for polymer app, but another thing for reusable polymer component.
 The current solution will generate a compiled app, but does not allow importing (check?) and how about lazy loading?
 Current compilation is one huge blob.
@@ -500,7 +504,7 @@ Packaging CSS as a module can be used as a way of scoping CSS, but this is actua
 in Polymer with Shadow DOM.  
 
 
-## Automatic compilation
+### Automatic compilation
 
 It would be unpractical to do manual transformation after each change in a TypeScript file, so now we want to automate it
 without using Webpack.
@@ -573,7 +577,7 @@ as is expected for use as the main JavaScript per Polygram element.
 Also see polygram-searchbox and webpack.config.js for PNG workaround.
 
 
-# Decorators
+## Decorators
 
 I want to see if I can use ES decorators, because they fit with the Mixin concept used on Polymer...
 
@@ -602,7 +606,7 @@ So I add to the compile options in ts-poly-watch.js: `'experimentalDecorators': 
 polyfill for `decorator` to the output. So take this into account when using decorator in many files, it will cause overhead.
 
 
-# twc 
+## twc 
 
 With `ts-poly-watch.js` it looks like we finally have an acceptable working environment. I will extract this to its own project
 [typescript-batch-compiler](https://github.com/mdvanes/typescript-batch-compiler) and an [npm package](https://www.npmjs.com/package/typescript-batch-compiler) because
@@ -703,6 +707,7 @@ export class MyApp extends PolymerElement {
 
 Also poly 3 will (prob?) supply an auto converter from (normal) poly 2 syntax. You could use that converter on the output
 of twc and now already get used to [proper] syntax.
+
 
 # To do for this article
 
