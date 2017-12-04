@@ -1,3 +1,10 @@
+---
+layout: post
+title: ! 'Polymer 2 and TypeScript'
+categories: webdevelopment
+excerpt: Unfortunately, adding TypeScript to a Polymer 2 development stack proves to be cumbersome...
+---
+
 # Polymer 2 and TypeScript
 
 For [reasons beyond my control](http://mdworld.nl/blog/webdevelopment/2017/07/30/polymer2-redux/) I'm working with
@@ -17,39 +24,41 @@ already exists, by [Paolo Ferretti](https://github.com/pferretti) and follows no
 If you're adventurous, don't need any [existing Polymer 2 elements](https://www.webcomponents.org/) and don't need to
 run production stop reading here and use Polymer 3. If you need Polymer 2 read on, but be warned that it won't be pretty.
 
-**TL;DR to use TypeScript with Polymer use [typescript-batch-compiler](https://github.com/mdvanes/typescript-batch-compiler) or even better [twc](https://github.com/Draccoz/twc).**
+**TL;DR to use TypeScript with Polymer 2 use [typescript-batch-compiler](https://github.com/mdvanes/typescript-batch-compiler) or even better [twc](https://github.com/Draccoz/twc).**
 
 
 ## Webpack
+
+For this experiment I will use my existing Polygram project and the result will be available in the [TypeScript branch](https://github.com/mdvanes/polygram/tree/TypeScript). 
 
 The first challenge is to use Webpack with Polymer 2. Although not strictly necessary for TypeScript compilation, it would
 make sense for importing HTML as modules. Fortunately, [Rob Dodson himself](https://www.youtube.com/playlist?list=PLOU2XLYxmsII5c3Mgw6fNYCzaWrsM3sMN) wrote an
 article [How to use Polymer with Webpack](http://robdodson.me/how-to-use-polymer-with-webpack/). It even mentions TypeScript!
 The article introduces the Webpack loader [https://github.com/webpack-contrib/polymer-webpack-loader](https://github.com/webpack-contrib/polymer-webpack-loader) and
-explains how it extracts the JavaScript from the HTMl of Polymer elements and eventually combines everything into one
-JavaScript file. I was basically able to copy the webpack.config.js and index.ejs and that would compile. I moved my
-[custom elements](https://github.com/mdvanes/polygram/tree/webpack) from the root of the project to the src dir and I had
+explains how it extracts the JavaScript from the HTML of Polymer elements and eventually packages everything into one
+JavaScript file. I was basically able to copy the webpack.config.js and index.ejs from his demo project, place it into Polygram and that would compile. I moved my
+[custom elements](https://github.com/mdvanes/polygram/tree/TypeScript) from the root of the project to the src dir and I had
 to modify the paths to the bower_components and it would basically work. 
 
-The most important exception is Redux, the redux-mixin.html can't resolve the PolymerRedux.html dependency. The polymer-webpack-loader
-should resolve this, but runtime it logs `Uncaught ReferenceError: PolymerRedux is not defined`. The loader seems to
-import the HTML element that goes into the `template` element, but not the JavaScript variables that go into the `script` element.
+The most important exception is Redux, the redux-mixin.html can't resolve the PolymerRedux.html dependency (in bower_components/polymer-redux/polymer-redux.html). 
+The polymer-webpack-loader should resolve this, but runtime it logs `Uncaught ReferenceError: PolymerRedux is not defined`. 
+E.g. for src/polygram-app.html, the loader seems to import the HTML elements that are used in the `template` element, 
+but not the JavaScript variables that are used in the `script` element.
+
 The PolymerRedux code is distributed as JavaScript wrapped in a `script` tag in mainly one file, so it would be easy to
-extract it into a JavaScript file. Or even to import `polymer-redux/src/index.js` instead of `polymer-redux/polymer-redux.html` 
-(this does not work because it is uncompiled and misses external dependencies that are not installed in bower_components). For now, I just 
-comment out the Redux dependencies.
+extract it to a JavaScript file. Or even to import `polymer-redux/src/index.js` instead of `polymer-redux/polymer-redux.html` 
+(although index.js is uncompiled and misses external dependencies that are not installed in bower_components because they are development dependencies of polymer-redux). 
+For now, I just comment out the Redux dependencies.
 
+It is already clear now that the result from Webpack will be one huge bundle.js that inlines all JavaScript and HTML 
+dependencies. This means using the [PRPL pattern](https://www.polymer-project.org/2.0/toolbox/prpl) will not be possible 
+in this workflow, nor will it be possible to have standalone Polymer components and the accompanying Polymer demo pages.
 
-
-
-
-The article uses Babel and import from npm modules. Was easy to migrate, but loses polyserve / the 
-poly serve/demo pages / polylint still possible? wct still possible? Lazy loading PRPL? @
 
 ## Adding ts-loader
 
-Normally, to migrate from JavaScript to TypeScript with Webpack, it would be enough to add the [ts-loader] to the Webpack
-config and to rename the JavaScript files to TypeScript files. 
+Normally, to migrate a Webpack project from JavaScript to TypeScript, it would be enough to add the [ts-loader](https://github.com/TypeStrong/ts-loader) 
+to the Webpack config and to rename the JavaScript files to TypeScript files. 
 
 So I started with changing the extension for the bootstrapping index.js and adding .ts as a resolved extension:
 
@@ -63,7 +72,7 @@ resolve: {
 ...
 ```
 
-And adding this loader:
+And adding this rule:
 
 ```javascript
 // webpack.config.js
@@ -85,9 +94,10 @@ And creating a tsconfig.json:
 }
 ```
 
-Everything still compiles, but the JavaScript is embedded in the HTML and is ignored by the ts-loader.
+Everything still compiles, but the JavaScript for the Polymer components is embedded in the HTML and therefore ignored 
+by the new rule with the ts-loader.
 
-Adding the ts-loader to the chain breaks the compilation:
+Adding the ts-loader to the rule for the HTML files breaks compilation:
 
 ```javascript
 // webpack.config.js
@@ -111,13 +121,13 @@ Module build failed: Error: Could not find file: '/home/me/polygram/src/polygram
 
 Well, that just doesn't look healthy. I filed [a bug](https://github.com/webpack-contrib/polymer-webpack-loader/issues/64) 
 and will look into the code of the polymer-webpack-loader later to see if this can be solved, but for the moment I will
-try to work around it by extracting the TypeScript code to a separate file. Got an update on the bug report: the root cause
-is with Webpack, so I don't see this will be resolved any time soon.
+try to work around it by extracting the TypeScript code to a separate file. Almost 2 months after my report the maintainers
+ closed the issue with the comment the root cause is with Webpack, so I don't see this will be resolved any time soon.
 
 
-### Workaround for ts compilation in a Polymer element
+### Workaround for TypeScript compilation in a Polymer element
 
-After removing the `ts-loader` line from the html rule in the webpack.config.js I set out to extract TypeScript to a
+After removing the `ts-loader` line from the HTML rule in the webpack.config.js I set out to extract the TypeScript to a
 separate file so it can be compiled with the rule that matches ts files. 
 
 Roughly, the main entry point for the Polymer elements `polygram-app.html` contains:
@@ -184,7 +194,8 @@ export default class PolygramApp extends Polymer.Element {
 }
 ``` 
 
-and to import this in the HTML:
+It would be possible to import PolygramApp.ts with `<script src="PolygramApp.ts"></script`, but I like the standard ES6 module structure
+of PolygramApp.ts without the added responsibility of registering itself to customElements, so I import it like this:
 
 ```html
 <!-- polygram-app.html -->
@@ -200,36 +211,28 @@ and to import this in the HTML:
 </dom-module>
 ```
 
-Compilation fails with 4 errors.
+The result is a failed compilation with 3 types of errors. Let's deal with them one by one.
 
-*now to add some typings*
-*script tag*
 
-Workaround :
-So extracting ts to separate file, so webpack match for tsloader can be... instead of part of the html match...  .
-How to load? Now using import (code example)  but would script tag work?
-
-### Failing accessors
+### 1. Failing accessors
 
 The `is` and `properties` getters require a specifically set target ECMAScript version, the compilation error is:
 `error TS1056: Accessors are only available when targeting ECMAScript 5 and higher`. It surprises me that the default
-ES target is ES3, but it's no problem to use ESNext here, because the babel-loader will transpile it back to ES5.
+ES target is ES3, but it's not even a problem to use ESNext here, because the babel-loader will transpile it back to ES5.
 
-In the tsconfig.json added `"target": "ESNext"` to compilerOptions, that fixes this error.
+Adding `"target": "ESNext"` to compilerOptions in the tsconfig.json fixes this error.
 
-### Failing Polymer import
+### 2. Failing Polymer import
 
 `Polymer` can't be found for the `extends`. This is the most difficult of these errors to solve, because it is caused by the preferred module 
 architecture of Polymer 2: because HTML imports are used, it is not possible to use `import Polymer from '../bower_components/polymer/polymer-element.html'`
 because this polymer-element does not export `Polymer` as an ES6 module. The webpack-polymer-loader can resolve HTML
-imports, but using `import '../bower_components/polymer/polymer-element.html'` results in an `error TS2304: Cannot find name 'Polymer'`
-I assume because it results in an HTML import @@@
+imports, but using `import '../bower_components/polymer/polymer-element.html'` results in an `error TS2304: Cannot find name 'Polymer'`.
  
-For the moment, I'm just removing the `extends Polymer.Element` from PolygrayApps.ts and `window.customElements.define(PolygramApp.is, PolygramApp);` from polygram-app.html.
-@@@ try with html import/require/ts ref imports
+For the moment, I'm just removing the `extends Polymer.Element` from PolygramApps.ts and `window.customElements.define(PolygramApp.is, PolygramApp);` from polygram-app.html.
 
 
-### Failing date-fns import
+### 3. Failing date-fns import
 
 To be able to continue resolving the compilation errors, I add a log statement to polygram-app.html:
 
@@ -270,7 +273,7 @@ import { format } from 'date-fns';
 
 And the IDE warning by adding `"moduleResolution": "node"` to the compilerOptions in tsconfig.json.
 
-At this point, nothing is rendered, but because of the added log statement, the current date is logged in the browser console. 
+At this point, although nothing is rendered, because of the added log statement the current date is logged to the browser console. 
 
 
 ### Failing Polymer import, continued
@@ -279,7 +282,7 @@ Now the import succeeds and it is clear that the TypeScript compiler correctly p
 try to fix the import of the `Polymer` module in PolygramApp.ts.
 
 A possible workaround will be to not try to import HTML imports in the TypeScript file, but instead to supply those dependencies
-through the HTML that is importing the TypeScript file. To do this, I change:
+through the HTML that is importing the TypeScript file. To do this, I change the respective files to:
 
 ```html
 <!-- polygram-app.html -->
@@ -321,28 +324,28 @@ export default { create }
 ``` 
 
 Now everything compiles without errors and the custom elements are rendered again!
- 
-@@@ But it would be better to see why polymer-webpack-loader is not importing Polymer when using `import Polymer from '../bower_components/polymer/polymer-element.html'`
-or `import '../bower_components/polymer/polymer-element.html'`.
+
+Note here that I also added a `string` type to `const label` to see if typings work.
 
 
 ### Re-enabling Redux
 
-Earlier, Redux was disabled to test Webpack. To re-enable it, I convert the `polymer-redux/polymer-redux.html` from 
+Earlier, Redux was disabled to test Webpack. It was failing with the runtime error `Uncaught ReferenceError: PolymerRedux 
+is not defined` To re-enable it, I convert the `polymer-redux/polymer-redux.html` from 
 bower_components to a local PolymerRedux.js, by just removing the `script` tags.
 
 Because redux-mixin.html, action.html, and reducer.html actually are already JavaScript wrapped in `script` tags, I just convert
-them to TypeScript files.
+them to TypeScript files, for example:
 
 ```typescript
 // ReduxMixin.ts
-import {createStore, combineReducers, compose} from 'redux';
+import {combineReducers, compose, createStore} from 'redux';
 const PolymerRedux = require('exports-loader?PolymerRedux!./PolymerRedux');
 ...
 export const ReduxMixin = PolymerRedux(reduxStore);
 ```
 
-To use it in PolygramApp.ts, it can now be imported normally:
+To use it in PolygramApp.ts, it can now be imported like a normal ES6 module:
 
 ```typescript
 // PolygramApp.ts
@@ -374,9 +377,9 @@ After making similar modifications for polygram-searchbox, the Redux events work
 
 ## Importing a global variable from HTML
 
-Now PolymerRedux is loaded from a custom PolymerRedux.js that I made by removing the `<script>` tags from the file in bower_components,
-and although this works, it would be better to use the file in bower_components directly because it will be easier to handle
-upgrades.
+At this point PolymerRedux is loaded from a custom PolymerRedux.js that I made in the previous step by removing the `<script>` 
+tags from the file in bower\_components. Although this works, it would be better to use the file in bower\_components 
+directly because it will be easier to handle updates to this external package.
 
 Currently I import the custom PolymerRedux.js in state/ReduxMixin.ts with:
 
@@ -708,10 +711,22 @@ export class MyApp extends PolymerElement {
 Also poly 3 will (prob?) supply an auto converter from (normal) poly 2 syntax. You could use that converter on the output
 of twc and now already get used to [proper] syntax.
 
+## @@@ Final remarks
 
-# To do for this article
+Unit testing and coverage support when using TypeScript has not been mentioned, but I hope it is clear that, when using
+typescript-batch-compiler, it is unchanged from a normal Polymer 2 application (so just use [WCT](https://github.com/Polymer/web-component-tester)), because all components
+are compiled to a state that conforms to a non-TypeScript Polymer 2 situation.
 
-* @@@ Unit and e2e and coverage (unchanged! because still using polymer. But should mention this)
+For the Webpack approach it would be an improvement to see why polymer-webpack-loader is not importing Polymer when 
+using `import Polymer from '../bower_components/polymer/polymer-element.html'`
+or `import '../bower_components/polymer/polymer-element.html'`.
+
+Improvement could be adding the *prettier* plugin to the typescript-batch-compiler plugin  
+
+
+
+
+
 
 
 
@@ -740,6 +755,6 @@ Next test cases and CI.
 ... also still have to try Thunk for the async calls ...
 
 
-Does such a Gist works in Jekyll?
+Does such a Gist works in Jekyll? Result: Flawlessly, even in this old version!
 https://github.com/jekyll/jekyll-gist
 <script src="https://gist.github.com/robdodson/4270ff2dbd0852b34ad849e723bc4592.js"></script>
