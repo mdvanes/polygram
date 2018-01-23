@@ -75,5 +75,47 @@ native webcomponents and a Polymer component.
 * Add Ramdba to Redux, see [this article](https://alligator.io/react/functional-redux-reducers-with-ramda/).
 * Test cases, source maps (bundler?), breakpoints (breakpoints work)?
 * Hydrolysis (now [Polymer Analyzer](https://github.com/Polymer/polymer-analyzer), used by linter and builder. 
-* Vulcanisation (now [Polymer Bundler??](https://github.com/Polymer/polymer-bundler)), used for packaging.
+* Vulcanisation (now [Polymer BuAddedAddedAddndler??](https://github.com/Polymer/polymer-bundler)), used for packaging.
 * improvement paper-autocomplete?
+
+
+
+# follow-up, conversion to Poly 3
+
+nvm use
+npm install -g polymer-modulizer
+what does it do? convert HTML to ES modules, which matches Polygram 3 (this is not in the docs, but based on comment of Tim van der Lippe)
+I will test package mode of the modulizer
+make a new dir polygram-modulizer-test next to the project dir 
+copy twc/polygram-details.html (this is equal to ./polygram-details.html in the master branch, the original version) to the new dir polygram-modulizer-test
+copy bower.json to the new dir
+in the new dir run 
+git init (a git repo is required) and commit changes + ignore bower_components
+bower cache clean && bower install
+modulizer --out .
+This already succeeds with:
+```
+? npm package name? @polymer/polygram-element
+? npm package version? 
+[1/2] 🌀  Converting Package...
+Out directory: /Users/mdvanes/Documents/OSS/polygram-modulizer-test
+WARN: bower->npm mapping for "polymer-redux" not found
+[2/2] 🎉  Conversion Complete!
+```
+This was not enough: the end result should be the ES6 module and this means a JS file, but for some
+reason the HTML was modified. 
+For sure, this has to do with:
+> 1. All dependencies must be available as modules to convert.
+
+Nevertheless, this looks very promising.
+
+## Typings
+
+There are typings for Poly 2 core, should be in the 2.4 release. Currently in RC.
+This should make it possible to import (should it?) dependencies, mainly
+`Polymer` itself without the factory workaround.
+Or actually `declare const Polymer: any;`
+which means this multiple declaration because of scoping would not occur.
+which means polymer-batch-compiler is not needed?
+
+## Decorators
